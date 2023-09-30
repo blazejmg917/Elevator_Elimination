@@ -29,6 +29,9 @@ public class Person : MonoBehaviour
             canSee = hasSight;
         }
     }
+
+    [SerializeField, Tooltip("this person's id")] private string personId;
+
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
     [SerializeField, Tooltip("if this person blocks a space")] private bool takesUpSpace = true;
     [SerializeField, Tooltip("if this person will fail the level if seen")] private bool triggerAlarmOnSeen = false;
@@ -74,24 +77,24 @@ public class Person : MonoBehaviour
         //update sprite to match direction
     }
 
-    public bool OnPush(Direction dir)
+    public bool OnPush(PlayerMechanics.DirectionFacing dir)
     {
         if (behavior.canPush)
         {
             switch (dir) {
-                case Direction.LEFT:
+                case PlayerMechanics.DirectionFacing.Left:
                     TryMove(currentTile.GetLeft());
                     break;
 
-                case Direction.RIGHT:
+                case PlayerMechanics.DirectionFacing.Right:
                     TryMove(currentTile.GetRight());
                     break;
 
-                case Direction.DOWN:
+                case PlayerMechanics.DirectionFacing.Down:
                     TryMove(currentTile.GetBottom());
                     break;
 
-                case Direction.UP:
+                case PlayerMechanics.DirectionFacing.Up:
                     TryMove(currentTile.GetTop());
                     break;
             }
@@ -118,25 +121,25 @@ public class Person : MonoBehaviour
 
     }
 
-    public bool OnTap(Direction dir)
+    public bool OnTap(PlayerMechanics.DirectionFacing dir)
     {
         if (behavior.canTurn)
         {
             switch (dir)
             {
-                case Direction.LEFT:
+                case PlayerMechanics.DirectionFacing.Left:
                     currentFacing = Direction.RIGHT;
                     break;
 
-                case Direction.RIGHT:
+                case PlayerMechanics.DirectionFacing.Right:
                     currentFacing = Direction.LEFT;
                     break;
 
-                case Direction.DOWN:
+                case PlayerMechanics.DirectionFacing.Down:
                     currentFacing = Direction.UP;
                     break;
 
-                case Direction.UP:
+                case PlayerMechanics.DirectionFacing.Up:
                     currentFacing = Direction.DOWN;
                     break;
             }
@@ -167,7 +170,7 @@ public class Person : MonoBehaviour
         
     }
 
-    public void OnLevelUpdate()
+    public bool OnFloorChange()
     {
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
@@ -189,10 +192,20 @@ public class Person : MonoBehaviour
             }
             if (tileSeen)
             {
-                
+                Person seenPerson = tileSeen.GetPerson();
+                if (seenPerson)
+                {
+                    if (seenPerson.CallAlarmWhenSeen())
+                    {
+                        //call game over
+                        return false;
+                    }
+                    sightlineCleared = true;
+                }
             }
                 
         }
+        return true;
     }
 
     public void SetDeadSprite()

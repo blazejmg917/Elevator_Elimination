@@ -9,9 +9,10 @@ public class TileManager : MonoBehaviour
     //[SerializeField, Tooltip("the lists of all current tiles")]private List<List<Tile>> tilesList = new List<List<Tile>>();
     [SerializeField, Tooltip("the tile prefab")] private GameObject tilePrefab;
     [SerializeField, Tooltip("tile holder object")] private GameObject tileHolder;
-    [SerializeField, Tooltip("the size of each tile object")] private Vector2 tileSize;
-    [SerializeField, Tooltip("the starting position of the first tile")] private Vector2 tileStart;
+    [SerializeField, Tooltip("the size of each tile object")] private Vector3 tileSize;
+    [SerializeField, Tooltip("the starting position of the first tile")] private Vector3 tileStart;
     [SerializeField, Tooltip("the tile structure file to load in")] private LevelStructure baseLevel;
+    [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
 
     private static TileManager _instance;
     public static TileManager Instance
@@ -40,6 +41,7 @@ public class TileManager : MonoBehaviour
             tileHolder = levelStructure.gameObject;
         }
         LoadLevel(baseLevel.GetTiles());
+       
     }
     public void LoadLevel(List<List<Tile>> tileList)
     {
@@ -72,6 +74,7 @@ public class TileManager : MonoBehaviour
     }
     public void LoadLevel(Tile[,] levelArray)
     {
+        Debug.Log("loading level from array: " + levelArray);
         tiles = levelArray;
         LinkTiles();
     }
@@ -104,6 +107,7 @@ public class TileManager : MonoBehaviour
 
             }
         }
+        startTile = tiles[tiles.GetLength(0) / 2, tiles.GetLength(1) / 2];
     }
 
     private Tile GetTile(int x, int y)
@@ -141,7 +145,7 @@ public class TileManager : MonoBehaviour
         {
             for(int j = 0; j < ySize; j++)
             {
-                GameObject newTileObj = Instantiate(tilePrefab, new Vector2(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j), Quaternion.identity, tileHolder.transform);
+                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y, tileStart.z + tileSize.z * j), tilePrefab.transform.rotation, tileHolder.transform);
                 Tile newTile = newTileObj.GetComponent<Tile>();
                 if (!newTile)
                 {
@@ -197,13 +201,41 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
+
         tiles = null;
-        //if (tileHolder)
-        //{
-        //    foreach(Transform t in tileHolder.transform.GetComponentInChildren<Transform>())
-        //    {
-        //        DestroyImmediate(t.gameObject);
-        //    }
-        //}
+        if (tileHolder)
+        {
+            foreach (Transform t in tileHolder.transform.GetComponentInChildren<Transform>())
+            {
+                DestroyImmediate(t.gameObject);
+            }
+        }
+    }
+
+    public bool UpdateLevel()
+    {
+        bool gameStillRunning = true;
+        for (int i = 0; i < tiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < tiles.GetLength(1); j++)
+            {
+                Person tilePerson = tiles[i, j].GetPerson();
+                if (tilePerson)
+                {
+                    if (!tilePerson.OnFloorChange())
+                    {
+                        gameStillRunning = false;
+                    }
+                    
+                }
+
+            }
+        }
+        return gameStillRunning;
+    }
+
+    public Tile GetStartTile()
+    {
+        return startTile;
     }
 }
