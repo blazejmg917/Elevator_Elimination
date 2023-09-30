@@ -59,17 +59,17 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public void LoadLevel(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
-    {
-        ClearLevel();
-        baseLevel = levelStructure;
-        if (setStructureAsTileHolder)
-        {
-            tileHolder = levelStructure.gameObject;
-        }
-        LoadLevel(baseLevel.GetTiles());
+    // public void LoadLevel(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
+    // {
+    //     ClearLevel();
+    //     baseLevel = levelStructure;
+    //     if (setStructureAsTileHolder)
+    //     {
+    //         tileHolder = levelStructure.gameObject;
+    //     }
+    //     LoadLevel(baseLevel.GetTiles());
        
-    }
+    // }
     public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
     {
         ClearLevel();
@@ -126,56 +126,66 @@ public class TileManager : MonoBehaviour
         personHolder.transform.parent = transform;
         for(int i = 0; i < tilesList.Count; i++){
             for(int j = 0; j < tilesList[i].Count; j++){
-
+                Tile thisTile = tilesList[i][j];
+                if(thisTile.GetPersonId() != null){
+                    PersonHolder pHolder = PersonManager.Instance.GetPHolder();
+                    GameObject personPrefab = pHolder.GetPersonById(thisTile.GetPersonId());
+                    if(personPrefab){
+                        GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
+                        //thisPerson.GetComponent<Person>.SetTiles
+                        thisPerson.transform.parent = personHolder.transform;
+                    }
+                }
+                
                 //tilesList[i][j]
             }
         }
     }
-    public void LoadLevel(Tile[,] levelArray)
-    {
-        Debug.Log("loading level from array: " + levelArray);
-        tiles = levelArray;
-        LinkTiles();
-    }
+    // public void LoadLevel(Tile[,] levelArray)
+    // {
+    //     Debug.Log("loading level from array: " + levelArray);
+    //     tiles = levelArray;
+    //     LinkTiles();
+    // }
 
-    public void LinkTiles()
-    {
+//     public void LinkTiles()
+//     {
         
-        Debug.Log("linking tiles: " + tiles.GetLength(0) + ", " + tiles.GetLength(1));
-        for (int i = 0; i < tiles.GetLength(0); i++)
-        {
-            Debug.Log("i");
-            for (int j = 0; j < tiles.GetLength(1); j++)
-            {
-                Debug.Log("j");
-                if(i > 0)
-                {
-                    tiles[i, j].SetLeft(tiles[i - 1, j]);
-                }
-                if (i < tiles.GetLength(0) - 1) 
-                {
-                    tiles[i, j].SetRight(tiles[i + 1, j]);
-                }
+//         Debug.Log("linking tiles: " + tiles.GetLength(0) + ", " + tiles.GetLength(1));
+//         for (int i = 0; i < tiles.GetLength(0); i++)
+//         {
+//             Debug.Log("i");
+//             for (int j = 0; j < tiles.GetLength(1); j++)
+//             {
+//                 Debug.Log("j");
+//                 if(i > 0)
+//                 {
+//                     tiles[i, j].SetLeft(tiles[i - 1, j]);
+//                 }
+//                 if (i < tiles.GetLength(0) - 1) 
+//                 {
+//                     tiles[i, j].SetRight(tiles[i + 1, j]);
+//                 }
 
-                if (j > 0)
-                {
-                    tiles[i, j].SetBottom(tiles[i, j-1]);
-                }
-                if (j < tiles.GetLength(1) - 1)
-                {
-                    tiles[i, j].SetTop(tiles[i, j+1]);
+//                 if (j > 0)
+//                 {
+//                     tiles[i, j].SetBottom(tiles[i, j-1]);
+//                 }
+//                 if (j < tiles.GetLength(1) - 1)
+//                 {
+//                     tiles[i, j].SetTop(tiles[i, j+1]);
 
-                }
+//                 }
 
-            }
-        }
-        startTile = tiles[tiles.GetLength(0) / 2, tiles.GetLength(1)-1];
+//             }
+//         }
+//         startTile = tiles[tiles.GetLength(0) / 2, tiles.GetLength(1)-1];
 
-#if UNITY_EDITOR
-    EditorUtility.SetDirty(this);
-#endif
+// #if UNITY_EDITOR
+//     EditorUtility.SetDirty(this);
+// #endif
         
-    }
+//     }
     public void LinkTileList()
     {
        // Debug.Log("linking tiles: " + tilesList.Count + ", " + tilesList[0].Count);
@@ -213,51 +223,51 @@ public class TileManager : MonoBehaviour
 
     private Tile GetTile(int x, int y)
     {
-        return tiles[x, y];
+        return tilesList[x][y];
     }
     private Tile GetTile(int[] coords)
     {
         return GetTile(coords[0], coords[1]);
     }
 
-    public void SetupElevator(int xSize, int ySize, bool overridePrevVals)
-    {
-        if (tiles != null)
-        {
-            if (!overridePrevVals)
-            {
-                Debug.LogWarning("Trying to override previous values through inspector");
-                return;
-            }
-            else
-            {
-                ClearLevel();
-            }
-        }
+    // public void SetupElevator(int xSize, int ySize, bool overridePrevVals)
+    // {
+    //     if (tiles != null)
+    //     {
+    //         if (!overridePrevVals)
+    //         {
+    //             Debug.LogWarning("Trying to override previous values through inspector");
+    //             return;
+    //         }
+    //         else
+    //         {
+    //             ClearLevel();
+    //         }
+    //     }
 
-        if (!tileHolder)
-        {
-            tileHolder = new GameObject("Tile Holder");
-            tileHolder.transform.parent = transform;
-        }
+    //     if (!tileHolder)
+    //     {
+    //         tileHolder = new GameObject("Tile Holder");
+    //         tileHolder.transform.parent = transform;
+    //     }
 
-        tiles = new Tile[xSize, ySize];
-        for(int i = 0; i < xSize; i++)
-        {
-            for(int j = 0; j < ySize; j++)
-            {
-                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
-                Tile newTile = newTileObj.GetComponent<Tile>();
-                if (!newTile)
-                {
-                    newTile = newTileObj.AddComponent<Tile>();
-                }
-                tiles[i, j] = newTile;
-            }
-        }
-        SaveLevelToStructure(overridePrevVals);
-        LinkTiles();
-    }
+    //     tiles = new Tile[xSize, ySize];
+    //     for(int i = 0; i < xSize; i++)
+    //     {
+    //         for(int j = 0; j < ySize; j++)
+    //         {
+    //             GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
+    //             Tile newTile = newTileObj.GetComponent<Tile>();
+    //             if (!newTile)
+    //             {
+    //                 newTile = newTileObj.AddComponent<Tile>();
+    //             }
+    //             tiles[i, j] = newTile;
+    //         }
+    //     }
+    //     SaveLevelToStructure(overridePrevVals);
+    //     LinkTiles();
+    // }
     public void SetupElevatorList(int xSize, int ySize, bool overridePrevVals)
     {
         if (tilesList != null)
@@ -300,35 +310,35 @@ public class TileManager : MonoBehaviour
         LinkTileList();
     }
 
-    private void SaveLevelToStructure(bool overridePrevVals)
-    {
-        if (!tileHolder)
-        {
-            tileHolder = new GameObject();
-        }
-        if (!baseLevel)
-        {
-            baseLevel = tileHolder.GetComponent<LevelStructure>();
-            if (!baseLevel)
-            {
-                baseLevel = tileHolder.AddComponent<LevelStructure>();
-            }
-        }
-        if (baseLevel.HasTiles() && !overridePrevVals)
-        {
+    // private void SaveLevelToStructure(bool overridePrevVals)
+    // {
+    //     if (!tileHolder)
+    //     {
+    //         tileHolder = new GameObject();
+    //     }
+    //     if (!baseLevel)
+    //     {
+    //         baseLevel = tileHolder.GetComponent<LevelStructure>();
+    //         if (!baseLevel)
+    //         {
+    //             baseLevel = tileHolder.AddComponent<LevelStructure>();
+    //         }
+    //     }
+    //     if (baseLevel.HasTiles() && !overridePrevVals)
+    //     {
             
-            Debug.LogWarning("Trying to override previous values through inspector");
-            return;
+    //         Debug.LogWarning("Trying to override previous values through inspector");
+    //         return;
             
-        }
-        else
-        {
-            baseLevel.SetTiles(tiles);
-        }
-    #if UNITY_EDITOR
-    EditorUtility.SetDirty(baseLevel);
-    #endif
-    }
+    //     }
+    //     else
+    //     {
+    //         baseLevel.SetTiles(tiles);
+    //     }
+    // #if UNITY_EDITOR
+    // EditorUtility.SetDirty(baseLevel);
+    // #endif
+    // }
     private void SaveLevelToStructureList(bool overridePrevVals)
     {
         if (!tileHolder)
@@ -413,7 +423,7 @@ public class TileManager : MonoBehaviour
         bool gameStillRunning = true;
         for (int i = 0; i < tilesList.Count; i++)
         {
-            for (int j = 0; j < tilesList[0].Count; j++)
+            for (int j = 0; j < tilesList[i].Count; j++)
             {
                 Person tilePerson = tilesList[i][j].GetPerson();
                 if (tilePerson)
