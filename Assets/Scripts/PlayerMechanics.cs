@@ -19,6 +19,7 @@ public class PlayerMechanics : MonoBehaviour
     private Person adjacentPerson = null;
     private Vector3 targetPosition;
     private TileManager tileMan;
+    private bool movePressed = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +67,8 @@ public class PlayerMechanics : MonoBehaviour
     public void Move(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
         Debug.Log("Move " + pressed);
-        if (pressed > 0.5f && isInteractible) {
+        if (pressed > 0.5f && isInteractible && !movePressed) {
+            movePressed = true;
             switch(facing) {
                 case DirectionFacing.Left:
                     if (currentTile.GetLeft() != null && currentTile.GetLeft().IsWalkable()) {
@@ -109,6 +111,8 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
+        } else if (pressed <= 0.5f && movePressed) {
+            movePressed = false;
         }
     }
 

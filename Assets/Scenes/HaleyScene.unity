@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 974748560}
   rightTile: {fileID: 0}
   topTile: {fileID: 1503126338}
@@ -323,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 712862533}
   rightTile: {fileID: 2103675653}
   topTile: {fileID: 0}
@@ -387,7 +389,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.8627451, g: 0.17254902, b: 0.17254902, a: 1}
+  m_Color: {r: 0.8627451, g: 0.17254902, b: 0.8627451, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -745,6 +747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 2133552293}
   rightTile: {fileID: 1066086126}
   topTile: {fileID: 1552148054}
@@ -948,6 +951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 1945824519}
   topTile: {fileID: 1309214752}
@@ -1137,6 +1141,7 @@ MonoBehaviour:
     - {fileID: 1503126338}
   tilePrefab: {fileID: 2577321018060466692, guid: edaf83ab3bbcb804499f1cdb8e74d0ee, type: 3}
   tileHolder: {fileID: 478334378}
+  personHolder: {fileID: 0}
   tileSize: {x: 1, y: 1, z: 0}
   tileStart: {x: 0, y: 0, z: 0}
   baseLevel: {fileID: 478334379}
@@ -1255,6 +1260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1782536854}
   rightTile: {fileID: 2032078883}
   topTile: {fileID: 2133552293}
@@ -1357,6 +1363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1309214752}
   rightTile: {fileID: 145476000}
   topTile: {fileID: 0}
@@ -1459,6 +1466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1822035202}
   rightTile: {fileID: 2133552293}
   topTile: {fileID: 1469108648}
@@ -1561,6 +1569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1552148054}
   rightTile: {fileID: 0}
   topTile: {fileID: 107235339}
@@ -1663,6 +1672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1272514472}
   rightTile: {fileID: 107235339}
   topTile: {fileID: 2103675653}
@@ -1765,10 +1775,121 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 407221172}
   rightTile: {fileID: 0}
   topTile: {fileID: 904809060}
   bottomTile: {fileID: 1508097089}
+--- !u!1 &1099074704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1099074707}
+  - component: {fileID: 1099074706}
+  - component: {fileID: 1099074705}
+  m_Layer: 0
+  m_Name: Circle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1099074705
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099074704}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Color: {r: 0.8627451, g: 0.8627451, b: 0.17254902, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &1099074706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099074704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8505c567d470e0e4191d957600d4a1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personId: 
+  isTarget: 0
+  takesUpSpace: 1
+  triggerAlarmOnSeen: 0
+  transparent: 0
+  currentTile: {fileID: 1508097089}
+  currentFacing: 0
+  behavior:
+    canPush: 1
+    canTurn: 1
+    canBeKilled: 0
+    canSee: 1
+  pushSpeed: 5
+--- !u!4 &1099074707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099074704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.5657153, y: 1.7992165, z: -0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1272514469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1867,6 +1988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1945824519}
   rightTile: {fileID: 974748560}
   topTile: {fileID: 145476000}
@@ -1969,6 +2091,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 712862533}
   topTile: {fileID: 0}
@@ -2071,6 +2194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 2095131189}
   rightTile: {fileID: 2117401943}
   topTile: {fileID: 1945824519}
@@ -2173,6 +2297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 2103675653}
   rightTile: {fileID: 0}
   topTile: {fileID: 0}
@@ -2274,7 +2399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfa1b5557ba83e4abbd9710be676208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPerson: {fileID: 0}
+  currentPerson: {fileID: 1099074706}
+  personId: 
   leftTile: {fileID: 2032078883}
   rightTile: {fileID: 0}
   topTile: {fileID: 1066086126}
@@ -2377,6 +2503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 324443994}
+  personId: 
   leftTile: {fileID: 2117401943}
   rightTile: {fileID: 904809060}
   topTile: {fileID: 974748560}
@@ -2479,6 +2606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1784002708}
   rightTile: {fileID: 698000894}
   topTile: {fileID: 735646676}
@@ -2581,6 +2709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 1782536854}
   topTile: {fileID: 1822035202}
@@ -2683,6 +2812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 735646676}
   topTile: {fileID: 2095131189}
@@ -2785,6 +2915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 533067139}
   rightTile: {fileID: 1272514472}
   topTile: {fileID: 712862533}
@@ -2887,6 +3018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 698000894}
   rightTile: {fileID: 1508097089}
   topTile: {fileID: 407221172}
@@ -2989,6 +3121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 1469108648}
   topTile: {fileID: 533067139}
@@ -3091,6 +3224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 145476000}
   rightTile: {fileID: 1503126338}
   topTile: {fileID: 0}
@@ -3193,6 +3327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1469108648}
   rightTile: {fileID: 1552148054}
   topTile: {fileID: 1272514472}
@@ -3295,6 +3430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 735646676}
   rightTile: {fileID: 407221172}
   topTile: {fileID: 2117401943}
@@ -3307,3 +3443,4 @@ SceneRoots:
   - {fileID: 615102280}
   - {fileID: 534697140}
   - {fileID: 324443995}
+  - {fileID: 1099074707}
