@@ -421,10 +421,13 @@ public class TileManager : MonoBehaviour
     public bool UpdateLevel()
     {
         bool gameStillRunning = true;
+        Debug.Log(tilesList.Count);
         for (int i = 0; i < tilesList.Count; i++)
         {
+            Debug.Log(i);
             for (int j = 0; j < tilesList[i].Count; j++)
             {
+                Debug.Log(j);
                 Person tilePerson = tilesList[i][j].GetPerson();
                 if (tilePerson)
                 {
