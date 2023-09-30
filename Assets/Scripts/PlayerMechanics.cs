@@ -19,19 +19,34 @@ public class PlayerMechanics : MonoBehaviour
     private Person adjacentPerson = null;
     private Vector3 targetPosition;
     private TileManager tileMan;
+    private GameManager gameMan;
     private bool movePressed = false;
+    private Tile exitTile;
+    private Vector3 exitPosition;
+    private bool isExiting = false;
     // Start is called before the first frame update
     void Start()
     {
         tileMan = TileManager.Instance;
+        gameMan = GameManager.Instance;
         currentTile = tileMan.GetStartTile();
+        exitTile = currentTile;
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        exitPosition = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isInteractible) {
+        if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon()) {
+            Debug.Log("hi");
+            transform.position = Vector3.MoveTowards(transform.position, exitPosition, movementSpeed * Time.fixedDeltaTime);
+            if (transform.position == exitPosition) {
+                gameMan.SetWinCon(false);
+                //load next level along with animations
+            }
+        }
+        if (!isInteractible && !isExiting && !gameMan.GetLoseCon()) {
             targetPosition = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
@@ -44,8 +59,8 @@ public class PlayerMechanics : MonoBehaviour
     public void Turn(InputAction.CallbackContext ctx) {
         float x = ctx.ReadValue<Vector2>().x;
         float y = ctx.ReadValue<Vector2>().y;
-        Debug.Log("Turn " + x + ", " + y);
-        if (Mathf.Abs(x) > Mathf.Abs(y)) {
+        //Debug.Log("Turn " + x + ", " + y);
+        if (Mathf.Abs(x) > Mathf.Abs(y) && isInteractible) {
             if (x < 0) {
                 facing = DirectionFacing.Left;
                 //change sprite
@@ -53,7 +68,7 @@ public class PlayerMechanics : MonoBehaviour
                 facing = DirectionFacing.Right;
                 //change sprite
             }
-        } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
+        } else if (Mathf.Abs(x) < Mathf.Abs(y) && isInteractible) {
             if (y < 0) {
                 facing = DirectionFacing.Down;
                 //change sprite
@@ -66,9 +81,14 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
-        Debug.Log("Move " + pressed);
+        //Debug.Log("Move " + pressed);
         if (pressed > 0.5f && isInteractible && !movePressed) {
             movePressed = true;
+            if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon()) {
+                //door animation start
+                isInteractible = false;
+                isExiting = true;
+            } 
             switch(facing) {
                 case DirectionFacing.Left:
                     if (currentTile.GetLeft() != null && currentTile.GetLeft().IsWalkable()) {
@@ -118,7 +138,7 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Tap(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
-        Debug.Log("Tap " + pressed);
+        //Debug.Log("Tap " + pressed);
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
@@ -162,7 +182,7 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Push(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
-        Debug.Log("Push " + pressed);
+        //Debug.Log("Push " + pressed);
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
@@ -241,6 +261,7 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
+            tileMan.UpdateLevel();
         } else {
             adjacentPerson = null;
         }
