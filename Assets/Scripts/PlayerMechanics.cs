@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMechanics : MonoBehaviour
 {
-    private enum DirectionFacing
+    public enum DirectionFacing
     {
         Left,
         Right,
