@@ -29,6 +29,9 @@ public class Person : MonoBehaviour
             canSee = hasSight;
         }
     }
+
+    [SerializeField, Tooltip("this person's id")] private string personId;
+
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
     [SerializeField, Tooltip("if this person blocks a space")] private bool takesUpSpace = true;
     [SerializeField, Tooltip("if this person will fail the level if seen")] private bool triggerAlarmOnSeen = false;
@@ -167,7 +170,7 @@ public class Person : MonoBehaviour
         
     }
 
-    public void OnLevelUpdate()
+    public bool OnFloorChange()
     {
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
@@ -189,10 +192,20 @@ public class Person : MonoBehaviour
             }
             if (tileSeen)
             {
-                
+                Person seenPerson = tileSeen.GetPerson();
+                if (seenPerson)
+                {
+                    if (seenPerson.CallAlarmWhenSeen())
+                    {
+                        //call game over
+                        return false;
+                    }
+                    sightlineCleared = true;
+                }
             }
                 
         }
+        return true;
     }
 
     public void SetDeadSprite()
