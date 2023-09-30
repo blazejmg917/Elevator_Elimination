@@ -78,4 +78,18 @@ public class Tile : MonoBehaviour
         x = thisX;
         y = thisY;
     }
+
+    public bool IsWalkable()
+    {
+        if(!currentPerson || !currentPerson.TakesUpSpace())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public Person GetPerson()
+    {
+        return currentPerson;
+    }
 }
