@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
     [SerializeField, Tooltip("The character currently on this tile")] private Person currentPerson;
+    private Person lastPerson = null;
+    [SerializeField, Tooltip("the id for the player on this tile"), ReadOnly(true)]private string personId;
     [SerializeField, Tooltip("The tile to the left")] private Tile leftTile;
     [SerializeField, Tooltip("The tile to the right")] private Tile rightTile;
     [SerializeField, Tooltip("The tile to the top")] private Tile topTile;
@@ -95,5 +99,16 @@ public class Tile : MonoBehaviour
 
     public void SetPerson(Person per) {
         currentPerson = per;
+    }
+
+    public string GetPersonId(){
+        return personId;
+    }
+
+    void OnValidate(){
+        if(lastPerson != currentPerson){
+            currentPerson = lastPerson;
+            personId = currentPerson.GetId();
+        }
     }
 }

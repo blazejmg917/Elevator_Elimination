@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 1315385977}
   topTile: {fileID: 0}
@@ -323,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1364180338}
   rightTile: {fileID: 1558326035}
   topTile: {fileID: 0}
@@ -425,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 1848083052}
   topTile: {fileID: 51395076}
@@ -527,6 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1848083052}
   rightTile: {fileID: 864887511}
   topTile: {fileID: 1364180338}
@@ -629,6 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1408639784}
   rightTile: {fileID: 1732294922}
   topTile: {fileID: 1848083052}
@@ -731,6 +736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 809679525}
   rightTile: {fileID: 0}
   topTile: {fileID: 2102854704}
@@ -1026,6 +1032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1958679887}
   rightTile: {fileID: 471874649}
   topTile: {fileID: 1900968897}
@@ -1128,6 +1135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 893268201}
   rightTile: {fileID: 1013735315}
   topTile: {fileID: 1958679887}
@@ -1230,6 +1238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 212494293}
   rightTile: {fileID: 1374101873}
   topTile: {fileID: 53040044}
@@ -1332,6 +1341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1114536791}
   rightTile: {fileID: 810779566}
   topTile: {fileID: 1161454679}
@@ -1434,6 +1444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 810779566}
   rightTile: {fileID: 1940947698}
   topTile: {fileID: 809679525}
@@ -1536,6 +1547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 893268201}
   topTile: {fileID: 1483026988}
@@ -1638,6 +1650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1483026988}
   rightTile: {fileID: 1958679887}
   topTile: {fileID: 382020543}
@@ -1706,6 +1719,7 @@ MonoBehaviour:
     - {fileID: 1940947698}
   tilePrefab: {fileID: 2577321018060466692, guid: edaf83ab3bbcb804499f1cdb8e74d0ee, type: 3}
   tileHolder: {fileID: 562339210}
+  personHolder: {fileID: 0}
   tileSize: {x: 1, y: 1, z: 0}
   tileStart: {x: 0, y: 0, z: 0}
   baseLevel: {fileID: 562339211}
@@ -1853,6 +1867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 51395076}
   rightTile: {fileID: 1364180338}
   topTile: {fileID: 0}
@@ -1955,6 +1970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1315385977}
   rightTile: {fileID: 53040044}
   topTile: {fileID: 0}
@@ -2057,6 +2073,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 864887511}
   rightTile: {fileID: 0}
   topTile: {fileID: 1558326035}
@@ -2159,6 +2176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 382020543}
   topTile: {fileID: 111358613}
@@ -2261,6 +2279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 0}
   rightTile: {fileID: 1161454679}
   topTile: {fileID: 1408639784}
@@ -2363,6 +2382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 53040044}
   rightTile: {fileID: 0}
   topTile: {fileID: 0}
@@ -2465,6 +2485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 382020543}
   rightTile: {fileID: 1900968897}
   topTile: {fileID: 212494293}
@@ -2567,6 +2588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 111358613}
   rightTile: {fileID: 212494293}
   topTile: {fileID: 1315385977}
@@ -2669,6 +2691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1732294922}
   rightTile: {fileID: 2102854704}
   topTile: {fileID: 864887511}
@@ -2771,6 +2794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1013735315}
   rightTile: {fileID: 0}
   topTile: {fileID: 471874649}
@@ -2873,6 +2897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1161454679}
   rightTile: {fileID: 809679525}
   topTile: {fileID: 1732294922}
@@ -2975,6 +3000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
+  personId: 
   leftTile: {fileID: 1900968897}
   rightTile: {fileID: 0}
   topTile: {fileID: 1374101873}
