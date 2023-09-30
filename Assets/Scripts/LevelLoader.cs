@@ -20,7 +20,7 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel()
     {
-        TileManager.Instance.LoadLevel(loadStructure,overwriteLevel);
+        TileManager.Instance.LoadLevelList(loadStructure,overwriteLevel);
         overwriteLevel = false;
     }
 }

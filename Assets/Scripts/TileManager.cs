@@ -2,11 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEditor;
 
 public class TileManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class ListWrapper<T>{
+        public List<T> list = new List<T>();
+        public T this[int key]
+        {
+            get
+            {
+                return list[key];
+            }
+            set
+            {
+                list[key] = value;
+            }
+        }
+        public int Count{
+            get
+            {
+                return list.Count;
+            }
+        }
+        public void Add(T val){
+            list.Add(val);
+        }
+    }
     [SerializeField, Tooltip("the array of all current tiles")] private Tile[,] tiles;
-    //[SerializeField, Tooltip("the lists of all current tiles")]private List<List<Tile>> tilesList = new List<List<Tile>>();
+    [SerializeField, Tooltip("the lists of all current tiles")]private List<ListWrapper<Tile>> tilesList = new List<ListWrapper<Tile>>();
     [SerializeField, Tooltip("the tile prefab")] private GameObject tilePrefab;
     [SerializeField, Tooltip("tile holder object")] private GameObject tileHolder;
     [SerializeField, Tooltip("the size of each tile object")] private Vector3 tileSize;
@@ -35,6 +60,7 @@ public class TileManager : MonoBehaviour
 
     public void LoadLevel(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
     {
+        ClearLevel();
         baseLevel = levelStructure;
         if (setStructureAsTileHolder)
         {
@@ -43,34 +69,54 @@ public class TileManager : MonoBehaviour
         LoadLevel(baseLevel.GetTiles());
        
     }
-    public void LoadLevel(List<List<Tile>> tileList)
+    public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
     {
-        if(tileList == null || tileList.Count == 0)
+        ClearLevel();
+        
+        if (setStructureAsTileHolder)
         {
-            return;
-        }
-        int iMax = tileList.Count;
-        int jMax = tileList[0].Count;
-        foreach(List<Tile> list in tileList)
-        {
-            if(list.Count > jMax)
-            {
-                jMax = list.Count;
+            if(baseLevel){
+                DestroyImmediate(baseLevel.gameObject);
             }
+            tileHolder = Instantiate(levelStructure.gameObject, transform);
+            baseLevel = tileHolder.GetComponent<LevelStructure>();
+
         }
-        tiles = new Tile[iMax,jMax];
-        int i = 0;
-        foreach(List<Tile> list in tileList)
-        {
-            int j = 0;
-            foreach(Tile tile in list)
-            {
-                tiles[i, j] = tile;
-                j++;
-            }
-            i++;
+        else{
+            baseLevel = levelStructure;
         }
-        LinkTiles();
+        LoadLevel(baseLevel.GetTileList());
+       
+    }
+    public void LoadLevel(List<ListWrapper<Tile>> tileList)
+    {
+        // if(tileList == null || tileList.Count == 0)
+        // {
+        //     return;
+        // }
+        // int iMax = tileList.Count;
+        // int jMax = tileList[0].Count;
+        // foreach(List<Tile> list in tileList)
+        // {
+        //     if(list.Count > jMax)
+        //     {
+        //         jMax = list.Count;
+        //     }
+        // }
+        // tiles = new Tile[iMax,jMax];
+        // int i = 0;
+        // foreach(List<Tile> list in tileList)
+        // {
+        //     int j = 0;
+        //     foreach(Tile tile in list)
+        //     {
+        //         tiles[i, j] = tile;
+        //         j++;
+        //     }
+        //     i++;
+        // }
+        this.tilesList = tileList;
+        LinkTileList();
     }
     public void LoadLevel(Tile[,] levelArray)
     {
@@ -81,11 +127,14 @@ public class TileManager : MonoBehaviour
 
     public void LinkTiles()
     {
+        
         Debug.Log("linking tiles: " + tiles.GetLength(0) + ", " + tiles.GetLength(1));
         for (int i = 0; i < tiles.GetLength(0); i++)
         {
+            Debug.Log("i");
             for (int j = 0; j < tiles.GetLength(1); j++)
             {
+                Debug.Log("j");
                 if(i > 0)
                 {
                     tiles[i, j].SetTop(tiles[i - 1, j]);
@@ -107,7 +156,46 @@ public class TileManager : MonoBehaviour
 
             }
         }
-        startTile = tiles[tiles.GetLength(0) / 2, tiles.GetLength(1) / 2];
+        startTile = tiles[tiles.GetLength(0) / 2, tiles.GetLength(1)-1];
+
+#if UNITY_EDITOR
+    EditorUtility.SetDirty(this);
+#endif
+        
+    }
+    public void LinkTileList()
+    {
+       // Debug.Log("linking tiles: " + tilesList.Count + ", " + tilesList[0].Count);
+        for (int i = 0; i < tilesList.Count; i++)
+        {
+            for (int j = 0; j < tilesList[i].Count; j++)
+            {
+                if(i > 0)
+                {
+                    //Debug.Log("top: "+ i +", " + j);
+                    tilesList[i][j].SetTop(tilesList[i - 1][ j]);
+                }
+                if (i < tilesList.Count - 1) 
+                {
+                    //Debug.Log("bottom: "+ i +", " + j);
+                    tilesList[i][j].SetBottom(tilesList[i + 1][ j]);
+                }
+
+                if (j > 0)
+                {
+                    //Debug.Log("left: "+ i +", " + j);
+                    tilesList[i][j].SetLeft(tilesList[i][ j-1]);
+                }
+                if (j < tilesList[i].Count - 1)
+                {
+                    //Debug.Log("right: "+ i +", " + j);
+                    tilesList[i][j].SetRight(tilesList[i][ j+1]);
+
+                }
+
+            }
+        }
+        startTile = tilesList[tilesList.Count / 2][ tilesList[0].Count-1];
     }
 
     private Tile GetTile(int x, int y)
@@ -145,7 +233,7 @@ public class TileManager : MonoBehaviour
         {
             for(int j = 0; j < ySize; j++)
             {
-                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y, tileStart.z + tileSize.z * j), tilePrefab.transform.rotation, tileHolder.transform);
+                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
                 Tile newTile = newTileObj.GetComponent<Tile>();
                 if (!newTile)
                 {
@@ -156,6 +244,47 @@ public class TileManager : MonoBehaviour
         }
         SaveLevelToStructure(overridePrevVals);
         LinkTiles();
+    }
+    public void SetupElevatorList(int xSize, int ySize, bool overridePrevVals)
+    {
+        if (tilesList != null)
+        {
+            if (!overridePrevVals)
+            {
+                Debug.LogWarning("Trying to override previous values through inspector");
+                return;
+            }
+            else
+            {
+                ClearLevel();
+            }
+        }
+
+        if (!tileHolder)
+        {
+            tileHolder = new GameObject("Tile Holder");
+            tileHolder.transform.parent = transform;
+        }
+
+        tilesList = new List<ListWrapper<Tile>>();
+        for(int i = 0; i < xSize; i++)
+        {
+            tilesList.Add(new ListWrapper<Tile>());
+            for(int j = 0; j < ySize; j++)
+            {
+                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
+                newTileObj.name = "Tile " + i + ", " + j;
+                Tile newTile = newTileObj.GetComponent<Tile>();
+                if (!newTile)
+                {
+                    newTile = newTileObj.AddComponent<Tile>();
+                }
+                tilesList[i].Add(newTile);
+            }
+        }
+        Debug.Log("completed list");
+        SaveLevelToStructureList(overridePrevVals);
+        LinkTileList();
     }
 
     private void SaveLevelToStructure(bool overridePrevVals)
@@ -183,7 +312,43 @@ public class TileManager : MonoBehaviour
         {
             baseLevel.SetTiles(tiles);
         }
-
+    #if UNITY_EDITOR
+    EditorUtility.SetDirty(baseLevel);
+    #endif
+    }
+    private void SaveLevelToStructureList(bool overridePrevVals)
+    {
+        if (!tileHolder)
+        {
+            tileHolder = new GameObject();
+            baseLevel = tileHolder.GetComponent<LevelStructure>();
+            if (!baseLevel)
+            {
+                baseLevel = tileHolder.AddComponent<LevelStructure>();
+            }
+        }
+        if (!baseLevel)
+        {
+            baseLevel = tileHolder.GetComponent<LevelStructure>();
+            if (!baseLevel)
+            {
+                baseLevel = tileHolder.AddComponent<LevelStructure>();
+            }
+        }
+        if (baseLevel.HasTiles() && !overridePrevVals)
+        {
+            
+            Debug.LogWarning("Trying to override previous values through inspector");
+            return;
+            
+        }
+        else
+        {
+            baseLevel.SetTiles(tilesList);
+        }
+    #if UNITY_EDITOR
+    EditorUtility.SetDirty(baseLevel);
+    #endif
     }
 
     private void ClearLevel()
@@ -201,6 +366,16 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
+        if(tilesList != null){
+            for(int i = 0; i < tilesList.Count; i++){
+                for(int j = 0; j < tilesList[i].Count; j++){
+                    if(tilesList[i][j]){
+                        DestroyImmediate(tilesList[i][j].gameObject);
+                    }
+                }
+                
+            }
+        }
 
         tiles = null;
         if (tileHolder)
@@ -210,6 +385,11 @@ public class TileManager : MonoBehaviour
                 DestroyImmediate(t.gameObject);
             }
         }
+        #if UNITY_EDITOR
+        if(baseLevel){
+            EditorUtility.SetDirty(baseLevel);
+        }
+    #endif
     }
 
     public bool UpdateLevel()
