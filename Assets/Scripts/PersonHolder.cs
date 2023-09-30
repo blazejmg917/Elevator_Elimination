@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PersonHolder : MonoBehaviour
 {
-
+    List<GameObject> people = new List<GameObject>();
+    Dictionary<string, GameObject> peopleMap = new Dictionary<string, GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -16,4 +17,25 @@ public class PersonHolder : MonoBehaviour
     {
         
     }
+
+    public void UpdateMap(){
+        peopleMap = new Dictionary<string, GameObject>();
+        foreach(GameObject person in people){
+            peopleMap.Add(person.GetComponent<Person>().GetId(),person);
+        }
+    }
+
+    public GameObject GetPersonById(string id){
+        GameObject result;
+        if(peopleMap.TryGetValue(id, out result)){
+            return result;
+        }
+        Debug.Log("Could not find person with id of " + id);
+        return null;
+
+    }
+
+    // void OnValidate(){
+    //     foreach()
+    // }
 }
