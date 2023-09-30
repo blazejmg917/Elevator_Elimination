@@ -77,24 +77,24 @@ public class Person : MonoBehaviour
         //update sprite to match direction
     }
 
-    public bool OnPush(Direction dir)
+    public bool OnPush(PlayerMechanics.DirectionFacing dir)
     {
         if (behavior.canPush)
         {
             switch (dir) {
-                case Direction.LEFT:
+                case PlayerMechanics.DirectionFacing.Left:
                     TryMove(currentTile.GetLeft());
                     break;
 
-                case Direction.RIGHT:
+                case PlayerMechanics.DirectionFacing.Right:
                     TryMove(currentTile.GetRight());
                     break;
 
-                case Direction.DOWN:
+                case PlayerMechanics.DirectionFacing.Down:
                     TryMove(currentTile.GetBottom());
                     break;
 
-                case Direction.UP:
+                case PlayerMechanics.DirectionFacing.Up:
                     TryMove(currentTile.GetTop());
                     break;
             }
@@ -121,25 +121,25 @@ public class Person : MonoBehaviour
 
     }
 
-    public bool OnTap(Direction dir)
+    public bool OnTap(PlayerMechanics.DirectionFacing dir)
     {
         if (behavior.canTurn)
         {
             switch (dir)
             {
-                case Direction.LEFT:
+                case PlayerMechanics.DirectionFacing.Left:
                     currentFacing = Direction.RIGHT;
                     break;
 
-                case Direction.RIGHT:
+                case PlayerMechanics.DirectionFacing.Right:
                     currentFacing = Direction.LEFT;
                     break;
 
-                case Direction.DOWN:
+                case PlayerMechanics.DirectionFacing.Down:
                     currentFacing = Direction.UP;
                     break;
 
-                case Direction.UP:
+                case PlayerMechanics.DirectionFacing.Up:
                     currentFacing = Direction.DOWN;
                     break;
             }
