@@ -46,7 +46,7 @@ public class Person : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
+        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
     }
 
     // Update is called once per frame
@@ -54,7 +54,7 @@ public class Person : MonoBehaviour
     {
         if (isMoving)
         {
-            goalPos = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
+            goalPos = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, goalPos, pushSpeed * Time.fixedDeltaTime);
             if(transform.position == goalPos)
             {
@@ -105,7 +105,9 @@ public class Person : MonoBehaviour
         return false;
     }
 
-
+    public string GetId(){
+        return personId;
+    }
 
     private bool TryMove(Tile newTile)
     {

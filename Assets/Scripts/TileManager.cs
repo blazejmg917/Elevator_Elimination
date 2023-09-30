@@ -137,20 +137,20 @@ public class TileManager : MonoBehaviour
                 Debug.Log("j");
                 if(i > 0)
                 {
-                    tiles[i, j].SetTop(tiles[i - 1, j]);
+                    tiles[i, j].SetLeft(tiles[i - 1, j]);
                 }
                 if (i < tiles.GetLength(0) - 1) 
                 {
-                    tiles[i, j].SetBottom(tiles[i + 1, j]);
+                    tiles[i, j].SetRight(tiles[i + 1, j]);
                 }
 
                 if (j > 0)
                 {
-                    tiles[i, j].SetLeft(tiles[i, j-1]);
+                    tiles[i, j].SetTop(tiles[i, j-1]);
                 }
                 if (j < tiles.GetLength(1) - 1)
                 {
-                    tiles[i, j].SetRight(tiles[i, j+1]);
+                    tiles[i, j].SetBottom(tiles[i, j+1]);
 
                 }
 
