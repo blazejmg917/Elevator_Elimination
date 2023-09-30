@@ -179,23 +179,30 @@ public class Person : MonoBehaviour
 
     public bool OnFloorChange()
     {
+        Debug.Log("what");
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         while (!sightlineCleared)
         {
+            if (!tileSeen) {
+                return true;
+            }
             switch (currentFacing) {
                 case Direction.LEFT:
-                    tileSeen = currentTile.GetLeft();
+                    tileSeen = tileSeen.GetLeft();
                     break;
                 case Direction.RIGHT:
-                    tileSeen = currentTile.GetRight();
+                    tileSeen = tileSeen.GetRight();
                     break;
                 case Direction.UP:
-                    tileSeen = currentTile.GetTop();
+                    tileSeen = tileSeen.GetTop();
                     break;
                 case Direction.DOWN:
-                    tileSeen = currentTile.GetBottom();
+                    tileSeen = tileSeen.GetBottom();
                     break;
+                default: 
+                    return true;
+                
             }
             if (tileSeen)
             {
@@ -208,10 +215,13 @@ public class Person : MonoBehaviour
                         //call game over
                         return false;
                     }
-                    sightlineCleared = true;
+                    return true;
                 }
+
             }
-                
+            else {
+                return true;
+            }
         }
         return true;
     }

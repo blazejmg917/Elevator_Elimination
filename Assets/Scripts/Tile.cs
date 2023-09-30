@@ -106,8 +106,8 @@ public class Tile : MonoBehaviour
     }
 
     void OnValidate(){
-        if(lastPerson != currentPerson){
-            currentPerson = lastPerson;
+        if(lastPerson != currentPerson && currentPerson != null){
+            lastPerson = currentPerson;
             personId = currentPerson.GetId();
         }
     }
