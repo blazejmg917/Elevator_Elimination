@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "02d90852-4920-4d31-a1c7-ff631e4b977d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -288,7 +297,7 @@
                 {
                     "name": "",
                     "id": "074b6233-c481-4867-a79a-038256b557c2",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -299,7 +308,7 @@
                 {
                     "name": "",
                     "id": "569a7252-26f6-42eb-a7f1-8d5bbf2c4ab0",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -342,19 +351,8 @@
                 },
                 {
                     "name": "",
-                    "id": "5b60a73b-72b5-46b7-8c69-cc4726ad65d7",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Push",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f713c050-b2ca-4ef5-a02b-e00b7ca58f69",
-                    "path": "<Keyboard>/x",
+                    "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -365,18 +363,7 @@
                 {
                     "name": "",
                     "id": "a420d786-fa45-4a88-8494-bbcb28398a2c",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Kill",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f51350f5-f172-4cdb-ba80-944f405321d9",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Keyboard>/semicolon",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -397,23 +384,34 @@
                 },
                 {
                     "name": "",
-                    "id": "24760f21-dc92-48cf-a8d5-600affa07680",
-                    "path": "<Gamepad>/leftTrigger",
+                    "id": "99365049-635b-4ae3-b842-7bad037b9092",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Kill",
+                    "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "123468d6-6fdf-458b-8665-e6a0e7f64443",
-                    "path": "<Gamepad>/rightTrigger",
+                    "id": "23745d6c-68c5-4b04-914f-c39e3b648c27",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Kill",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0a5344b-bb32-4639-854c-9216807afa94",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
