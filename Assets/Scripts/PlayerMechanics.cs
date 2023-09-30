@@ -35,6 +35,7 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
+                tileMan.UpdateLevel();
             }
         }
     }
@@ -149,6 +150,7 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
+            tileMan.UpdateLevel();
         } else {
             adjacentPerson = null;
         }

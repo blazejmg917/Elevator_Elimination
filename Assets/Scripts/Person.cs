@@ -59,6 +59,7 @@ public class Person : MonoBehaviour
             if(transform.position == goalPos)
             {
                 isMoving = false;
+                TileManager.Instance.UpdateLevel();
             }
         }
     }
@@ -203,6 +204,7 @@ public class Person : MonoBehaviour
                 {
                     if (seenPerson.CallAlarmWhenSeen())
                     {
+                        Debug.Log("WE WOOOH");
                         //call game over
                         return false;
                     }
