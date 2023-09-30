@@ -46,15 +46,16 @@ public class Person : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        transform.position = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (isMoving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, goalPos, pushSpeed * Time.deltaTime);
+            goalPos = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, goalPos, pushSpeed * Time.fixedDeltaTime);
             if(transform.position == goalPos)
             {
                 isMoving = false;
@@ -79,7 +80,7 @@ public class Person : MonoBehaviour
 
     public bool OnPush(PlayerMechanics.DirectionFacing dir)
     {
-        if (behavior.canPush)
+        if (behavior.canPush && !isMoving)
         {
             switch (dir) {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -114,7 +115,10 @@ public class Person : MonoBehaviour
         }
         if (newTile.IsWalkable())
         {
+            currentTile.SetPerson(null);
             currentTile = newTile;
+            newTile.SetPerson(this);
+            isMoving = true;
             return true;
         }
         return false;
