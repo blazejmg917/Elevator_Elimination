@@ -12,7 +12,7 @@ public class PlayerMechanics : MonoBehaviour
         Up,
         Down
     }
-    [SerializeField] private DirectionFacing facing;
+    [SerializeField] private DirectionFacing facing = DirectionFacing.Down;
     private Tile currentTile;
     [SerializeField] private float movementSpeed = 5f;
     private bool isInteractible = true;
@@ -22,20 +22,20 @@ public class PlayerMechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        facing = DirectionFacing.Down;
         tileMan = TileManager.Instance;
         currentTile = tileMan.GetStartTile();
-        transform.position = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
+        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         if (!isInteractible) {
-            targetPosition = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
+            targetPosition = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
+                tileMan.UpdateLevel();
             }
         }
     }
@@ -150,6 +150,7 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
+            tileMan.UpdateLevel();
         } else {
             adjacentPerson = null;
         }
