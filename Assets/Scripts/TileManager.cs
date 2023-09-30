@@ -146,11 +146,11 @@ public class TileManager : MonoBehaviour
 
                 if (j > 0)
                 {
-                    tiles[i, j].SetTop(tiles[i, j-1]);
+                    tiles[i, j].SetBottom(tiles[i, j-1]);
                 }
                 if (j < tiles.GetLength(1) - 1)
                 {
-                    tiles[i, j].SetBottom(tiles[i, j+1]);
+                    tiles[i, j].SetTop(tiles[i, j+1]);
 
                 }
 
@@ -184,12 +184,12 @@ public class TileManager : MonoBehaviour
                 if (j > 0)
                 {
                     //Debug.Log("left: "+ i +", " + j);
-                    tilesList[i][j].SetTop(tilesList[i][ j-1]);
+                    tilesList[i][j].SetBottom(tilesList[i][ j-1]);
                 }
                 if (j < tilesList[i].Count - 1)
                 {
                     //Debug.Log("right: "+ i +", " + j);
-                    tilesList[i][j].SetBottom(tilesList[i][ j+1]);
+                    tilesList[i][j].SetTop(tilesList[i][ j+1]);
 
                 }
 
