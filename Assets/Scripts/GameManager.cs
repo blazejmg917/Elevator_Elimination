@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private int maxFloors;
+    private int currentFloor;
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -33,4 +35,30 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    public void SetFloors(int max, int current) {
+        maxFloors = max;
+        currentFloor = current;
+    }
+
+    public void ChangeFloor() {
+        currentFloor--;
+        if (currentFloor == 0) {
+            GameOver();
+        }
+    }
+
+    public void GameOver() {
+        //reload scene with UI popup
+        
+    }
+
+    public void TransitionLevel() {
+
+    }
+
+    public void StartGame() {
+        //Show tutorial and controller prompts
+    }
+
 }

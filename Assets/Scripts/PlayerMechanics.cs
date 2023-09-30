@@ -37,6 +37,7 @@ public class PlayerMechanics : MonoBehaviour
     public void Turn(InputAction.CallbackContext ctx) {
         float x = ctx.ReadValue<Vector2>().x;
         float y = ctx.ReadValue<Vector2>().y;
+        Debug.Log("Turn " + x + ", " + y);
         if (Mathf.Abs(x) > Mathf.Abs(y)) {
             if (x < 0) {
                 facing = DirectionFacing.Left;
@@ -58,10 +59,11 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
+        Debug.Log("Move " + pressed);
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
-                    if (currentTile.GetLeft() != null /*&& currentTile.GetLeft().IsWalkable()*/) {
+                    if (currentTile.GetLeft() != null && currentTile.GetLeft().IsWalkable()) {
                         currentTile = currentTile.GetLeft();
                         isInteractible = false;
                         //Trigger step sound
@@ -71,7 +73,7 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
                 case DirectionFacing.Right:
-                    if (currentTile.GetRight() != null /*&& currentTile.GetRight().IsWalkable()*/) {
+                    if (currentTile.GetRight() != null && currentTile.GetRight().IsWalkable()) {
                         currentTile = currentTile.GetRight();
                         isInteractible = false;
                         //Trigger step sound
@@ -81,7 +83,7 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
                 case DirectionFacing.Up:
-                    if (currentTile.GetTop() != null /*&& currentTile.GetTop().IsWalkable()*/) {
+                    if (currentTile.GetTop() != null && currentTile.GetTop().IsWalkable()) {
                         currentTile = currentTile.GetTop();
                         isInteractible = false;
                         //Trigger step sound
@@ -91,7 +93,7 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
                 case DirectionFacing.Down:
-                    if (currentTile.GetBottom() != null /*&& currentTile.GetBottom().IsWalkable()*/) {
+                    if (currentTile.GetBottom() != null && currentTile.GetBottom().IsWalkable()) {
                         currentTile = currentTile.GetBottom();
                         isInteractible = false;
                         //Trigger step sound
@@ -106,6 +108,7 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Tap(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
+        Debug.Log("Tap " + pressed);
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
@@ -148,6 +151,7 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Push(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
+        Debug.Log("Push " + pressed);
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
@@ -190,6 +194,7 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Kill(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
+        Debug.Log("Kill " + pressed);
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
