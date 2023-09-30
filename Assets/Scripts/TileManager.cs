@@ -34,6 +34,7 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("the lists of all current tiles")]private List<ListWrapper<Tile>> tilesList = new List<ListWrapper<Tile>>();
     [SerializeField, Tooltip("the tile prefab")] private GameObject tilePrefab;
     [SerializeField, Tooltip("tile holder object")] private GameObject tileHolder;
+    [SerializeField, Tooltip("person holder object")]private GameObject personHolder;
     [SerializeField, Tooltip("the size of each tile object")] private Vector3 tileSize;
     [SerializeField, Tooltip("the starting position of the first tile")] private Vector3 tileStart;
     [SerializeField, Tooltip("the tile structure file to load in")] private LevelStructure baseLevel;
@@ -117,6 +118,18 @@ public class TileManager : MonoBehaviour
         // }
         this.tilesList = tileList;
         LinkTileList();
+        GetTilePeople();
+    }
+
+    public void GetTilePeople(){
+        personHolder = new GameObject("Person Holder");
+        personHolder.transform.parent = transform;
+        for(int i = 0; i < tilesList.Count; i++){
+            for(int j = 0; j < tilesList[i].Count; j++){
+
+                //tilesList[i][j]
+            }
+        }
     }
     public void LoadLevel(Tile[,] levelArray)
     {
@@ -385,6 +398,9 @@ public class TileManager : MonoBehaviour
                 DestroyImmediate(t.gameObject);
             }
         }
+        if(personHolder){
+            DestroyImmediate(personHolder);
+        }
         #if UNITY_EDITOR
         if(baseLevel){
             EditorUtility.SetDirty(baseLevel);
@@ -395,11 +411,11 @@ public class TileManager : MonoBehaviour
     public bool UpdateLevel()
     {
         bool gameStillRunning = true;
-        for (int i = 0; i < tiles.GetLength(0); i++)
+        for (int i = 0; i < tilesList.Count; i++)
         {
-            for (int j = 0; j < tiles.GetLength(1); j++)
+            for (int j = 0; j < tilesList[0].Count; j++)
             {
-                Person tilePerson = tiles[i, j].GetPerson();
+                Person tilePerson = tilesList[i][j].GetPerson();
                 if (tilePerson)
                 {
                     if (!tilePerson.OnFloorChange())
