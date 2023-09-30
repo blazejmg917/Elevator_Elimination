@@ -121,7 +121,7 @@ public class TileManager : MonoBehaviour
         {
             if (!overridePrevVals)
             {
-                Debug.Log("Trying to override previous values through inspector");
+                Debug.LogWarning("Trying to override previous values through inspector");
                 return;
             }
             else
@@ -171,7 +171,7 @@ public class TileManager : MonoBehaviour
         if (baseLevel.HasTiles() && !overridePrevVals)
         {
             
-            Debug.Log("Trying to override previous values through inspector");
+            Debug.LogWarning("Trying to override previous values through inspector");
             return;
             
         }
