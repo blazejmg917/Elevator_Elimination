@@ -92,4 +92,8 @@ public class Tile : MonoBehaviour
     {
         return currentPerson;
     }
+
+    public void SetPerson(Person per) {
+        currentPerson = per;
+    }
 }

@@ -12,23 +12,29 @@ public class PlayerMechanics : MonoBehaviour
         Up,
         Down
     }
-    private DirectionFacing facing;
-    [SerializeField] Tile currentTile;
-    [SerializeField] float movementSpeed = 5f;
+    [SerializeField] private DirectionFacing facing;
+    private Tile currentTile;
+    [SerializeField] private float movementSpeed = 5f;
     private bool isInteractible = true;
     private Person adjacentPerson = null;
+    private Vector3 targetPosition;
+    private TileManager tileMan;
     // Start is called before the first frame update
     void Start()
     {
         facing = DirectionFacing.Down;
+        tileMan = TileManager.Instance;
+        currentTile = tileMan.GetStartTile();
+        transform.position = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         if (!isInteractible) {
-            transform.position = Vector3.MoveTowards(transform.position, currentTile.transform.position, movementSpeed * Time.fixedDeltaTime);
-            if (transform.position == currentTile.transform.position) {
+            targetPosition = new Vector3(currentTile.transform.position.x, transform.position.y, currentTile.transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
+            if (transform.position == targetPosition) {
                 isInteractible = true;
             }
         }
@@ -112,32 +118,32 @@ public class PlayerMechanics : MonoBehaviour
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
-                    //adjacentPerson = currentTile.GetLeft().GetPerson();
-                    if (currentTile.GetLeft() != null && adjacentPerson != null /*&& adjacentPerson.OnTap(DirectionFacing.Left)*/) {
+                    adjacentPerson = currentTile.GetLeft().GetPerson();
+                    if (currentTile.GetLeft() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Left)) {
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Right:
-                    //adjacentPerson = currentTile.GetRight().GetPerson();
-                    if (currentTile.GetRight() != null && adjacentPerson != null /*&& adjacentPerson.OnTap(DirectionFacing.Right)*/) {
+                    adjacentPerson = currentTile.GetRight().GetPerson();
+                    if (currentTile.GetRight() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Right)) {
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Up:
-                    //adjacentPerson = currentTile.GetUp().GetPerson();
-                    if (currentTile.GetTop() != null && adjacentPerson != null /*&& adjacentPerson.OnTap(DirectionFacing.Up)*/) {
+                    adjacentPerson = currentTile.GetTop().GetPerson();
+                    if (currentTile.GetTop() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Up)) {
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Down:
-                    //adjacentPerson = currentTile.GetBottom().GetPerson();
-                    if (currentTile.GetBottom() != null && adjacentPerson != null /*&& adjacentPerson.OnTap(DirectionFacing.Bottom)*/) {
+                    adjacentPerson = currentTile.GetBottom().GetPerson();
+                    if (currentTile.GetBottom() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Down)) {
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
@@ -155,32 +161,32 @@ public class PlayerMechanics : MonoBehaviour
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
-                    //adjacentPerson = currentTile.GetLeft().GetPerson();
-                    if (currentTile.GetLeft() != null && adjacentPerson != null /*&& adjacentPerson.OnPush(DirectionFacing.Left)*/) {
+                    adjacentPerson = currentTile.GetLeft().GetPerson();
+                    if (currentTile.GetLeft() != null && adjacentPerson != null && adjacentPerson.OnPush(DirectionFacing.Left)) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Right:
-                    //adjacentPerson = currentTile.GetRight().GetPerson();
-                    if (currentTile.GetRight() != null && adjacentPerson != null /*&& adjacentPerson.OnPush(DirectionFacing.Right)*/) {
+                    adjacentPerson = currentTile.GetRight().GetPerson();
+                    if (currentTile.GetRight() != null && adjacentPerson != null && adjacentPerson.OnPush(DirectionFacing.Right)) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Up:
-                    //adjacentPerson = currentTile.GetUp().GetPerson();
-                    if (currentTile.GetTop() != null && adjacentPerson != null /*&& adjacentPerson.OnPush(DirectionFacing.Up)*/) {
+                    adjacentPerson = currentTile.GetTop().GetPerson();
+                    if (currentTile.GetTop() != null && adjacentPerson != null && adjacentPerson.OnPush(DirectionFacing.Up)) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Down:
-                    //adjacentPerson = currentTile.GetBottom().GetPerson();
-                    if (currentTile.GetBottom() != null && adjacentPerson != null /*&& adjacentPerson.OnPush(DirectionFacing.Bottom)*/) {
+                    adjacentPerson = currentTile.GetBottom().GetPerson();
+                    if (currentTile.GetBottom() != null && adjacentPerson != null && adjacentPerson.OnPush(DirectionFacing.Down)) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
@@ -198,32 +204,32 @@ public class PlayerMechanics : MonoBehaviour
         if (pressed > 0.5f && isInteractible) {
             switch(facing) {
                 case DirectionFacing.Left:
-                    //adjacentPerson = currentTile.GetLeft().GetPerson();
-                    if (currentTile.GetLeft() != null && adjacentPerson != null /*&& adjacentPerson.OnKill(DirectionFacing.Left)*/) {
+                    adjacentPerson = currentTile.GetLeft().GetPerson();
+                    if (currentTile.GetLeft() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Right:
-                    //adjacentPerson = currentTile.GetRight().GetPerson();
-                    if (currentTile.GetRight() != null && adjacentPerson != null /*&& adjacentPerson.OnKill(DirectionFacing.Right)*/) {
+                    adjacentPerson = currentTile.GetRight().GetPerson();
+                    if (currentTile.GetRight() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Up:
-                    //adjacentPerson = currentTile.GetUp().GetPerson();
-                    if (currentTile.GetTop() != null && adjacentPerson != null /*&& adjacentPerson.OnKill(DirectionFacing.Up)*/) {
+                    adjacentPerson = currentTile.GetTop().GetPerson();
+                    if (currentTile.GetTop() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
                 case DirectionFacing.Down:
-                    //adjacentPerson = currentTile.GetBottom().GetPerson();
-                    if (currentTile.GetBottom() != null && adjacentPerson != null /*&& adjacentPerson.OnKill(DirectionFacing.Bottom)*/) {
+                    adjacentPerson = currentTile.GetBottom().GetPerson();
+                    if (currentTile.GetBottom() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
                         //Trigger push noise
                     } else {
                         //Trigger error sound
