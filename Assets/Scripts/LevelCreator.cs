@@ -20,7 +20,7 @@ public class LevelCreator : MonoBehaviour
         {
             tileMan = TileManager.Instance;
         }
-        tileMan.SetupElevator(width, height, overwriteLevel);
+        tileMan.SetupElevatorList(width, height, overwriteLevel);
         overwriteLevel = false;
     }
 }

@@ -17,7 +17,7 @@ public class TileManagerEditor : Editor
         {
             if (tm.IsSceneBound())
             {
-                tm.LinkTiles();
+                tm.LinkTileList();
             }
         }
 
