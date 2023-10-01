@@ -46,6 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   people:
   - {fileID: 9175127389048938379, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+  - {fileID: 3649510877605341402, guid: b97e26b8feab52b4284d79f68407e93d, type: 3}
+  - {fileID: 6457604167940142058, guid: fd0192f14c1fb1643a73224c35bd3147, type: 3}
+  - {fileID: 6950652292840498002, guid: 733fe35af6323364d9316d61bb2b9af3, type: 3}
+  - {fileID: 1634169641428644144, guid: 9a8e4fbf3da6b994bbd0ef091638154a, type: 3}
 --- !u!1 &4786607557137048732
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +209,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 2577321018060466692, guid: edaf83ab3bbcb804499f1cdb8e74d0ee, type: 3}
   tileHolder: {fileID: 0}
   personHolder: {fileID: 3530963456393664605}
+  spritesSetup: {fileID: 0}
   tileSize: {x: 1, y: 1, z: 0}
   tileStart: {x: 0, y: 0, z: 0}
   baseLevel: {fileID: 0}

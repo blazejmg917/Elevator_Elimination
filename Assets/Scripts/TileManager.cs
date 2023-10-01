@@ -116,7 +116,7 @@ public class TileManager : MonoBehaviour
                     if(personPrefab){
                         GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
                         //Person personScript = thisPerson.GetComponent<Person>()
-                        thisPerson.transform.parent = personHolder.transform;
+                        //thisPerson.transform.parent = personHolder.transform;
                         thisPerson.transform.position = thisTile.transform.position;
                         Person thisPersonScript = thisPerson.GetComponent<Person>();
                         thisPersonScript.SetCurrentTile(thisTile);

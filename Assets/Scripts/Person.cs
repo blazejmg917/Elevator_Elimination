@@ -38,6 +38,7 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("if this person can be seen through")] private bool transparent = false;
     [SerializeField, Tooltip("the Tile this Person is on")] private Tile currentTile;
     [SerializeField, Tooltip("the direction this person is facing")]private Direction currentFacing = Direction.LEFT;
+    private Direction lastFacing;
     [SerializeField, Tooltip("this person's behavior")] private personBehavior behavior = new personBehavior();
 
     private bool isMoving = false;
@@ -72,6 +73,12 @@ public class Person : MonoBehaviour
     private void OnValidate()
     {
         TurnSprite();
+        if(lastFacing  != currentFacing ){
+            lastFacing = currentFacing;
+            if(currentTile){
+                currentTile.SetDirection(currentFacing);
+            }
+        }
     }
 
     private void TurnSprite()
@@ -254,4 +261,5 @@ public class Person : MonoBehaviour
         currentFacing = direction;
 
     }
+    
 }

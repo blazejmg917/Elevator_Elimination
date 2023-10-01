@@ -110,11 +110,15 @@ public class Tile : MonoBehaviour
         return personDirection;
     }
 
+    public void SetDirection(Person.Direction direction){
+        personDirection = direction;
+    }
+
     void OnValidate(){
         if(lastPerson != currentPerson && currentPerson != null){
             lastPerson = currentPerson;
             personId = currentPerson.GetId();
-            personDirection = currentPerson.GetDirection();
+            //personDirection = currentPerson.GetDirection();
         }
         else if(lastPerson != currentPerson){
             lastPerson = null;
