@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     private int maxFloors;
     private int currentFloor;
     private static GameManager _instance;
+    private bool winCon = false;
+    private bool loseCon = false;
     public static GameManager Instance
     {
         get
@@ -61,4 +63,19 @@ public class GameManager : MonoBehaviour
         //Show tutorial and controller prompts
     }
 
+    public bool GetWinCon() {
+        return winCon;
+    }
+
+    public void SetWinCon(bool con) {
+        winCon = con;
+    }
+
+    public bool GetLoseCon() {
+        return loseCon;
+    }
+
+    public void SetLoseCon(bool con) {
+        loseCon = con;
+    }
 }

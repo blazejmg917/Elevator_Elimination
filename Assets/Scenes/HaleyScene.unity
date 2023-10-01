@@ -419,10 +419,10 @@ MonoBehaviour:
   currentTile: {fileID: 1552148054}
   currentFacing: 0
   behavior:
-    canPush: 1
-    canTurn: 1
+    canPush: 0
+    canTurn: 0
     canBeKilled: 1
-    canSee: 1
+    canSee: 0
   pushSpeed: 5
 --- !u!4 &324443995
 Transform:
@@ -433,7 +433,7 @@ Transform:
   m_GameObject: {fileID: 324443992}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5357187, y: 1.7620494, z: -0.01}
+  m_LocalPosition: {x: 3, y: 2, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -519,7 +519,7 @@ Transform:
   m_GameObject: {fileID: 380542291}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.08, y: 0.96, z: -0.01}
+  m_LocalPosition: {x: 2, y: 5, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1465,7 +1465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfa1b5557ba83e4abbd9710be676208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPerson: {fileID: 0}
+  currentPerson: {fileID: 1099074706}
   personId: 
   leftTile: {fileID: 1822035202}
   rightTile: {fileID: 2133552293}
@@ -1867,7 +1867,7 @@ MonoBehaviour:
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
   transparent: 0
-  currentTile: {fileID: 1508097089}
+  currentTile: {fileID: 735646676}
   currentFacing: 0
   behavior:
     canPush: 1
@@ -1884,7 +1884,7 @@ Transform:
   m_GameObject: {fileID: 1099074704}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.5657153, y: 1.7992165, z: -0.01}
+  m_LocalPosition: {x: 1, y: 1, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2399,7 +2399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfa1b5557ba83e4abbd9710be676208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPerson: {fileID: 1099074706}
+  currentPerson: {fileID: 0}
   personId: 
   leftTile: {fileID: 2032078883}
   rightTile: {fileID: 0}

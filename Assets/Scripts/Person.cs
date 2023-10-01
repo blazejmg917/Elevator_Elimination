@@ -164,6 +164,8 @@ public class Person : MonoBehaviour
             {
                 SetDeadSprite();
                 takesUpSpace = false;
+                triggerAlarmOnSeen = true;
+                GameManager.Instance.SetWinCon(true);
                 //call target killed
                 return true;
             }
@@ -179,7 +181,6 @@ public class Person : MonoBehaviour
 
     public bool OnFloorChange()
     {
-        Debug.Log("what");
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         while (!sightlineCleared)
@@ -209,8 +210,10 @@ public class Person : MonoBehaviour
                 Person seenPerson = tileSeen.GetPerson();
                 if (seenPerson)
                 {
+                    Debug.Log("Seen");
                     if (seenPerson.CallAlarmWhenSeen())
                     {
+                        GameManager.Instance.SetLoseCon(true);
                         Debug.Log("WE WOOOH");
                         //call game over
                         return false;
@@ -234,5 +237,13 @@ public class Person : MonoBehaviour
     public bool CallAlarmWhenSeen()
     {
         return triggerAlarmOnSeen;
+    }
+
+    public Tile GetCurrentTile() {
+        return currentTile;
+    }
+    
+    public Direction GetDirection() {
+        return currentFacing;
     }
 }
