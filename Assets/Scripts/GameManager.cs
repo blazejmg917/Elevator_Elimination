@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     private bool winCon = false;
     private bool loseCon = false;
-    private bool cautious = false;
+    [SerializeField][Tooltip("Control style: true is cautious, false is quick")] private bool cautious = true;
     public static GameManager Instance
     {
         get
