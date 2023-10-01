@@ -14,6 +14,8 @@ public class Tile : MonoBehaviour
     [SerializeField, Tooltip("The tile to the right")] private Tile rightTile;
     [SerializeField, Tooltip("The tile to the top")] private Tile topTile;
     [SerializeField, Tooltip("The tile to the bottom")] private Tile bottomTile;
+    [SerializeField, Tooltip("the person/character offset for this tile")]private Vector3 offset;
+    [SerializeField, Tooltip("the sprite renderer for this tile")]private SpriteRenderer sRenderer;
     private int x = 0;
     private int y = 0;
     // Start is called before the first frame update
@@ -125,5 +127,20 @@ public class Tile : MonoBehaviour
             personId = "";
             personDirection = Person.Direction.NONE;
         }
+    }
+
+    public Vector3 GetPersonLocation(){
+        return transform.position + offset;
+    }
+
+    public void SetSprite(Sprite sprite){
+        if(!sRenderer){
+            sRenderer = gameObject.GetComponent<SpriteRenderer>();
+        }
+        sRenderer.sprite = sprite;
+    }
+
+    public void SetOffset(Vector3 tileOffset){
+        offset = tileOffset;
     }
 }
