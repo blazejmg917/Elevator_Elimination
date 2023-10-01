@@ -19,7 +19,7 @@ public class PersonHolder : MonoBehaviour
     }
 
     public void UpdateMap(){
-        Debug.Log("updating person map");
+        Debug.Log("updating person map: " + people + ", " +people.Count);
         peopleMap = new Dictionary<string, GameObject>();
         foreach(GameObject person in people){
             peopleMap.Add(person.GetComponent<Person>().GetId(),person);
