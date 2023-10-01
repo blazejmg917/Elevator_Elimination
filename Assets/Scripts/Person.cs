@@ -242,8 +242,16 @@ public class Person : MonoBehaviour
     public Tile GetCurrentTile() {
         return currentTile;
     }
+    public void SetCurrentTile(Tile newTile){
+        currentTile = newTile;
+    }
     
     public Direction GetDirection() {
         return currentFacing;
+    }
+
+    public void SetDirection(Direction direction){
+        currentFacing = direction;
+
     }
 }
