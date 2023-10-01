@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8505c567d470e0e4191d957600d4a1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  personId: 
+  personId: Target
   isTarget: 1
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
