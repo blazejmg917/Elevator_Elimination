@@ -15,7 +15,7 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField] private DirectionFacing facing = DirectionFacing.Down;
     private Tile currentTile;
     [SerializeField] private float movementSpeed = 5f;
-    private bool isInteractible = true;
+    private bool isInteractible = false;
     private Person adjacentPerson = null;
     private Vector3 targetPosition;
     private TileManager tileMan;
@@ -24,6 +24,7 @@ public class PlayerMechanics : MonoBehaviour
     private Tile exitTile;
     private Vector3 exitPosition;
     private bool isExiting = false;
+    private bool isStarting = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,22 +32,29 @@ public class PlayerMechanics : MonoBehaviour
         gameMan = GameManager.Instance;
         currentTile = tileMan.GetStartTile();
         exitTile = currentTile;
-        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
-        exitPosition = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y + 1, transform.position.z);
+        targetPosition = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        exitPosition = transform.position;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon()) {
-            Debug.Log("hi");
+        if (isStarting) {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
+            if (transform.position == targetPosition) {
+                isStarting = false;
+                isInteractible = true;
+            }
+        }
+        if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon() && !isStarting) {
             transform.position = Vector3.MoveTowards(transform.position, exitPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == exitPosition) {
                 gameMan.SetWinCon(false);
                 //load next level along with animations
             }
         }
-        if (!isInteractible && !isExiting && !gameMan.GetLoseCon()) {
+        if (!isInteractible && !isExiting && !gameMan.GetLoseCon() && !isStarting) {
             targetPosition = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
