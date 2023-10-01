@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +13,19 @@ public class GameManager : MonoBehaviour
     private bool winCon = false;
     private bool loseCon = false;
     [SerializeField][Tooltip("Control style: true is cautious, false is quick")] private bool cautious = true;
+
+    private enum GameState
+    {
+        MainMenu,
+        GameStart,
+        Paused,
+        GameEnd,
+        GameOver
+    }
+    [SerializeField] GameState state = GameState.MainMenu;
+    private String[] menuOptions = {"Play", "Level Select", "Quit", "Control Mode"};
+    private int menuIndex = 0;
+    [SerializeField] private String highlightedMenu = "Play";
     public static GameManager Instance
     {
         get
@@ -28,13 +44,23 @@ public class GameManager : MonoBehaviour
         }
     }
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        DontDestroyOnLoad(this);
+        SceneManager.sceneLoaded += (scene, mode) => OnSceneLoaded(scene, mode);
     }
-
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (Instance != this) return;
+        if (scene.name == "MainMenu") {
+            state = GameState.MainMenu;
+        } else if (scene.name == "HaleyTest") {
+            state = GameState.GameStart;
+        } else if (scene.name == "GameOver") {
+            state = GameState.GameOver;
+        }
+    }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
     }
@@ -53,7 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver() {
         //reload scene with UI popup
-        
+        SceneManager.LoadScene("GameOver");
     }
 
     public void TransitionLevel() {
@@ -62,6 +88,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame() {
         //Show tutorial and controller prompts
+        SceneManager.LoadScene("HaleyScene");
     }
 
     public bool GetWinCon() {
@@ -86,5 +113,57 @@ public class GameManager : MonoBehaviour
 
     public void FlipControlStyle() {
         cautious = !cautious;
+        //change toggle
+    }
+
+    public void UpdateMenuHighlight() {
+        highlightedMenu = menuOptions[menuIndex];
+        //change highlight
+    }
+
+    // public void Menuing(InputAction.CallbackContext ctx) {
+    //     if (state == GameState.MainMenu) {
+    //         float y = ctx.ReadValue<Vector2>().y;
+    //         if (y < -0.1f) {
+    //             menuIndex++;
+    //             if (menuIndex > 3) {
+    //                 menuIndex = 0;
+    //             }
+    //             UpdateMenuHighlight();
+    //         } else if (y > 0.1f) {
+    //             menuIndex--;
+    //             if (menuIndex < 0) {
+    //                 menuIndex = 3;
+    //             }
+    //             UpdateMenuHighlight();
+    //         }
+    //     }
+    // }
+
+    // public void MenuSelect(InputAction.CallbackContext ctx) {
+    //     if (state == GameState.MainMenu) {
+    //         float pressed = ctx.ReadValue<float>();
+    //         if (pressed > 0.5f) {
+    //             switch(highlightedMenu) {
+    //                 case "Play":
+    //                     StartGame();
+    //                     break;
+    //                 case "Level Select":
+    //                     LevelSelect();
+    //                     break;
+    //                 case "Quit":
+    //                     Application.Quit();
+    //                     break;
+    //                 case "Control Mode":
+    //                     FlipControlStyle();
+    //                     break;
+    //             }
+    //         }
+    //     }
+    // }
+
+    public void LevelSelect() {
+        //Show Level Select Menu
+        SceneManager.LoadScene("LevelSelect");
     }
 }
