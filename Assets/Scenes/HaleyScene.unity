@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 1099074706}
-  personId: 
+  personId: Bystander
   personDirection: 0
   leftTile: {fileID: 984332814}
   rightTile: {fileID: 270814801}
@@ -2214,6 +2214,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 2577321018060466692, guid: edaf83ab3bbcb804499f1cdb8e74d0ee, type: 3}
   tileHolder: {fileID: 1575215399}
   personHolder: {fileID: 0}
+  spritesSetup: {fileID: 0}
   tileSize: {x: 1, y: 1, z: 0}
   tileStart: {x: 0, y: 0, z: 0}
   baseLevel: {fileID: 1575215400}
@@ -4639,7 +4640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 324443994}
-  personId: 
+  personId: Target
   personDirection: 0
   leftTile: {fileID: 437404848}
   rightTile: {fileID: 952165902}
