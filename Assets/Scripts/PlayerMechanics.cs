@@ -32,6 +32,7 @@ public class PlayerMechanics : MonoBehaviour
     private bool movedDown = false;
     private bool cautious;
     private bool neutral = true;
+    [SerializeField] private Animation gameOverAnimation;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +49,10 @@ public class PlayerMechanics : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (gameMan.GetLoseCon()) {
+            gameMan.SetLoseCon(false);
+            //gameOverAnimation.Play(gameOverAnimation);
+        }
         if (!cautious && Mathf.Abs(controlDirection.x) < 0.1f && Mathf.Abs(controlDirection.y) < 0.1f) {
             movedLeft = false;
             movedRight = false;
