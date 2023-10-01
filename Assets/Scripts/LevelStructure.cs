@@ -31,4 +31,8 @@ public class LevelStructure : MonoBehaviour
     {
         return tiles != null && tiles.Length != 0;
     }
+
+    public int GetFloors(){
+        return floors;
+    }
 }

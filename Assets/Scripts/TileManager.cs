@@ -59,17 +59,6 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    // public void LoadLevel(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
-    // {
-    //     ClearLevel();
-    //     baseLevel = levelStructure;
-    //     if (setStructureAsTileHolder)
-    //     {
-    //         tileHolder = levelStructure.gameObject;
-    //     }
-    //     LoadLevel(baseLevel.GetTiles());
-       
-    // }
     public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
     {
         ClearLevel();
@@ -87,53 +76,35 @@ public class TileManager : MonoBehaviour
             baseLevel = levelStructure;
         }
         LoadLevel(baseLevel.GetTileList());
-       
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
     }
     public void LoadLevel(List<ListWrapper<Tile>> tileList)
     {
-        // if(tileList == null || tileList.Count == 0)
-        // {
-        //     return;
-        // }
-        // int iMax = tileList.Count;
-        // int jMax = tileList[0].Count;
-        // foreach(List<Tile> list in tileList)
-        // {
-        //     if(list.Count > jMax)
-        //     {
-        //         jMax = list.Count;
-        //     }
-        // }
-        // tiles = new Tile[iMax,jMax];
-        // int i = 0;
-        // foreach(List<Tile> list in tileList)
-        // {
-        //     int j = 0;
-        //     foreach(Tile tile in list)
-        //     {
-        //         tiles[i, j] = tile;
-        //         j++;
-        //     }
-        //     i++;
-        // }
         this.tilesList = tileList;
         LinkTileList();
         GetTilePeople();
     }
 
     public void GetTilePeople(){
-        personHolder = new GameObject("Person Holder");
-        personHolder.transform.parent = transform;
+        //personHolder = PersonManager.Instance.GetPHolder().gameObject;
+        //personHolder.transform.parent = transform;
+        personHolder = PersonManager.Instance.GetPHolder().gameObject;
+        PersonHolder pHolder = personHolder.GetComponent<PersonHolder>();
+        pHolder.UpdateMap();
         for(int i = 0; i < tilesList.Count; i++){
             for(int j = 0; j < tilesList[i].Count; j++){
                 Tile thisTile = tilesList[i][j];
-                if(thisTile.GetPersonId() != null){
-                    PersonHolder pHolder = PersonManager.Instance.GetPHolder();
+                if(thisTile.GetPersonId() != null && thisTile.GetPersonId() != ""){
+                    Debug.Log("looking for person " + thisTile.GetPersonId());
+                    
                     GameObject personPrefab = pHolder.GetPersonById(thisTile.GetPersonId());
                     if(personPrefab){
                         GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
-                        //thisPerson.GetComponent<Person>.SetTiles
+                        //Person personScript = thisPerson.GetComponent<Person>()
                         thisPerson.transform.parent = personHolder.transform;
+                        thisPerson.transform.position = thisTile.transform.position;
+                        //thisPerson.SetCurrentTile(thisTile.person);
+                        thisTile.SetPerson(thisPerson.GetComponent<Person>());
                     }
                 }
                 
@@ -141,51 +112,7 @@ public class TileManager : MonoBehaviour
             }
         }
     }
-    // public void LoadLevel(Tile[,] levelArray)
-    // {
-    //     Debug.Log("loading level from array: " + levelArray);
-    //     tiles = levelArray;
-    //     LinkTiles();
-    // }
-
-//     public void LinkTiles()
-//     {
-        
-//         Debug.Log("linking tiles: " + tiles.GetLength(0) + ", " + tiles.GetLength(1));
-//         for (int i = 0; i < tiles.GetLength(0); i++)
-//         {
-//             Debug.Log("i");
-//             for (int j = 0; j < tiles.GetLength(1); j++)
-//             {
-//                 Debug.Log("j");
-//                 if(i > 0)
-//                 {
-//                     tiles[i, j].SetLeft(tiles[i - 1, j]);
-//                 }
-//                 if (i < tiles.GetLength(0) - 1) 
-//                 {
-//                     tiles[i, j].SetRight(tiles[i + 1, j]);
-//                 }
-
-//                 if (j > 0)
-//                 {
-//                     tiles[i, j].SetBottom(tiles[i, j-1]);
-//                 }
-//                 if (j < tiles.GetLength(1) - 1)
-//                 {
-//                     tiles[i, j].SetTop(tiles[i, j+1]);
-
-//                 }
-
-//             }
-//         }
-//         startTile = tiles[tiles.GetLength(0) / 2, tiles.GetLength(1)-1];
-
-// #if UNITY_EDITOR
-//     EditorUtility.SetDirty(this);
-// #endif
-        
-//     }
+    
     public void LinkTileList()
     {
        // Debug.Log("linking tiles: " + tilesList.Count + ", " + tilesList[0].Count);
@@ -230,44 +157,6 @@ public class TileManager : MonoBehaviour
         return GetTile(coords[0], coords[1]);
     }
 
-    // public void SetupElevator(int xSize, int ySize, bool overridePrevVals)
-    // {
-    //     if (tiles != null)
-    //     {
-    //         if (!overridePrevVals)
-    //         {
-    //             Debug.LogWarning("Trying to override previous values through inspector");
-    //             return;
-    //         }
-    //         else
-    //         {
-    //             ClearLevel();
-    //         }
-    //     }
-
-    //     if (!tileHolder)
-    //     {
-    //         tileHolder = new GameObject("Tile Holder");
-    //         tileHolder.transform.parent = transform;
-    //     }
-
-    //     tiles = new Tile[xSize, ySize];
-    //     for(int i = 0; i < xSize; i++)
-    //     {
-    //         for(int j = 0; j < ySize; j++)
-    //         {
-    //             GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
-    //             Tile newTile = newTileObj.GetComponent<Tile>();
-    //             if (!newTile)
-    //             {
-    //                 newTile = newTileObj.AddComponent<Tile>();
-    //             }
-    //             tiles[i, j] = newTile;
-    //         }
-    //     }
-    //     SaveLevelToStructure(overridePrevVals);
-    //     LinkTiles();
-    // }
     public void SetupElevatorList(int xSize, int ySize, bool overridePrevVals)
     {
         if (tilesList != null)
@@ -310,35 +199,6 @@ public class TileManager : MonoBehaviour
         LinkTileList();
     }
 
-    // private void SaveLevelToStructure(bool overridePrevVals)
-    // {
-    //     if (!tileHolder)
-    //     {
-    //         tileHolder = new GameObject();
-    //     }
-    //     if (!baseLevel)
-    //     {
-    //         baseLevel = tileHolder.GetComponent<LevelStructure>();
-    //         if (!baseLevel)
-    //         {
-    //             baseLevel = tileHolder.AddComponent<LevelStructure>();
-    //         }
-    //     }
-    //     if (baseLevel.HasTiles() && !overridePrevVals)
-    //     {
-            
-    //         Debug.LogWarning("Trying to override previous values through inspector");
-    //         return;
-            
-    //     }
-    //     else
-    //     {
-    //         baseLevel.SetTiles(tiles);
-    //     }
-    // #if UNITY_EDITOR
-    // EditorUtility.SetDirty(baseLevel);
-    // #endif
-    // }
     private void SaveLevelToStructureList(bool overridePrevVals)
     {
         if (!tileHolder)
@@ -409,7 +269,11 @@ public class TileManager : MonoBehaviour
             }
         }
         if(personHolder){
-            DestroyImmediate(personHolder);
+            foreach (Transform t in personHolder.transform.GetComponentInChildren<Transform>())
+            {
+                DestroyImmediate(t.gameObject);
+            }
+            
         }
         #if UNITY_EDITOR
         if(baseLevel){
@@ -421,13 +285,13 @@ public class TileManager : MonoBehaviour
     public bool UpdateLevel()
     {
         bool gameStillRunning = true;
-        Debug.Log(tilesList.Count);
+        //Debug.Log(tilesList.Count);
         for (int i = 0; i < tilesList.Count; i++)
         {
-            Debug.Log(i);
+            //Debug.Log(i);
             for (int j = 0; j < tilesList[i].Count; j++)
             {
-                Debug.Log(j);
+                //Debug.Log(j);
                 Person tilePerson = tilesList[i][j].GetPerson();
                 if (tilePerson)
                 {

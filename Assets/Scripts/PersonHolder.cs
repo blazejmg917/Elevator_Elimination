@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PersonHolder : MonoBehaviour
 {
-    List<GameObject> people = new List<GameObject>();
+    [SerializeField, Tooltip("a list of the all the people prefabs that have been created for the game")]List<GameObject> people = new List<GameObject>();
     Dictionary<string, GameObject> peopleMap = new Dictionary<string, GameObject>();
     // Start is called before the first frame update
     void Start()
@@ -19,6 +19,7 @@ public class PersonHolder : MonoBehaviour
     }
 
     public void UpdateMap(){
+        Debug.Log("updating person map");
         peopleMap = new Dictionary<string, GameObject>();
         foreach(GameObject person in people){
             peopleMap.Add(person.GetComponent<Person>().GetId(),person);
