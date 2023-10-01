@@ -103,7 +103,10 @@ public class TileManager : MonoBehaviour
                         //Person personScript = thisPerson.GetComponent<Person>()
                         thisPerson.transform.parent = personHolder.transform;
                         thisPerson.transform.position = thisTile.transform.position;
-                        //thisPerson.SetCurrentTile(thisTile.person);
+                        Person thisPersonScript = thisPerson.GetComponent<Person>();
+                        thisPersonScript.SetCurrentTile(thisTile);
+                        thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
+
                         thisTile.SetPerson(thisPerson.GetComponent<Person>());
                     }
                 }
