@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     private bool winCon = false;
     private bool loseCon = false;
+    private bool cautious = false;
     public static GameManager Instance
     {
         get
@@ -77,5 +78,13 @@ public class GameManager : MonoBehaviour
 
     public void SetLoseCon(bool con) {
         loseCon = con;
+    }
+
+    public bool GetControlStyle() {
+        return cautious;
+    }
+
+    public void FlipControlStyle() {
+        cautious = !cautious;
     }
 }

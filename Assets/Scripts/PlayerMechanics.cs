@@ -25,6 +25,7 @@ public class PlayerMechanics : MonoBehaviour
     private Vector3 exitPosition;
     private bool isExiting = false;
     private bool isStarting = true;
+    private Vector2 controlDirection;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,21 +68,39 @@ public class PlayerMechanics : MonoBehaviour
     public void Turn(InputAction.CallbackContext ctx) {
         float x = ctx.ReadValue<Vector2>().x;
         float y = ctx.ReadValue<Vector2>().y;
+        bool cautious = gameMan.GetControlStyle();
+        controlDirection = ctx.ReadValue<Vector2>();
         //Debug.Log("Turn " + x + ", " + y);
         if (Mathf.Abs(x) > Mathf.Abs(y) && isInteractible) {
             if (x < 0) {
                 facing = DirectionFacing.Left;
+                if (!cautious && currentTile.GetLeft().IsWalkable()) {
+                    currentTile = currentTile.GetLeft();
+                    isInteractible = false;
+                }
                 //change sprite
             } else {
                 facing = DirectionFacing.Right;
+                if (!cautious && currentTile.GetRight().IsWalkable()) {
+                    currentTile = currentTile.GetRight();
+                    isInteractible = false;
+                }
                 //change sprite
             }
         } else if (Mathf.Abs(x) < Mathf.Abs(y) && isInteractible) {
             if (y < 0) {
                 facing = DirectionFacing.Down;
+                if (!cautious && currentTile.GetBottom().IsWalkable()) {
+                    currentTile = currentTile.GetBottom();
+                    isInteractible = false;
+                }
                 //change sprite
             } else {
                 facing = DirectionFacing.Up;
+                if (!cautious && currentTile.GetTop().IsWalkable()) {
+                    currentTile = currentTile.GetTop();
+                    isInteractible = false;
+                }
                 //change sprite
             }
         }
@@ -89,8 +108,9 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
+        bool cautious = gameMan.GetControlStyle();
         //Debug.Log("Move " + pressed);
-        if (pressed > 0.5f && isInteractible && !movePressed) {
+        if (pressed > 0.5f && isInteractible && !movePressed && cautious) {
             movePressed = true;
             if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon()) {
                 //door animation start
@@ -152,6 +172,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Left)) {
+                        tileMan.UpdateLevel();
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
@@ -160,6 +181,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Right)) {
+                        tileMan.UpdateLevel();
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
@@ -168,6 +190,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Up)) {
+                        tileMan.UpdateLevel();
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
@@ -176,13 +199,13 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() != null && adjacentPerson != null && adjacentPerson.OnTap(DirectionFacing.Down)) {
+                        tileMan.UpdateLevel();
                         //Trigger tap noise
                     } else {
                         //Trigger error sound
                     }
                     break;
             }
-            tileMan.UpdateLevel();
         } else {
             adjacentPerson = null;
         }
@@ -239,6 +262,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
+                        tileMan.UpdateLevel();
                         //Trigger push noise
                     } else {
                         //Trigger error sound
@@ -247,6 +271,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
+                        tileMan.UpdateLevel();
                         //Trigger push noise
                     } else {
                         //Trigger error sound
@@ -255,6 +280,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
+                        tileMan.UpdateLevel();
                         //Trigger push noise
                     } else {
                         //Trigger error sound
@@ -263,13 +289,13 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() != null && adjacentPerson != null && adjacentPerson.OnKill()) {
+                        tileMan.UpdateLevel();
                         //Trigger push noise
                     } else {
                         //Trigger error sound
                     }
                     break;
             }
-            tileMan.UpdateLevel();
         } else {
             adjacentPerson = null;
         }
