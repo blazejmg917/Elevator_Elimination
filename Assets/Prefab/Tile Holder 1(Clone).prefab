@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
   personId: name
-  personDirection: 0
+  personDirection: 3
   leftTile: {fileID: 6685850008226007668}
   rightTile: {fileID: 5463331698532671214}
   topTile: {fileID: 0}
