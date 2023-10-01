@@ -1396,67 +1396,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 662561573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &657784507
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 657784508}
-  - component: {fileID: 657784509}
-  m_Layer: 0
-  m_Name: Tile Sprites
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &657784508
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 657784507}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1019600952}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &657784509
+--- !u!114 &657784509 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1978576382999452240, guid: 04c14393f18f1b64288d94655ca18ef1, type: 3}
+  m_PrefabInstance: {fileID: 1019600951}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 657784507}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7c3795434a75094fa4f9b5bd2084f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tl: {fileID: 21300000, guid: 00359a1af9670cf4587d862f1b03855d, type: 3}
-  tr: {fileID: 21300000, guid: fd62aa469a64af049b665b660a9f3c34, type: 3}
-  bl: {fileID: 21300000, guid: 1a5c0f1555b793a4fafcc8dc09e57c9d, type: 3}
-  br: {fileID: 21300000, guid: 33c40bc987226e9409c75948aca1e7b7, type: 3}
-  topRowSprites: {fileID: 21300000, guid: 7d0376e7ea090c646b864532fee7af78, type: 3}
-  topRowLeftSprite: {fileID: 21300000, guid: 2782cdef8b093bd4a80978ac983c625b, type: 3}
-  topRowRightSprite: {fileID: 21300000, guid: 0859d5f7a190d5148b3fd3f72e105ded, type: 3}
-  bottomRowSprites: {fileID: 21300000, guid: 7276386d42c4f644291d2541e8256d29, type: 3}
-  bottomRowLeftSprite: {fileID: 21300000, guid: b90e6c4ab8bfd5c41bc6dc3bdf32dca9, type: 3}
-  bottomRowRightSprite: {fileID: 21300000, guid: 936b0fda8863141498f17d2a6d012160, type: 3}
-  leftColSprites: {fileID: 21300000, guid: 7d0376e7ea090c646b864532fee7af78, type: 3}
-  leftColTopSprite: {fileID: 21300000, guid: 0859d5f7a190d5148b3fd3f72e105ded, type: 3}
-  leftColBottomSprite: {fileID: 21300000, guid: 54a9dd205d1f42745b99e94d683881ea, type: 3}
-  rightColSprites: {fileID: 21300000, guid: 7276386d42c4f644291d2541e8256d29, type: 3}
-  rightColTopSprite: {fileID: 21300000, guid: 54569327afa8e65428917a0bca96c653, type: 3}
-  rightColBottomSprite: {fileID: 21300000, guid: c20a70ca62d29ee46a50bdb89fe76c34, type: 3}
-  defaultSprite: {fileID: 21300000, guid: 9711ca92b1ebb78478061641df8186ad, type: 3}
 --- !u!1 &662561572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2983,9 +2933,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4564345700855471451, guid: 04c14393f18f1b64288d94655ca18ef1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 657784508}
     - targetCorrespondingSourceObject: {fileID: 4564345700855471451, guid: 04c14393f18f1b64288d94655ca18ef1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 662561573}
