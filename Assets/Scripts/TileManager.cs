@@ -30,12 +30,17 @@ public class TileManager : MonoBehaviour
             list.Add(val);
         }
     }
+    [Header("Tiles")]
     [SerializeField, Tooltip("the array of all current tiles")] private Tile[,] tiles;
     [SerializeField, Tooltip("the lists of all current tiles")]private List<ListWrapper<Tile>> tilesList = new List<ListWrapper<Tile>>();
+    [Header("other objects")]
     [SerializeField, Tooltip("the tile prefab")] private GameObject tilePrefab;
     [SerializeField, Tooltip("tile holder object")] private GameObject tileHolder;
     [SerializeField, Tooltip("person holder object")]private GameObject personHolder;
-    [SerializeField, Tooltip("the size of each tile object")] private Vector3 tileSize;
+    [SerializeField, Tooltip("the tile sprite setup script")]private TileSpritesSetup spritesSetup;
+    [Header("tile fields")]
+    [SerializeField, Tooltip("the size of each tile object. only used if there's no collider on tiles")] private Vector3 tileSize;
+    private Vector3 realTileSize;
     [SerializeField, Tooltip("the starting position of the first tile")] private Vector3 tileStart;
     [SerializeField, Tooltip("the tile structure file to load in")] private LevelStructure baseLevel;
     [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
@@ -56,6 +61,16 @@ public class TileManager : MonoBehaviour
                 }
             }
             return _instance;
+        }
+    }
+
+    public void Start(){
+        realTileSize = tileSize;
+        if(tilePrefab && tilePrefab.GetComponent<BoxCollider2D>()){
+            realTileSize = tilePrefab.GetComponent<BoxCollider2D>().size;
+        }
+        if(!spritesSetup){
+            spritesSetup = FindObjectOfType<TileSpritesSetup>();
         }
     }
 
@@ -162,6 +177,12 @@ public class TileManager : MonoBehaviour
 
     public void SetupElevatorList(int xSize, int ySize, bool overridePrevVals)
     {
+        if(tilePrefab && tilePrefab.GetComponent<BoxCollider2D>()){
+            realTileSize = tilePrefab.GetComponent<BoxCollider2D>().size;
+        }
+        else{
+            realTileSize = tileSize;
+        }
         if (tilesList != null)
         {
             if (!overridePrevVals)
@@ -187,7 +208,7 @@ public class TileManager : MonoBehaviour
             tilesList.Add(new ListWrapper<Tile>());
             for(int j = 0; j < ySize; j++)
             {
-                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + tileSize.x * i, tileStart.y + tileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
+                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + realTileSize.x * i, tileStart.y + realTileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
                 newTileObj.name = "Tile " + i + ", " + j;
                 Tile newTile = newTileObj.GetComponent<Tile>();
                 if (!newTile)
@@ -313,5 +334,12 @@ public class TileManager : MonoBehaviour
     public Tile GetStartTile()
     {
         return startTile;
+    }
+
+    private void SetupTileSprites(){
+        if(!spritesSetup){
+            return;
+        }
+        
     }
 }
