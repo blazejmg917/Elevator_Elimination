@@ -42,6 +42,7 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("the size of each tile object. only used if there's no collider on tiles")] private Vector3 tileSize;
     private Vector3 realTileSize;
     [SerializeField, Tooltip("the starting position of the first tile")] private Vector3 tileStart;
+    [SerializeField, Tooltip("the offset for objects over tiles")]private Vector3 tileOffset;
     [SerializeField, Tooltip("the tile structure file to load in")] private LevelStructure baseLevel;
     [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
 
@@ -121,7 +122,7 @@ public class TileManager : MonoBehaviour
                         GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
                         //Person personScript = thisPerson.GetComponent<Person>()
                         //thisPerson.transform.parent = personHolder.transform;
-                        thisPerson.transform.position = thisTile.transform.position;
+                        thisPerson.transform.position = thisTile.GetPersonLocation();
                         Person thisPersonScript = thisPerson.GetComponent<Person>();
                         thisPersonScript.SetCurrentTile(thisTile);
                         thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
@@ -168,6 +169,7 @@ public class TileManager : MonoBehaviour
             }
         }
         startTile = tilesList[tilesList.Count / 2][ tilesList[0].Count-1];
+        SetupTileSprites();
     }
 
     private Tile GetTile(int x, int y)
@@ -342,8 +344,11 @@ public class TileManager : MonoBehaviour
 
     private void SetupTileSprites(){
         if(!spritesSetup){
-            return;
+            spritesSetup = GetComponentInChildren<TileSpritesSetup>();
+            if(!spritesSetup){
+                return;
+            }
         }
-        
+        spritesSetup.UpdateSprites(tilesList);
     }
 }
