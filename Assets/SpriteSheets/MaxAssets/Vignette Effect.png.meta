@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e551bac3cd4b9e74aa140b128ca11e58
+guid: 0cb610e2e2b41e142bbbe7a92e1fb1a2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: elevatorDoorAnim_0
+      name: Vignette Effect_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b457e860dce5674ba6cb2e64f8b0900
-      internalID: -2056793865
+      spriteID: 53cbd0f35f542ae4fb55127eb4071872
+      internalID: 281240324
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_1
+      name: Vignette Effect_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 400
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +145,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1bfdc8432d002c54192d686241976a50
-      internalID: -1850505122
+      spriteID: 40b14600d28efb74e8a3b815e5b35287
+      internalID: -164372975
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_2
+      name: Vignette Effect_2
       rect:
         serializedVersion: 2
-        x: 32
+        x: 800
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,20 +166,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c1ab38c48581644097ab2d853c982c0
-      internalID: -1161573525
+      spriteID: 17ea201c9300c654aad6c68f2cb90853
+      internalID: -803697468
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_3
+      name: Vignette Effect_3
       rect:
         serializedVersion: 2
-        x: 48
+        x: 1200
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,20 +187,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 699b994fb0b8dc74eb91ff7bbfbf4e92
-      internalID: 1264939160
+      spriteID: e1636bc876ad651478e9e7cae299ae70
+      internalID: 1407828300
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_4
+      name: Vignette Effect_4
       rect:
         serializedVersion: 2
-        x: 64
+        x: 1600
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,20 +208,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a764ade3cebca04db0fcda5fda4f533
-      internalID: -152746664
+      spriteID: 169c47771020d0f49a2ae12f43b27f3d
+      internalID: 1973656421
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_5
+      name: Vignette Effect_5
       rect:
         serializedVersion: 2
-        x: 80
+        x: 2000
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,20 +229,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 63b310eef3de5894887932709fb42d3a
-      internalID: 449085880
+      spriteID: d9400d9b6801d4c4bbd801c220eaa46b
+      internalID: 1978465066
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_6
+      name: Vignette Effect_6
       rect:
         serializedVersion: 2
-        x: 96
+        x: 2400
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,20 +250,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 980322b8946b4304a9241f7da8ddf815
-      internalID: -64302060
+      spriteID: 8d44851bb22d1d948bc93822d02abe3c
+      internalID: -905326898
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elevatorDoorAnim_7
+      name: Vignette Effect_7
       rect:
         serializedVersion: 2
-        x: 112
+        x: 2800
         y: 0
-        width: 16
-        height: 32
+        width: 400
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -271,92 +271,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bdf88cb57cfe02e49ae10c08cec40a52
-      internalID: 1963956209
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: elevatorDoorAnim_8
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6ead3ffa919220a4e9f076dcc08a6ef2
-      internalID: -164407075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: elevatorDoorAnim_9
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9ccc15231a4be244ab94ae6aaa4cb55a
-      internalID: 22124812
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: elevatorDoorAnim_10
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7ea0cc84cacd0574484370151d23771e
-      internalID: 482653106
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: elevatorDoorAnim_11
-      rect:
-        serializedVersion: 2
-        x: 176
-        y: 0
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fae375880cdf9e64e96f1f53d4b8b03b
-      internalID: -2104443064
+      spriteID: 7ac32e5f4c6f2b340998fd9d86a4d6f2
+      internalID: 942386223
       vertices: []
       indices: 
       edges: []
@@ -372,18 +288,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      elevatorDoorAnim_0: -2056793865
-      elevatorDoorAnim_1: -1850505122
-      elevatorDoorAnim_10: 482653106
-      elevatorDoorAnim_11: -2104443064
-      elevatorDoorAnim_2: -1161573525
-      elevatorDoorAnim_3: 1264939160
-      elevatorDoorAnim_4: -152746664
-      elevatorDoorAnim_5: 449085880
-      elevatorDoorAnim_6: -64302060
-      elevatorDoorAnim_7: 1963956209
-      elevatorDoorAnim_8: -164407075
-      elevatorDoorAnim_9: 22124812
+      Vignette Effect_0: 281240324
+      Vignette Effect_1: -164372975
+      Vignette Effect_2: -803697468
+      Vignette Effect_3: 1407828300
+      Vignette Effect_4: 1973656421
+      Vignette Effect_5: 1978465066
+      Vignette Effect_6: -905326898
+      Vignette Effect_7: 942386223
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
