@@ -165,7 +165,7 @@ public class TileManager : MonoBehaviour
                     tilesList[i][j].SetTop(tilesList[i][ j+1]);
 
                 }
-
+                tilesList[i][j].SetOffset(tileOffset);
             }
         }
         startTile = tilesList[tilesList.Count / 2][ tilesList[0].Count-1];
