@@ -74,6 +74,7 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
+                //change sprite to direction facing
                 tileMan.UpdateLevel();
             }
         }
@@ -85,45 +86,53 @@ public class PlayerMechanics : MonoBehaviour
         cautious = gameMan.GetControlStyle();
         controlDirection = ctx.ReadValue<Vector2>();
         //Debug.Log("Turn " + x + ", " + y);
-        if (Mathf.Abs(x) > Mathf.Abs(y) && isInteractible) {
+        if (Mathf.Abs(x) > Mathf.Abs(y)) {
             if (x < -0.1f) {
                 facing = DirectionFacing.Left;
-                if (!cautious && currentTile.GetLeft() && currentTile.GetLeft().IsWalkable() && !movedLeft && neutral) {
+                if (!cautious && currentTile.GetLeft() && currentTile.GetLeft().IsWalkable() && !movedLeft && neutral && isInteractible) {
                     currentTile = currentTile.GetLeft();
                     isInteractible = false;
                     movedLeft = true;
                     neutral = false;
                 }
-                //change sprite
+                if (isInteractible) {
+                    //change sprite to direction facing
+                }
             } else if (x > 0.1f) {
                 facing = DirectionFacing.Right;
-                if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral) {
+                if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral && isInteractible) {
                     currentTile = currentTile.GetRight();
                     isInteractible = false;
                     movedRight = true;
                     neutral = false;
                 }
-                //change sprite
+                if (isInteractible) {
+                    //change sprite to direction facing
+                }
             }
-        } else if (Mathf.Abs(x) < Mathf.Abs(y) && isInteractible) {
+        } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
             if (y < -0.1f) {
                 facing = DirectionFacing.Down;
-                if (!cautious && currentTile.GetBottom() && currentTile.GetBottom().IsWalkable() && !movedDown && neutral) {
+                if (!cautious && currentTile.GetBottom() && currentTile.GetBottom().IsWalkable() && !movedDown && neutral && isInteractible) {
                     currentTile = currentTile.GetBottom();
                     isInteractible = false;
                     movedDown = true;
                     neutral = false;
                 }
-                //change sprite
+                if (isInteractible) {
+                    //change sprite to direction facing
+                }
             } else if (y > 0.1f) {
                 facing = DirectionFacing.Up;
-                if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral) {
+                if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral && isInteractible) {
                     currentTile = currentTile.GetTop();
                     isInteractible = false;
                     movedUp = true;
                     neutral = false;
                 }
-                //change sprite
+                if (isInteractible) {
+                    //change sprite to direction facing
+                }
             }
         }
     }
