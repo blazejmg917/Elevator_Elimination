@@ -29,7 +29,7 @@ public class PersonManager : MonoBehaviour
     {
         if (!pHolder)
         {
-            pHolder = gameObject.GetComponent<PersonHolder>();
+            pHolder = gameObject.GetComponentInChildren<PersonHolder>();
             if (!pHolder)
             {
                 Debug.LogWarning("WARNING: no Person Holder in person manager. will be unable to generate people.");
@@ -45,6 +45,11 @@ public class PersonManager : MonoBehaviour
 
     public PersonHolder GetPHolder()
     {
+        if(!pHolder){
+            GameObject pHolderObj = new GameObject("Person Holder");
+            pHolderObj.transform.parent = transform;
+            pHolder = pHolderObj.AddComponent<PersonHolder>();
+        }
         return pHolder;
     }
 }

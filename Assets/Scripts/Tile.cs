@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour
     [SerializeField, Tooltip("The character currently on this tile")] private Person currentPerson;
     private Person lastPerson = null;
     [SerializeField, Tooltip("the id for the player on this tile"), ReadOnly(true)]private string personId;
+    [SerializeField, Tooltip("the look direction for the player on this tile"), ReadOnly(true)]private Person.Direction personDirection;
     [SerializeField, Tooltip("The tile to the left")] private Tile leftTile;
     [SerializeField, Tooltip("The tile to the right")] private Tile rightTile;
     [SerializeField, Tooltip("The tile to the top")] private Tile topTile;
@@ -109,6 +110,12 @@ public class Tile : MonoBehaviour
         if(lastPerson != currentPerson && currentPerson != null){
             lastPerson = currentPerson;
             personId = currentPerson.GetId();
+            //personDirection = currentPerson.getDirection
+        }
+        else if(lastPerson != currentPerson){
+            lastPerson = null;
+            personId = "";
+            personDirection = Person.Direction.NONE;
         }
     }
 }
