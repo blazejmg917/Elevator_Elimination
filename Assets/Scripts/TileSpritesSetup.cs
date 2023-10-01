@@ -17,7 +17,18 @@ public class TileSpritesSetup : MonoBehaviour
     //     [Tooltip("the actual sprite")]public Sprite sprite;
     // }
     [SerializeField,Tooltip("top left sprite")] public Sprite tl;
-    [SerializeField, Tooltip("the top row. will use the last entry to fill all non-corner entries")]public List<Sprite> topRowSprites = new List<Sprite>();
+    [SerializeField, Tooltip("the top row default sprite")]public Sprite topRowSprites;
+    [SerializeField, Tooltip("the top row leftmost sprite")]public Sprite topRowLeftSprite;
+    [SerializeField, Tooltip("the top row rightmost sprite")]public Sprite topRowRightSprite;
+    [SerializeField, Tooltip("the bottom row default sprite")]public Sprite bottomRowSprites;
+    [SerializeField, Tooltip("the bottom row leftmost sprite")]public Sprite bottomRowLeftSprite;
+    [SerializeField, Tooltip("the bottom row rightmost sprite")]public Sprite bottomRowRightSprite;
+    [SerializeField, Tooltip("the left column  default sprite")]public Sprite leftColSprites;
+    [SerializeField, Tooltip("the left column topmost sprite")]public Sprite leftColTopSprite;
+    [SerializeField, Tooltip("the left column bottommost sprite")]public Sprite leftColBottomSprite;
+    [SerializeField, Tooltip("the right column default sprite")]public Sprite rightColSprites;
+    [SerializeField, Tooltip("the right column topmost sprite")]public Sprite rightColTopSprite;
+    [SerializeField, Tooltip("the right column bottommost sprite")]public Sprite rightColBottomSprite;
     
     // Start is called before the first frame update
     void Start()

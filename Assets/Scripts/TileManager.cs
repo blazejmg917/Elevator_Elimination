@@ -76,20 +76,22 @@ public class TileManager : MonoBehaviour
 
     public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
     {
-        ClearLevel();
         
-        if (setStructureAsTileHolder)
+        
+        if (!setStructureAsTileHolder)
         {
-            if(baseLevel){
-                DestroyImmediate(baseLevel.gameObject);
-            }
-            tileHolder = Instantiate(levelStructure.gameObject, transform);
-            baseLevel = tileHolder.GetComponent<LevelStructure>();
+            Debug.LogWarning("tried to overwrite data in inspector");
+            return;
+            // if(baseLevel){
+            //     DestroyImmediate(baseLevel.gameObject);
+            // }
+            // tileHolder = Instantiate(levelStructure.gameObject, transform);
+            // baseLevel = tileHolder.GetComponent<LevelStructure>();
 
         }
-        else{
-            baseLevel = levelStructure;
-        }
+        ClearLevel();
+        tileHolder = Instantiate(levelStructure.gameObject, transform);
+        baseLevel = tileHolder.GetComponent<LevelStructure>();
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
     }
@@ -101,11 +103,13 @@ public class TileManager : MonoBehaviour
     }
 
     public void GetTilePeople(){
+        Debug.Log("looking for tile people");
         //personHolder = PersonManager.Instance.GetPHolder().gameObject;
         //personHolder.transform.parent = transform;
         personHolder = PersonManager.Instance.GetPHolder().gameObject;
         PersonHolder pHolder = personHolder.GetComponent<PersonHolder>();
         pHolder.UpdateMap();
+        Debug.Log("tile lists " + tilesList.Count +", "+ tilesList[0].Count);
         for(int i = 0; i < tilesList.Count; i++){
             for(int j = 0; j < tilesList[i].Count; j++){
                 Tile thisTile = tilesList[i][j];

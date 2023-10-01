@@ -463,7 +463,7 @@ PrefabInstance:
     - target: {fileID: 8758258291080227175, guid: 04c14393f18f1b64288d94655ca18ef1, type: 3}
       propertyPath: loadStructure
       value: 
-      objectReference: {fileID: 4148009941960326736, guid: 687dab7b22f4e644eab1a9f527b5d740, type: 3}
+      objectReference: {fileID: 8224055810288248763, guid: 431c8dbebdd028e40b0ded4d5816cdb3, type: 3}
     - target: {fileID: 8758258291080227175, guid: 04c14393f18f1b64288d94655ca18ef1, type: 3}
       propertyPath: overwriteLevel
       value: 1
