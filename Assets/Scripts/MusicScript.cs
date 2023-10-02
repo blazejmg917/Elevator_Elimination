@@ -110,10 +110,10 @@ public class MusicScript : MonoBehaviour
     }
     public void TapSFX()
     {
-        sfx.PlayOneShot(tap);
+        sfx.PlayOneShot(tap, 0.8f);
     }
     public void RotateSFX()
-    {
+    { 
         sfx.PlayOneShot(rotate);
     }
     public void ScreamSFX()

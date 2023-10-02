@@ -59,7 +59,7 @@ MonoBehaviour:
   push: {fileID: 8300000, guid: ce83f0581a8751640aeaad631124f9ce, type: 3}
   tap: {fileID: 8300000, guid: 0eb3fa6c1bdc4c947ae27eae31aa696c, type: 3}
   rotate: {fileID: 8300000, guid: 12423069a266d6c4394d6e73d21caa95, type: 3}
-  scream: {fileID: 8300000, guid: d400c669853a04644afeb0063de3e46c, type: 3}
+  scream: {fileID: 8300000, guid: ff2be0ecc5864dc4098603e7a2d863a1, type: 3}
   bell: {fileID: 8300000, guid: 587974a91bde89f4f850aded7087fa83, type: 3}
   huh: {fileID: 8300000, guid: a5eece3168917064b9f5bbeb6b1a369b, type: 3}
   guh: {fileID: 8300000, guid: d2cec7f2b1f84984caacd9c172add474, type: 3}
