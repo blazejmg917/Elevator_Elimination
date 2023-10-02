@@ -110,6 +110,7 @@ public class PlayerMechanics : MonoBehaviour
                 levelStart.Invoke();
                 isInteractible = true;
                 exitPosition = transform.position;
+                LevelManager.Instance.EnablePause(true);
             }
             return;
         }
@@ -121,7 +122,7 @@ public class PlayerMechanics : MonoBehaviour
                 waitingForLevel = true;
                 gameObject.SetActive(false);
                 levelEnd.Invoke();
-                
+                LevelManager.Instance.EnablePause(false);
             }
             return;
         }
@@ -167,7 +168,7 @@ public class PlayerMechanics : MonoBehaviour
 
     public void Turn(InputAction.CallbackContext ctx) {
         anim.speed = 10000;
-        if(gameMan.GetLoseCon()){
+        if(gameMan.GetLoseCon() || waitingForLevel || LevelManager.Instance.IsPaused()){
             return;
         }
         float x = ctx.ReadValue<Vector2>().x;
@@ -240,7 +241,7 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Move(InputAction.CallbackContext ctx) {
-        if(gameMan.GetLoseCon()){
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
             return;
         }
         float pressed = ctx.ReadValue<float>();
@@ -301,7 +302,7 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Tap(InputAction.CallbackContext ctx) {
-        if(gameMan.GetLoseCon()){
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
             return;
         }
         float pressed = ctx.ReadValue<float>();
@@ -356,7 +357,7 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Push(InputAction.CallbackContext ctx) {
-        if(gameMan.GetLoseCon()){
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
             return;
         }
         float pressed = ctx.ReadValue<float>();
@@ -402,7 +403,7 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Kill(InputAction.CallbackContext ctx) {
-        if(gameMan.GetLoseCon()){
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
             return;
         }
         float pressed = ctx.ReadValue<float>();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class LevelManager : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
     [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    [SerializeField, Tooltip("the pause menu")]private GameObject pauseMenu;
+    [SerializeField, Tooltip("if the game is paused")]private bool paused;
+    private bool pausePressed = false;
+    private bool pauseAllowed = false;
     [SerializeField, Tooltip("the game over event for this project")]private GameOverEvent gameOver = new GameOverEvent();
     [SerializeField, Tooltip("event played when level is reset")]private ResetEvent reset = new ResetEvent();
     [SerializeField, Tooltip("event played when level is completed")]private LevelCompleteEvent levelComplete = new LevelCompleteEvent();
@@ -53,7 +58,11 @@ public class LevelManager : MonoBehaviour
         if(!eMove){
             eMove = GetComponent<ElevatorMove>();
         }
-        
+        if(pauseMenu){
+            pauseMenu.SetActive(false);
+        }
+        paused = false;
+        UnPause();
     }
 
     // Update is called once per frame
@@ -62,6 +71,40 @@ public class LevelManager : MonoBehaviour
         
     }
 
+    public void EnablePause(bool enable){
+        pauseAllowed = enable;
+    }
+
+    public bool IsPaused(){
+        return paused;
+    }
+    public void PressedPause(InputAction.CallbackContext ctx){
+        float val = ctx.ReadValue<float>();
+        if(val > .5 && !pausePressed){
+            pausePressed = true;
+            TogglePause();
+        }
+        else if(val <= .5){
+            pausePressed = false;
+        }
+        
+    }
+    public void TogglePause(){
+        if(paused){
+                UnPause();
+            }
+            else if(pauseAllowed){
+                Pause();
+            }
+    }
+    public void Pause(){
+        paused = true;
+        pauseMenu.SetActive(true);
+    }
+    public void UnPause(){
+        paused = false;
+        pauseMenu.SetActive(false);
+    }
     public void GameOver(){
         gameOver.Invoke();
     }
