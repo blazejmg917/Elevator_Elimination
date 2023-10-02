@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if UNITY_EDITOR
 using UnityEditor.EditorTools;
+#endif
 using UnityEngine;
 
 public class Tile : MonoBehaviour

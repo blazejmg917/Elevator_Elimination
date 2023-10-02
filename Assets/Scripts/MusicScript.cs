@@ -36,7 +36,24 @@ public class MusicScript : MonoBehaviour
 
     public List<AudioClip> steps;
 
-
+    private static MusicScript _instance;
+    public static MusicScript Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<MusicScript>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject();
+                    _instance = go.AddComponent<MusicScript>();
+                    Debug.Log("Generating new music script");
+                }
+            }
+            return _instance;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -80,7 +97,7 @@ public class MusicScript : MonoBehaviour
     public void MischiefManaged()
     {
         alteredSource.volume = 0;
-        sfx.PlayOneShot(recordScratch);
+        sfx.PlayOneShot(recordScratch, 0.25f);
         StartCoroutine(FadeAudioSource.StartFade(normalSource, .65f, normalVolume)); // middle value is how long to fade in
         currentSource = normalSource;
         currentVolume = normalVolume;
@@ -93,10 +110,10 @@ public class MusicScript : MonoBehaviour
     }
     public void TapSFX()
     {
-        sfx.PlayOneShot(tap);
+        sfx.PlayOneShot(tap, 0.8f);
     }
     public void RotateSFX()
-    {
+    { 
         sfx.PlayOneShot(rotate);
     }
     public void ScreamSFX()

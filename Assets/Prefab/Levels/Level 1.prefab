@@ -3646,7 +3646,7 @@ MonoBehaviour:
     - {fileID: 3738091875372118831}
     - {fileID: 7605946056403162027}
     - {fileID: 5830288010213753459}
-  floors: 20
+  floors: 18
 --- !u!1 &5435240685545640226
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,26 +22,28 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 3f;
     private bool isInteractible = false;
     private Person adjacentPerson = null;
-    private Vector3 targetPosition;
+    [SerializeField]private Vector3 targetPosition;
     private TileManager tileMan;
     private GameManager gameMan;
     private bool movePressed = false;
-    private Tile exitTile;
-    private Vector3 exitPosition;
-    private bool isExiting = false;
-    private bool isStarting = true;
+    [SerializeField]private Tile exitTile;
+    [SerializeField]private Vector3 exitPosition;
+    [SerializeField]private bool isExiting = false;
+    [SerializeField]private bool isStarting = true;
     private Vector2 controlDirection;
     private bool movedLeft = false;
     private bool movedRight = false;
     private bool movedUp = false;
     private bool movedDown = false;
-    private bool cautious;
+    [SerializeField]private bool cautious;
     private bool neutral = true;
+    private bool hasTapped = false;
+    private bool hasKilled = false;
 
-    private bool escaping = false;
-    private bool entering = false;
-    private bool waitingForLevel = true;
-    private Vector3 currentTilePos;
+    [SerializeField]private bool escaping = false;
+    [SerializeField]private bool entering = false;
+    [SerializeField]private bool waitingForLevel = true;
+    [SerializeField]private Vector3 currentTilePos;
     [SerializeField] private Animation gameOverAnimation;
     private Animator anim;
     private SpriteRenderer spriteRen;
@@ -52,6 +54,33 @@ public class PlayerMechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Setup();
+        anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
+    }
+
+    public void WalkIn() {
+        Debug.Log("player entering");
+        currentTile = tileMan.GetStartTile();
+        currentTilePos = currentTile.transform.position;
+        exitTile = currentTile;
+        entering = true;
+        gameObject.SetActive(true);
+        transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
+        targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
+        waitingForLevel = false;
+        gameObject.SetActive(true);
+    }
+
+    public void WalkOut() {
+        targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
+        escaping = true;
+        isInteractible = false;
+        MusicScript.Instance.ExitDoorSFX();
+    }
+
+    public void Setup(){
+        Debug.Log("player setup");
         tileMan = TileManager.Instance;
         gameMan = GameManager.Instance;
         
@@ -64,50 +93,44 @@ public class PlayerMechanics : MonoBehaviour
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
         gameObject.SetActive(false);
-    }
-
-    public void WalkIn() {
-        currentTile = tileMan.GetStartTile();
-        currentTilePos = currentTile.transform.position;
-        exitTile = currentTile;
-        entering = true;
-        gameObject.SetActive(true);
-        transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
-        targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
-        waitingForLevel = false;
-    }
-
-    public void WalkOut() {
-        targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
-        escaping = true;
-        isInteractible = false;
+        escaping = false;
+        gameMan.SetLoseCon(false);
+        gameMan.SetWinCon(false);
+        waitingForLevel=true;
+        isStarting=true;
+        isInteractible=false;
+        facing = DirectionFacing.Down;
+        adjacentPerson = null;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(waitingForLevel){
+        if(waitingForLevel || gameMan.GetLoseCon()){
             return;
         }
         if(entering){
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, enterExitSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
+                Debug.Log("player entered");
                 entering = false;
                 levelStart.Invoke();
                 isInteractible = true;
                 exitPosition = transform.position;
+                LevelManager.Instance.EnablePause(true);
             }
             return;
         }
         if(escaping){
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, enterExitSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
+                Debug.Log("player escaped");
                 escaping = false;
                 isExiting = false;
                 waitingForLevel = true;
                 gameObject.SetActive(false);
                 levelEnd.Invoke();
-                
+                LevelManager.Instance.EnablePause(false);
             }
             return;
         }
@@ -129,6 +152,7 @@ public class PlayerMechanics : MonoBehaviour
             if (transform.position == targetPosition) {
                 isStarting = false;
                 isInteractible = true;
+               
             }
         }
         if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon() && !isStarting) {
@@ -143,13 +167,21 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
-                tileMan.UpdateLevel();
+                MusicScript.Instance.StepSFX();
+                if (!tileMan.UpdateLevel()){
+                    GameManager.Instance.GameOver();
+                }
             }
         }
         UpdateDirection();
+        MusicScript.Instance.RotateSFX();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
+        anim.speed = 10000;
+        if(gameMan.GetLoseCon() || waitingForLevel || LevelManager.Instance.IsPaused()){
+            return;
+        }
         float x = ctx.ReadValue<Vector2>().x;
         float y = ctx.ReadValue<Vector2>().y;
         cautious = gameMan.GetControlStyle();
@@ -195,28 +227,34 @@ public class PlayerMechanics : MonoBehaviour
     }
     
     public void UpdateDirection() {
-        // if (anim.GetInteger("Facing Direction") == 1) {
-        //     spriteRen.flipX = true;
-        // } else {
-        //     spriteRen.flipX = false;
-        // }
+        //sets the anim speed back to one (was super high to get through end of last anim)
+        anim.speed = 1;
         switch(facing) {
             case DirectionFacing.Left:
+                
                 anim.SetInteger("Facing Direction", 3);
+                //anim.speed = 1;
                 break;
             case DirectionFacing.Right:
                 anim.SetInteger("Facing Direction", 1);
+                //anim.speed = 1;
                 break;
             case DirectionFacing.Up:
+                
                 anim.SetInteger("Facing Direction", 0);
+                //anim.speed = 1;
                 break;
             case DirectionFacing.Down:
                 anim.SetInteger("Facing Direction", 2);
+                //anim.speed = 1;
                 break;
         }
     }
 
     public void Move(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         cautious = gameMan.GetControlStyle();
         Debug.Log("Move " + pressed);
@@ -232,7 +270,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetLeft() && currentTile.GetLeft().IsWalkable()) {
                         currentTile = currentTile.GetLeft();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -242,7 +280,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetRight() && currentTile.GetRight().IsWalkable()) {
                         currentTile = currentTile.GetRight();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -252,7 +290,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetTop() && currentTile.GetTop().IsWalkable()) {
                         currentTile = currentTile.GetTop();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -262,7 +300,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetBottom() && currentTile.GetBottom().IsWalkable()) {
                         currentTile = currentTile.GetBottom();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -275,15 +313,19 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Tap(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         //Debug.Log("Tap " + pressed);
-        if (pressed > 0.5f && isInteractible) {
+        if (pressed > 0.5f && isInteractible && !hasTapped) {
+            hasTapped = true;
             switch(facing) {
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Left)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -292,7 +334,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Right)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -301,7 +343,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Up)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -310,18 +352,25 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Down)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
                     break;
             }
-        } else {
+        } else if(pressed <=.5) {
+            hasTapped = false;
+            adjacentPerson = null;
+        }
+        else{
             adjacentPerson = null;
         }
     }
 
     public void Push(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         //Debug.Log("Push " + pressed);
         if (pressed > 0.5f && isInteractible) {
@@ -329,7 +378,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Left)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -337,7 +386,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Right)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -345,7 +394,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Up)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -353,7 +402,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Down)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -365,15 +414,20 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Kill(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         Debug.Log("Kill " + pressed);
-        if (pressed > 0.5f && isInteractible) {
+        if (pressed > 0.5f && isInteractible && !hasKilled) {
+            hasKilled = true;
             switch(facing) {
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
@@ -382,7 +436,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
@@ -391,7 +445,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
@@ -400,13 +454,17 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
                     break;
             }
-        } else {
+        } else if (pressed <= .5) {
+            hasKilled = false;
+            adjacentPerson = null;
+        }
+        else{
             adjacentPerson = null;
         }
     }

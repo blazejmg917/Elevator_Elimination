@@ -24,4 +24,8 @@ public class LevelsHolder : MonoBehaviour
         }
         return gameLevels[levelId];
     }
+
+    public int GetLevelsCount(){
+        return gameLevels.Count;
+    }
 }
