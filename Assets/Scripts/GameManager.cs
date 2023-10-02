@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("the current level")]private int currentLevel = -1;
     [SerializeField, Tooltip("if marked true, will try to set up demo level that is the number specified above")]private bool tryDemoLevel = false;
     [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    [SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
     [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
     [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
@@ -85,13 +86,20 @@ public class GameManager : MonoBehaviour
         if(!cameraFade){
             cameraFade = transform.GetComponentInChildren<CameraFade>();
         }
-        if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
-            LevelStart(currentLevel);
-        }
         if(!eMove){
             eMove = GetComponent<ElevatorMove>();
         }
+        if(!gameCam){
+            gameCam = GetComponentInChildren<Camera>();
+        }
+        if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
+            LevelStart(currentLevel);
+        }
         
+    }
+
+    public Camera GetCamera(){
+        return gameCam;
     }
 
     public void SetFloors(int max, int current) {

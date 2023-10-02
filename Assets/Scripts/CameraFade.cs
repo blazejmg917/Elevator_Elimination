@@ -40,7 +40,7 @@ public class CameraFade : MonoBehaviour
             float t = fadeTimer / fadeTime;
             
             fadeBlackRenderer.material.color = new Color(blackColor.r, blackColor.g, blackColor.b, Mathf.Lerp(0,1,t));
-            Debug.Log("t: " + t);
+            //Debug.Log("t: " + t);
         }
         else if(fadingOut){
             float t = fadeTimer / fadeTime;
