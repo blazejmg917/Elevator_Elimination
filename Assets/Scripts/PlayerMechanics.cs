@@ -37,6 +37,8 @@ public class PlayerMechanics : MonoBehaviour
     private bool movedDown = false;
     private bool cautious;
     private bool neutral = true;
+    private bool hasTapped = false;
+    private bool hasKilled = false;
 
     private bool escaping = false;
     private bool entering = false;
@@ -52,18 +54,7 @@ public class PlayerMechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tileMan = TileManager.Instance;
-        gameMan = GameManager.Instance;
-        
-        if(startEndPos){
-            transform.position = startEndPos.position;
-        }
-        //WalkIn();
-        
-        cautious = gameMan.GetControlStyle();
-        anim = GetComponent<Animator>();
-        spriteRen = GetComponent<SpriteRenderer>();
-        gameObject.SetActive(false);
+        Setup();
     }
 
     public void WalkIn() {
@@ -83,10 +74,33 @@ public class PlayerMechanics : MonoBehaviour
         isInteractible = false;
     }
 
+    public void Setup(){
+        tileMan = TileManager.Instance;
+        gameMan = GameManager.Instance;
+        
+        if(startEndPos){
+            transform.position = startEndPos.position;
+        }
+        //WalkIn();
+        
+        cautious = gameMan.GetControlStyle();
+        anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
+        gameObject.SetActive(false);
+        escaping = false;
+        gameMan.SetLoseCon(false);
+        gameMan.SetWinCon(false);
+        waitingForLevel=true;
+        isStarting=true;
+        isInteractible=false;
+        facing = DirectionFacing.Down;
+        adjacentPerson = null;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(waitingForLevel){
+        if(waitingForLevel || gameMan.GetLoseCon()){
             return;
         }
         if(entering){
@@ -143,13 +157,19 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
-                tileMan.UpdateLevel();
+                if(!tileMan.UpdateLevel()){
+                    GameManager.Instance.GameOver();
+                }
             }
         }
         UpdateDirection();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
+        anim.speed = 10000;
+        if(gameMan.GetLoseCon()){
+            return;
+        }
         float x = ctx.ReadValue<Vector2>().x;
         float y = ctx.ReadValue<Vector2>().y;
         cautious = gameMan.GetControlStyle();
@@ -195,28 +215,34 @@ public class PlayerMechanics : MonoBehaviour
     }
     
     public void UpdateDirection() {
-        // if (anim.GetInteger("Facing Direction") == 1) {
-        //     spriteRen.flipX = true;
-        // } else {
-        //     spriteRen.flipX = false;
-        // }
+        //sets the anim speed back to one (was super high to get through end of last anim)
+        anim.speed = 1;
         switch(facing) {
             case DirectionFacing.Left:
+                
                 anim.SetInteger("Facing Direction", 3);
+                //anim.speed = 1;
                 break;
             case DirectionFacing.Right:
                 anim.SetInteger("Facing Direction", 1);
+                //anim.speed = 1;
                 break;
             case DirectionFacing.Up:
+                
                 anim.SetInteger("Facing Direction", 0);
+                //anim.speed = 1;
                 break;
             case DirectionFacing.Down:
                 anim.SetInteger("Facing Direction", 2);
+                //anim.speed = 1;
                 break;
         }
     }
 
     public void Move(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         cautious = gameMan.GetControlStyle();
         Debug.Log("Move " + pressed);
@@ -275,9 +301,13 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Tap(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         //Debug.Log("Tap " + pressed);
-        if (pressed > 0.5f && isInteractible) {
+        if (pressed > 0.5f && isInteractible && !hasTapped) {
+            hasTapped = true;
             switch(facing) {
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
@@ -316,12 +346,19 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
-        } else {
+        } else if(pressed <=.5) {
+            hasTapped = false;
+            adjacentPerson = null;
+        }
+        else{
             adjacentPerson = null;
         }
     }
 
     public void Push(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         //Debug.Log("Push " + pressed);
         if (pressed > 0.5f && isInteractible) {
@@ -365,9 +402,13 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Kill(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()){
+            return;
+        }
         float pressed = ctx.ReadValue<float>();
         Debug.Log("Kill " + pressed);
-        if (pressed > 0.5f && isInteractible) {
+        if (pressed > 0.5f && isInteractible && !hasKilled) {
+            hasKilled = true;
             switch(facing) {
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
@@ -406,7 +447,11 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
-        } else {
+        } else if (pressed <= .5) {
+            hasKilled = false;
+            adjacentPerson = null;
+        }
+        else{
             adjacentPerson = null;
         }
     }

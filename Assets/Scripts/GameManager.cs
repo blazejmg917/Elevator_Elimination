@@ -8,10 +8,10 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    [Serializable]
-    public class TurnChangeEvent : UnityEvent<int>{};
+    
+    
     private int maxFloors;
-    private int currentFloor;
+    [SerializeField]private int currentFloor;
     private static GameManager _instance;
     private bool winCon = false;
     private bool loseCon = false;
@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     //[SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
     //[SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
     [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
-    [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
+    // [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
+    // [SerializeField, Tooltip("event played on game loss")]private GameLoseEvent gameOver = new GameLoseEvent();
     //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     private enum GameState
@@ -60,6 +61,10 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += (scene, mode) => OnSceneLoaded(scene, mode);
     }
+
+    public int GetLevelId(){
+        return currentLevel;
+    }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if (Instance != this) return;
         if (scene.name == "MainMenu") {
@@ -95,20 +100,26 @@ public class GameManager : MonoBehaviour
     public void SetFloors(int max, int current) {
         maxFloors = max;
         currentFloor = current;
-        turnChangeEvent.Invoke(currentFloor);
+        //turnChangeEvent.Invoke(currentFloor);
     }
 
-    public void ChangeFloor() {
+    public int ChangeFloor() {
         currentFloor-= 1;
-        turnChangeEvent.Invoke(currentFloor);
-        if (currentFloor == 0) {
+        //turnChangeEvent.Invoke(currentFloor);
+        if (currentFloor <= 0) {
             GameOver();
         }
+        return currentFloor;
     }
 
     public void GameOver() {
         //reload scene with UI popup
-        SceneManager.LoadScene("GameOver");
+        //SceneManager.LoadScene("GameOver");
+        //gameOver.Invoke();
+        if(!loseCon){
+            SetLoseCon(true);
+        }
+        LevelManager.Instance.GameOver();
     }
 
     public void TransitionLevel() {
@@ -134,6 +145,9 @@ public class GameManager : MonoBehaviour
 
     public void SetLoseCon(bool con) {
         loseCon = con;
+        if(loseCon){
+            GameOver();
+        }
     }
 
     public bool GetControlStyle() {
@@ -150,6 +164,8 @@ public class GameManager : MonoBehaviour
         //change highlight
     }
 
+    
+
     public void LevelStart(int id){
         
         LevelManager.Instance.LevelStart(id);
@@ -162,7 +178,8 @@ public class GameManager : MonoBehaviour
         // TileManager.Instance.LoadLevelList(startLevel, true);
         // eMove.HideElevator();
         // cameraFade.StartFadeIn();
-        
+        SetLoseCon(false);
+        SetWinCon(false);
     }
 
     // public void Menuing(InputAction.CallbackContext ctx) {
@@ -213,6 +230,14 @@ public class GameManager : MonoBehaviour
 
     public void OnFadeOutEnd(bool sceneChange){
         Debug.Log("fade out ended");
+    }
+
+    public void RetryLevel(){
+        LevelStart(currentLevel);
+    }
+
+    public void QuitToMenu(){
+        SceneManager.LoadScene("MainMenu");
     }
 
 
