@@ -34,6 +34,7 @@ public class PlayerMechanics : MonoBehaviour
     private bool neutral = true;
     private Vector3 currentTilePos;
     [SerializeField] private Animation gameOverAnimation;
+    private Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +46,7 @@ public class PlayerMechanics : MonoBehaviour
         WalkIn();
         exitPosition = transform.position;
         cautious = gameMan.GetControlStyle();
+        anim = GetComponent<Animator>();
     }
 
     void WalkIn() {
@@ -61,7 +63,9 @@ public class PlayerMechanics : MonoBehaviour
     void FixedUpdate()
     {
         if (gameMan.GetLoseCon()) {
-            gameMan.SetLoseCon(false);
+            //Remove return, set to go to game over screen and wait until player clicks on a button to reset lose con
+            return;
+            //gameMan.SetLoseCon(false);
             //gameOverAnimation.Play(gameOverAnimation);
         }
         if (!cautious && Mathf.Abs(controlDirection.x) < 0.1f && Mathf.Abs(controlDirection.y) < 0.1f) {
@@ -90,7 +94,6 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
-                //change sprite to direction facing
                 tileMan.UpdateLevel();
             }
         }
@@ -111,9 +114,6 @@ public class PlayerMechanics : MonoBehaviour
                     movedLeft = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             } else if (x > 0.1f) {
                 facing = DirectionFacing.Right;
                 if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral && isInteractible) {
@@ -122,10 +122,8 @@ public class PlayerMechanics : MonoBehaviour
                     movedRight = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             }
+            UpdateDirection();
         } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
             if (y < -0.1f) {
                 facing = DirectionFacing.Down;
@@ -135,9 +133,6 @@ public class PlayerMechanics : MonoBehaviour
                     movedDown = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             } else if (y > 0.1f) {
                 facing = DirectionFacing.Up;
                 if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral && isInteractible) {
@@ -146,10 +141,41 @@ public class PlayerMechanics : MonoBehaviour
                     movedUp = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             }
+            UpdateDirection();
+        }
+    }
+    
+    public void UpdateDirection() {
+        switch(facing) {
+            case DirectionFacing.Left:
+                // if (transform.localScale.x < 0) {
+                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+                // }
+                GetComponent<SpriteRenderer>().flipX = false;
+                anim.SetInteger("Facing Direction", 3);
+                break;
+            case DirectionFacing.Right:
+                // if (transform.localScale.x > 0) {
+                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+                // }
+                GetComponent<SpriteRenderer>().flipX = true;
+                anim.SetInteger("Facing Direction", 1);
+                break;
+            case DirectionFacing.Up:
+                // if (transform.localScale.x < 0) {
+                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+                // }
+                GetComponent<SpriteRenderer>().flipX = false;
+                anim.SetInteger("Facing Direction", 0);
+                break;
+            case DirectionFacing.Down:
+                // if (transform.localScale.x < 0) {
+                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+                // }
+                GetComponent<SpriteRenderer>().flipX = false;
+                anim.SetInteger("Facing Direction", 2);
+                break;
         }
     }
 
