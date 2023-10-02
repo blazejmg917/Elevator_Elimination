@@ -86,21 +86,26 @@ public class ElevatorMove : MonoBehaviour
         }
     }
 
-    public void EnterScreen(bool SceneChange){
+    public void HideElevator(){
+        elevator.position = OffScreenPos;
+    }
+
+    public void EnterScreen(bool SceneChange = false){
         if(SceneChange){
             return;
         }
-        elevator.position = OffScreenPos;
+        HideElevator();
         enteringScreen = true;
         transitionTimer = transitionTime;
         bouncing = false;
         Debug.Log("elevator entering");
     }
-    public void ExitScreen(){
+    public void ExitScreen(bool SceneChange = false){
         exitingScreen = true;
         transitionTimer = transitionTime;
         bouncing = true;
         Debug.Log("elevator exiting");
+        HideElevator();
     }
 
     public Vector3 Bouncerp(Vector3 start, Vector3 end, float t){

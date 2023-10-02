@@ -123,7 +123,7 @@ public class TileManager : MonoBehaviour
                         GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
                         //Person personScript = thisPerson.GetComponent<Person>()
                         //thisPerson.transform.parent = personHolder.transform;
-                        thisPerson.transform.position = thisTile.GetPersonLocation();
+                        thisPerson.transform.position = thisTile.GetPersonLocation() + new Vector3(0,0,-.001f * (tilesList[i].Count - j));
                         Person thisPersonScript = thisPerson.GetComponent<Person>();
                         thisPersonScript.SetCurrentTile(thisTile);
                         thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
@@ -284,30 +284,46 @@ public class TileManager : MonoBehaviour
             for(int i = 0; i < tilesList.Count; i++){
                 for(int j = 0; j < tilesList[i].Count; j++){
                     if(tilesList[i][j]){
-                        DestroyImmediate(tilesList[i][j].gameObject);
+                        Debug.Log("destroying: " + tilesList[i][j].name);
+                        if(!tilesList[i][j].GetComponent<TileSpritesSetup>() && tilesList[i][j].name != "Tile Sprites"){
+                            DestroyImmediate(tilesList[i][j],false);
+                        }
                     }
                 }
                 
             }
         }
 
-        tiles = null;
+        //les = null;
         if (tileHolder)
         {
-            foreach (Transform t in tileHolder.transform.GetComponentInChildren<Transform>())
+            foreach (Transform t in tileHolder.transform.GetComponentsInChildren<Transform>())
             {
-                DestroyImmediate(t.gameObject);
+                if(t && !t.GetComponent<TileSpritesSetup>() && t.name != "Tile Sprites"){
+                    Debug.Log("destroying: " + t.name);
+                    DestroyImmediate(t.gameObject);
+                }
             }
-            DestroyImmediate(tileHolder,true);
+            if(tileHolder&& !tileHolder.GetComponent<TileSpritesSetup>() && tileHolder.name != "Tile Sprites"){
+                DestroyImmediate(tileHolder,true);
+            }
             
         }
         if(personHolder){
-            foreach (Transform t in personHolder.transform.GetComponentInChildren<Transform>())
+            foreach (Transform t in personHolder.transform.GetComponentsInChildren<Transform>())
             {
-                DestroyImmediate(t.gameObject,true);
+                if(t && t != personHolder.transform){
+                    DestroyImmediate(t.gameObject,true);
+                }
             }
             
         }
+        foreach (Transform t in transform)
+            {
+                if(t && !t.GetComponent<PersonManager>() && !t.GetComponent<TileManager>() && !t.GetComponent<TileSpritesSetup>()){
+                    DestroyImmediate(t.gameObject,true);
+                }
+            }
         
         #if UNITY_EDITOR
         if(baseLevel){
