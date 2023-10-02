@@ -21,11 +21,14 @@ public class PandaTalk : MonoBehaviour
 
     public void DisplayWinDialog(){
         DialogManager.Instance.StartDialog(LevelWinDialog);
+        MusicScript.Instance.PandaStaticSFX();
     }
     public void DisplayFinalWinDialog(){
         DialogManager.Instance.StartDialog(LastLevelWinDialog);
+        MusicScript.Instance.PandaStaticSFX();
     }
     public void DisplayLoseDialog(){
         DialogManager.Instance.StartDialog(LevelLoseDialog);
+        MusicScript.Instance.PandaStaticSFX();
     }
 }

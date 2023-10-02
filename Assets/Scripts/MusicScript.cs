@@ -97,7 +97,7 @@ public class MusicScript : MonoBehaviour
     public void MischiefManaged()
     {
         alteredSource.volume = 0;
-        sfx.PlayOneShot(recordScratch);
+        sfx.PlayOneShot(recordScratch, 0.25f);
         StartCoroutine(FadeAudioSource.StartFade(normalSource, .65f, normalVolume)); // middle value is how long to fade in
         currentSource = normalSource;
         currentVolume = normalVolume;
@@ -110,10 +110,10 @@ public class MusicScript : MonoBehaviour
     }
     public void TapSFX()
     {
-        sfx.PlayOneShot(tap);
+        sfx.PlayOneShot(tap, 0.8f);
     }
     public void RotateSFX()
-    {
+    { 
         sfx.PlayOneShot(rotate);
     }
     public void ScreamSFX()
