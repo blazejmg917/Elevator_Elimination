@@ -53,6 +53,12 @@ TagManager:
   - name: FrontWall
     uniqueID: 878100583
     locked: 0
+  - name: ScreenBorderUI
+    uniqueID: 3594731923
+    locked: 0
   - name: FadeBlock
     uniqueID: 787220775
+    locked: 0
+  - name: FullScreenUI
+    uniqueID: 971426355
     locked: 0

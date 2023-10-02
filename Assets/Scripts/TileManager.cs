@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
 
 public class TileManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class TurnChangeEvent : UnityEvent<int>{};
     [System.Serializable]
     public class ListWrapper<T>{
         public List<T> list = new List<T>();
@@ -45,6 +48,8 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("the offset for objects over tiles")]private Vector3 tileOffset;
     [SerializeField, Tooltip("the tile structure file to load in")] private LevelStructure baseLevel;
     [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
+    [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
+    
 
     private static TileManager _instance;
     public static TileManager Instance
@@ -102,6 +107,7 @@ public class TileManager : MonoBehaviour
         this.tilesList = tileList;
         LinkTileList();
         GetTilePeople();
+        turnChangeEvent.Invoke(baseLevel.GetFloors());
     }
 
     public void GetTilePeople(){
@@ -354,7 +360,10 @@ public class TileManager : MonoBehaviour
 
             }
         }
-        GameManager.Instance.ChangeFloor();
+        int floor = GameManager.Instance.ChangeFloor();
+        if(floor >= 0){
+            turnChangeEvent.Invoke(floor);
+        }
         return gameStillRunning;
     }
 
