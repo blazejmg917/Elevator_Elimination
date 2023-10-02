@@ -166,6 +166,7 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
+        anim.speed = 10000;
         if(gameMan.GetLoseCon()){
             return;
         }
@@ -214,23 +215,26 @@ public class PlayerMechanics : MonoBehaviour
     }
     
     public void UpdateDirection() {
-        // if (anim.GetInteger("Facing Direction") == 1) {
-        //     spriteRen.flipX = true;
-        // } else {
-        //     spriteRen.flipX = false;
-        // }
+        //sets the anim speed back to one (was super high to get through end of last anim)
+        anim.speed = 1;
         switch(facing) {
             case DirectionFacing.Left:
+                
                 anim.SetInteger("Facing Direction", 3);
+                
                 break;
             case DirectionFacing.Right:
                 anim.SetInteger("Facing Direction", 1);
+                anim.speed = 1;
                 break;
             case DirectionFacing.Up:
+                
                 anim.SetInteger("Facing Direction", 0);
+                anim.speed = 1;
                 break;
             case DirectionFacing.Down:
                 anim.SetInteger("Facing Direction", 2);
+                anim.speed = 1;
                 break;
         }
     }
