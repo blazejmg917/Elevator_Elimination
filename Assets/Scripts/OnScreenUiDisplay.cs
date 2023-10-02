@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class OnScreenUiDisplay : MonoBehaviour
 {
-    [SerializeField,Tooltip("the objects to display")]private GameObject objectToBeDisplayed;
+    [SerializeField,Tooltip("the objects to display")]private List<GameObject> objectsToBeDisplayed = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
-        if(!objectToBeDisplayed){
-            objectToBeDisplayed = gameObject;
-        }
-        if(objectToBeDisplayed){
-            objectToBeDisplayed.SetActive(false);
+
+        if(objectsToBeDisplayed != null){
+            foreach(GameObject go in objectsToBeDisplayed){
+                go.SetActive(false);
+            }
         }
     }
 
@@ -23,8 +23,10 @@ public class OnScreenUiDisplay : MonoBehaviour
     }
 
     public void DisplayObjects(){
-        if(objectToBeDisplayed){
-            objectToBeDisplayed.SetActive(true);
+        if(objectsToBeDisplayed != null){
+            foreach(GameObject go in objectsToBeDisplayed){
+                go.SetActive(true);
+            }
         }
     }
 }

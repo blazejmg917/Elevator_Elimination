@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    [Serializable]
+    public class TurnChangeEvent : UnityEvent<int>{};
     private int maxFloors;
     private int currentFloor;
     private static GameManager _instance;
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     //[SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
     //[SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
     [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
+    [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
     //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     private enum GameState
@@ -91,10 +95,12 @@ public class GameManager : MonoBehaviour
     public void SetFloors(int max, int current) {
         maxFloors = max;
         currentFloor = current;
+        turnChangeEvent.Invoke(currentFloor);
     }
 
     public void ChangeFloor() {
-        currentFloor--;
+        currentFloor-= 1;
+        turnChangeEvent.Invoke(currentFloor);
         if (currentFloor == 0) {
             GameOver();
         }
@@ -147,6 +153,7 @@ public class GameManager : MonoBehaviour
     public void LevelStart(int id){
         
         LevelManager.Instance.LevelStart(id);
+        //turnChangeEvent.Invoke(currentFloor);
         //currentLevel = id;
         // eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
 
