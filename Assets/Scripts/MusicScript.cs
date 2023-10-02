@@ -8,8 +8,8 @@ public class MusicScript : MonoBehaviour
     public AudioSource normalSource; // has its clip stored inside
     public AudioSource alteredSource;
 
-    public AudioSource currentSource;
-    public float currentVolume;
+    private AudioSource currentSource;
+    private float currentVolume;
 
     public AudioSource sfx;
 
