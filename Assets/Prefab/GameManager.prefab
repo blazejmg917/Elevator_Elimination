@@ -276,6 +276,7 @@ MonoBehaviour:
   currentLevel: -1
   tryDemoLevel: 0
   cameraFade: {fileID: 4447913489044060082}
+  gameCam: {fileID: 2118574923867156903}
   levelSceneName: GameLoopSetupScene
   eMove: {fileID: 1437808734436697417}
   state: 0
