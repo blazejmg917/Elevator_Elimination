@@ -79,6 +79,7 @@ public class CameraFade : MonoBehaviour
         if(OnSceneChange){
             sceneChange = OnSceneChange;
         }
+        fadingOut=false;
         Debug.Log("starting camera fade in" + fadeTimer);
     }
 

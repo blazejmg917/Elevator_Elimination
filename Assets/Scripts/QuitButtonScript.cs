@@ -30,5 +30,6 @@ public class QuitButtonScript : MonoBehaviour
     public void Click() {
         GetComponent<Button>().image.sprite = pressed;
         timerStart = true;
+        Application.Quit();
     }
 }

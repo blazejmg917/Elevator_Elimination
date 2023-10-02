@@ -36,7 +36,24 @@ public class MusicScript : MonoBehaviour
 
     public List<AudioClip> steps;
 
-
+    private static MusicScript _instance;
+    public static MusicScript Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<MusicScript>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject();
+                    _instance = go.AddComponent<MusicScript>();
+                    Debug.Log("Generating new music script");
+                }
+            }
+            return _instance;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
