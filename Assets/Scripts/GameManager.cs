@@ -13,13 +13,13 @@ public class GameManager : MonoBehaviour
     private bool winCon = false;
     private bool loseCon = false;
     [SerializeField][Tooltip("Control style: true is cautious, false is quick")] private bool cautious = true;
-    [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
+    //[SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
     [SerializeField, Tooltip("the current level")]private int currentLevel = -1;
     [SerializeField, Tooltip("if marked true, will try to set up demo level that is the number specified above")]private bool tryDemoLevel = false;
-    [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
-    [SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
+    //[SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    //[SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
     [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
-    [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
+    //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     private enum GameState
     {
@@ -76,31 +76,17 @@ public class GameManager : MonoBehaviour
     }
 
     public void Start(){
-        if(!levelHolder){
-            
-            levelHolder = GetComponentInChildren<LevelsHolder>();
-            if(!levelHolder){
-                Debug.LogError("NO LEVEL HOLDER IS FOUND. WILL BE EMPTY");
-            }
-        }
-        if(!cameraFade){
-            cameraFade = transform.GetComponentInChildren<CameraFade>();
-        }
-        if(!eMove){
-            eMove = GetComponent<ElevatorMove>();
-        }
-        if(!gameCam){
-            gameCam = GetComponentInChildren<Camera>();
-        }
+        
         if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
+            
             LevelStart(currentLevel);
         }
         
     }
 
-    public Camera GetCamera(){
-        return gameCam;
-    }
+    // public Camera GetCamera(){
+    //     return gameCam;
+    // }
 
     public void SetFloors(int max, int current) {
         maxFloors = max;
@@ -160,14 +146,15 @@ public class GameManager : MonoBehaviour
 
     public void LevelStart(int id){
         
+        LevelManager.Instance.LevelStart(id);
+        //currentLevel = id;
+        // eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
 
-        eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
-
-        id--;
-        LevelStructure startLevel = levelHolder.getLevelById(id);
-        TileManager.Instance.LoadLevelList(startLevel, true);
-        eMove.HideElevator();
-        cameraFade.StartFadeIn();
+        // id--;
+        // LevelStructure startLevel = levelHolder.getLevelById(id);
+        // TileManager.Instance.LoadLevelList(startLevel, true);
+        // eMove.HideElevator();
+        // cameraFade.StartFadeIn();
         
     }
 
@@ -215,6 +202,10 @@ public class GameManager : MonoBehaviour
     public void LevelSelect() {
         //Show Level Select Menu
         SceneManager.LoadScene("LevelSelect");
+    }
+
+    public void OnFadeOutEnd(bool sceneChange){
+        Debug.Log("fade out ended");
     }
 
 
