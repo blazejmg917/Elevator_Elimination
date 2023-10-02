@@ -101,10 +101,10 @@ public class Person : MonoBehaviour
         // }
         switch(currentFacing) {
             case Direction.LEFT:
-                anim.SetInteger("FacingDirection", 1);
+                anim.SetInteger("FacingDirection", 3);
                 break;
             case Direction.RIGHT:
-                anim.SetInteger("FacingDirection", 3);
+                anim.SetInteger("FacingDirection", 1);
                 break;
             case Direction.UP:
                 anim.SetInteger("FacingDirection", 0);
