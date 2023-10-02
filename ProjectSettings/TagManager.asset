@@ -62,3 +62,6 @@ TagManager:
   - name: FullScreenUI
     uniqueID: 971426355
     locked: 0
+  - name: pandatext
+    uniqueID: 3811513717
+    locked: 0

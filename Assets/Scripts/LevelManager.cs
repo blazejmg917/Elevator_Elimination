@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     [System.Serializable]public class GameOverEvent : UnityEvent{};
     [System.Serializable]public class ResetEvent : UnityEvent{};
+    [System.Serializable]public class LevelCompleteEvent : UnityEvent<bool>{};
     
     [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
@@ -14,6 +15,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
     [SerializeField, Tooltip("the game over event for this project")]private GameOverEvent gameOver = new GameOverEvent();
     [SerializeField, Tooltip("event played when level is reset")]private ResetEvent reset = new ResetEvent();
+    [SerializeField, Tooltip("event played when level is completed")]private LevelCompleteEvent levelComplete = new LevelCompleteEvent();
+    [SerializeField, Tooltip("current level ")]private int currentLevel = 0;
+    [SerializeField, Tooltip("mark true once player has completed final level")]private bool completedFinalLevel = false;
     
     private static LevelManager _instance;
     public static LevelManager Instance
@@ -66,12 +70,32 @@ public class LevelManager : MonoBehaviour
         
         reset.Invoke();
         eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
-
+        currentLevel = id;
         id--;
         LevelStructure startLevel = levelHolder.getLevelById(id);
         TileManager.Instance.LoadLevelList(startLevel, true);
         eMove.HideElevator();
         cameraFade.StartFadeIn();
         
+    }
+
+    public void CompleteLevel(){
+        
+        if(currentLevel + 1 < levelHolder.GetLevelsCount()){
+            
+        }
+        else{
+            completedFinalLevel = true;
+        }
+        levelComplete.Invoke(completedFinalLevel);
+    }
+
+    public void NextLevel(){
+        if(completedFinalLevel){
+            GameManager.Instance.QuitToMenu();
+        }
+        Debug.Log("Move to next level");
+        currentLevel++;
+        GameManager.Instance.LevelStart(currentLevel);
     }
 }

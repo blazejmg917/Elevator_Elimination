@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     
     
     private int maxFloors;
-    private int currentFloor;
+    [SerializeField]private int currentFloor;
     private static GameManager _instance;
     private bool winCon = false;
     private bool loseCon = false;
@@ -60,6 +60,10 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += (scene, mode) => OnSceneLoaded(scene, mode);
+    }
+
+    public int GetLevelId(){
+        return currentLevel;
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if (Instance != this) return;
@@ -159,6 +163,8 @@ public class GameManager : MonoBehaviour
         highlightedMenu = menuOptions[menuIndex];
         //change highlight
     }
+
+    
 
     public void LevelStart(int id){
         
