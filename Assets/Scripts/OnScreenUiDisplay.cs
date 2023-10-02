@@ -9,11 +9,7 @@ public class OnScreenUiDisplay : MonoBehaviour
     void Start()
     {
 
-        if(objectsToBeDisplayed != null){
-            foreach(GameObject go in objectsToBeDisplayed){
-                go.SetActive(false);
-            }
-        }
+        HideObjects();
     }
 
     // Update is called once per frame
@@ -26,6 +22,14 @@ public class OnScreenUiDisplay : MonoBehaviour
         if(objectsToBeDisplayed != null){
             foreach(GameObject go in objectsToBeDisplayed){
                 go.SetActive(true);
+            }
+        }
+    }
+
+    public void HideObjects(){
+        if(objectsToBeDisplayed != null){
+            foreach(GameObject go in objectsToBeDisplayed){
+                go.SetActive(false);
             }
         }
     }
