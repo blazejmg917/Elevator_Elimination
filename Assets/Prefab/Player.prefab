@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facing: 3
   movementSpeed: 5
+  gameOverAnimation: {fileID: 0}
 --- !u!212 &6779383192895689382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -87,8 +88,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 65956865
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1433211656, guid: c0fc1afac236e0f468b155f76d45ac4b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -206,6 +207,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 02d90852-4920-4d31-a1c7-ff631e4b977d
     m_ActionName: Controls/Tap[/Keyboard/x,/Keyboard/k,/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 15f67aa2-750f-4a48-aa35-836647240419
+    m_ActionName: MenuActions/MenuButton[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c2a74310-297b-4059-aa31-118122b378cf
+    m_ActionName: MenuActions/Menuing[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Controls

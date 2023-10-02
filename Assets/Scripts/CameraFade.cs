@@ -21,23 +21,30 @@ public class CameraFade : MonoBehaviour
     [SerializeField, Tooltip("event that is called whenever the fade in completes")]private EndFadeInEvent fadeInEvent = new EndFadeInEvent();
     [SerializeField, Tooltip("event that is called whenever the fade out completes")]private EndFadeOutEvent fadeOutEvent = new EndFadeOutEvent();
     private Color blackColor = Color.black;
+    [SerializeField, Tooltip("Will show up at game start if marked true")]private bool displayOnGameStart = true;
     // Start is called before the first frame update
     void Start()
     {
         if(!fadeBlackRenderer){
             fadeBlackRenderer = GetComponent<Renderer>();
         }
+        if(displayOnGameStart){
+            fadeBlackRenderer.enabled = true;
+        }
+        //fadeTime = deaf
     }
 
     void FixedUpdate(){
 
         if(fadingIn){
             float t = fadeTimer / fadeTime;
-            t = 1-t;
+            
             fadeBlackRenderer.material.color = new Color(blackColor.r, blackColor.g, blackColor.b, Mathf.Lerp(0,1,t));
+            Debug.Log("t: " + t);
         }
         else if(fadingOut){
             float t = fadeTimer / fadeTime;
+            t = 1-t;
             fadeBlackRenderer.material.color = new Color(blackColor.r, blackColor.g, blackColor.b, Mathf.Lerp(0,1,t));
         }
         fadeTimer -= Time.fixedDeltaTime;
@@ -62,25 +69,31 @@ public class CameraFade : MonoBehaviour
 
 
     public void StartFadeIn(float thisFadeTime = -1, bool OnSceneChange = false){
-        if(fadeTime < 0){
+        fadeBlackRenderer.enabled = true;
+        if(thisFadeTime < 0){
             thisFadeTime = defaultFadeTime;
         }
         fadeTime = thisFadeTime;
+        fadeTimer=fadeTime;
         fadingIn = true;
         if(OnSceneChange){
             sceneChange = OnSceneChange;
         }
+        Debug.Log("starting camera fade in" + fadeTimer);
     }
 
     public void StartFadeOut(float thisFadeTime = -1, bool OnSceneChange = false){
-        if(fadeTime < 0){
+        fadeBlackRenderer.enabled = true;
+        if(thisFadeTime < 0){
             thisFadeTime = defaultFadeTime;
         }
         fadeTime = thisFadeTime;
+        fadeTimer=fadeTime;
         fadingOut = true;
         if(OnSceneChange){
             sceneChange = OnSceneChange;
         }
+        Debug.Log("starting camera fade out " + fadeTimer);
     }
 
     

@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: forward
+    uniqueID: 3029095075
+    locked: 0
+  - name: Person
+    uniqueID: 65956865
+    locked: 0
+  - name: Player
+    uniqueID: 611168469
+    locked: 0
+  - name: FadeBlock
+    uniqueID: 787220775
+    locked: 0

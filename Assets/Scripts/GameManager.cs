@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
     [SerializeField, Tooltip("the current level")]private int currentLevel = -1;
     [SerializeField, Tooltip("if marked true, will try to set up demo level that is the number specified above")]private bool tryDemoLevel = false;
+    [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
 
     private enum GameState
     {
@@ -76,9 +77,13 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("NO LEVEL HOLDER IS FOUND. WILL BE EMPTY");
             }
         }
+        if(!cameraFade){
+            cameraFade = transform.GetComponentInChildren<CameraFade>();
+        }
         if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
             LevelStart(currentLevel);
         }
+        
     }
 
     public void SetFloors(int max, int current) {
@@ -138,7 +143,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void LevelStart(int id){
-        levelHolder.getLevelById(id);
+        id--;
+        LevelStructure startLevel = levelHolder.getLevelById(id);
+        TileManager.Instance.LoadLevelList(startLevel, true);
+        GetComponent<ElevatorMove>().HideElevator();
+        cameraFade.StartFadeIn();
+        
     }
 
     // public void Menuing(InputAction.CallbackContext ctx) {
