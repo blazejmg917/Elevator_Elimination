@@ -32,22 +32,38 @@ public class PlayerMechanics : MonoBehaviour
     private bool movedDown = false;
     private bool cautious;
     private bool neutral = true;
+    private Vector3 currentTilePos;
+    [SerializeField] private Animation gameOverAnimation;
     // Start is called before the first frame update
     void Start()
     {
         tileMan = TileManager.Instance;
         gameMan = GameManager.Instance;
         currentTile = tileMan.GetStartTile();
+        currentTilePos = currentTile.transform.position;
         exitTile = currentTile;
-        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y + 1, transform.position.z);
-        targetPosition = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        WalkIn();
         exitPosition = transform.position;
         cautious = gameMan.GetControlStyle();
+    }
+
+    void WalkIn() {
+        gameObject.SetActive(true);
+        transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
+        targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
+    }
+
+    void WalkOut() {
+        transform.position = Vector3.MoveTowards(transform.position, exitPosition, movementSpeed * Time.fixedDeltaTime);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (gameMan.GetLoseCon()) {
+            gameMan.SetLoseCon(false);
+            //gameOverAnimation.Play(gameOverAnimation);
+        }
         if (!cautious && Mathf.Abs(controlDirection.x) < 0.1f && Mathf.Abs(controlDirection.y) < 0.1f) {
             movedLeft = false;
             movedRight = false;
@@ -63,7 +79,7 @@ public class PlayerMechanics : MonoBehaviour
             }
         }
         if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon() && !isStarting) {
-            transform.position = Vector3.MoveTowards(transform.position, exitPosition, movementSpeed * Time.fixedDeltaTime);
+            WalkOut();
             if (transform.position == exitPosition) {
                 gameMan.SetWinCon(false);
                 //load next level along with animations
