@@ -1909,6 +1909,10 @@ PrefabInstance:
       propertyPath: displayOnGameStart
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5024845338591460149, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: levelSceneName
+      value: camera pos testing scene
+      objectReference: {fileID: 0}
     - target: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
       propertyPath: m_Name
       value: GameManager
