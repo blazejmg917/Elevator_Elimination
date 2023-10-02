@@ -152,6 +152,7 @@ public class PlayerMechanics : MonoBehaviour
             if (transform.position == targetPosition) {
                 isStarting = false;
                 isInteractible = true;
+               
             }
         }
         if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon() && !isStarting) {
@@ -166,12 +167,14 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
-                if(!tileMan.UpdateLevel()){
+                MusicScript.Instance.StepSFX();
+                if (!tileMan.UpdateLevel()){
                     GameManager.Instance.GameOver();
                 }
             }
         }
         UpdateDirection();
+        MusicScript.Instance.RotateSFX();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
