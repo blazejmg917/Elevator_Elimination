@@ -148,11 +148,11 @@ public class PlayerMechanics : MonoBehaviour
     }
     
     public void UpdateDirection() {
-        if (anim.GetInteger("Facing Direction") == 1) {
-            spriteRen.flipX = true;
-        } else {
-            spriteRen.flipX = false;
-        }
+        // if (anim.GetInteger("Facing Direction") == 1) {
+        //     spriteRen.flipX = true;
+        // } else {
+        //     spriteRen.flipX = false;
+        // }
         switch(facing) {
             case DirectionFacing.Left:
                 anim.SetInteger("Facing Direction", 3);

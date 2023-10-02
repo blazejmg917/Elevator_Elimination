@@ -94,11 +94,11 @@ public class Person : MonoBehaviour
 
     private void TurnSprite()
     {
-        if (anim.GetInteger("FacingDirection") == 1) {
-            spriteRen.flipX = true;
-        } else {
-            spriteRen.flipX = false;
-        }
+        // if (anim.GetInteger("FacingDirection") == 1) {
+        //     spriteRen.flipX = true;
+        // } else {
+        //     spriteRen.flipX = false;
+        // }
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 1);
