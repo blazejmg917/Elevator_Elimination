@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     private bool winCon = false;
     private bool loseCon = false;
     [SerializeField][Tooltip("Control style: true is cautious, false is quick")] private bool cautious = true;
+    [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
+    [SerializeField, Tooltip("the current level")]private int currentLevel = -1;
+    [SerializeField, Tooltip("if marked true, will try to set up demo level that is the number specified above")]private bool tryDemoLevel = false;
 
     private enum GameState
     {
@@ -63,6 +66,19 @@ public class GameManager : MonoBehaviour
     void FixedUpdate()
     {
         
+    }
+
+    public void Start(){
+        if(!levelHolder){
+            
+            levelHolder = GetComponentInChildren<LevelsHolder>();
+            if(!levelHolder){
+                Debug.LogError("NO LEVEL HOLDER IS FOUND. WILL BE EMPTY");
+            }
+        }
+        if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
+            LevelStart(currentLevel);
+        }
     }
 
     public void SetFloors(int max, int current) {
@@ -121,6 +137,10 @@ public class GameManager : MonoBehaviour
         //change highlight
     }
 
+    public void LevelStart(int id){
+        levelHolder.getLevelById(id);
+    }
+
     // public void Menuing(InputAction.CallbackContext ctx) {
     //     if (state == GameState.MainMenu) {
     //         float y = ctx.ReadValue<Vector2>().y;
@@ -166,4 +186,6 @@ public class GameManager : MonoBehaviour
         //Show Level Select Menu
         SceneManager.LoadScene("LevelSelect");
     }
+
+
 }
