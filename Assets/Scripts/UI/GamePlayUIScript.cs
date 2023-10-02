@@ -11,8 +11,8 @@ public class GamePlayUIScript : MonoBehaviour
         if(!canvas){
             canvas = GetComponent<Canvas>();
         }
-        Debug.Log("start in camera");
-            GetCameraFromGameManager();
+        //Debug.Log("start in camera");
+            //GetCameraFromGameManager();
         
     }
 
@@ -27,7 +27,5 @@ public class GamePlayUIScript : MonoBehaviour
         Debug.Log(canvas.worldCamera);
     }
 
-    public void GetCameraFromGameManager(){
-        SetCamera(GameManager.Instance.GetCamera());
-    }
+    //
 }

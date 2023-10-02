@@ -96,5 +96,7 @@ public class CameraFade : MonoBehaviour
         Debug.Log("starting camera fade out " + fadeTimer);
     }
 
+
+
     
 }
