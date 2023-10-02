@@ -240,5 +240,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void SetCurrentLevel(int levelID) {
+        currentLevel = levelID;
+    }
+
 
 }

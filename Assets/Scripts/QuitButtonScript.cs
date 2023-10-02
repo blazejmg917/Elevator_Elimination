@@ -19,7 +19,7 @@ public class QuitButtonScript : MonoBehaviour
     {
         if (timerStart) {
             timer++;
-            if (timer == 50) {
+            if (timer == 5) {
                 timerStart = false;
                 timer = 0;
                 Application.Quit();
