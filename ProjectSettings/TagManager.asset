@@ -50,6 +50,9 @@ TagManager:
   - name: Player
     uniqueID: 611168469
     locked: 0
+  - name: FrontWall
+    uniqueID: 878100583
+    locked: 0
   - name: FadeBlock
     uniqueID: 787220775
     locked: 0

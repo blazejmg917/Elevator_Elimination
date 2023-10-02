@@ -46,11 +46,13 @@ public class Person : MonoBehaviour
     private Vector3 goalPos = Vector3.zero;
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
+    private SpriteRenderer spriteRen;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
         anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -66,6 +68,7 @@ public class Person : MonoBehaviour
                 TileManager.Instance.UpdateLevel();
             }
         }
+        TurnSprite();
     }
 
     public bool TakesUpSpace()
@@ -76,6 +79,7 @@ public class Person : MonoBehaviour
     private void OnValidate()
     {
         anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
         if (!anim) {
             return;
         }
@@ -90,56 +94,10 @@ public class Person : MonoBehaviour
 
     private void TurnSprite()
     {
-        //update sprite to match direction
-        // switch(personId) {
-        //     case "BigGuy":
-        //         switch(currentFacing) {
-        //             case Direction.LEFT:
-        //                 anim.SetTrigger("BigGuyIdleLeft");
-        //                 break;
-        //             case Direction.RIGHT:
-        //                 anim.SetTrigger("BigGuyIdleLeft 0");
-        //                 break;
-        //             case Direction.UP:
-        //                 anim.SetTrigger("BigGuyIdleBackward");
-        //                 break;
-        //             case Direction.DOWN:
-        //                 anim.SetTrigger("BigGuyIdleForward");
-        //                 break;
-        //         }
-        //         break;
-        //     case "Target":
-        //         switch(currentFacing) {
-        //             case Direction.LEFT:
-        //                 anim.SetTrigger("targetIdleLeft");
-        //                 break;
-        //             case Direction.RIGHT:
-        //                 anim.SetTrigger("targetIdleLeft 0");
-        //                 break;
-        //             case Direction.UP:
-        //                 anim.SetTrigger("targetIdleBackwards");
-        //                 break;
-        //             case Direction.DOWN:
-        //                 anim.SetTrigger("targetIdleForward");
-        //                 break;
-        //         }
-        //         break;
-        //     case "Bystander":
-        //         switch(currentFacing) {
-        //             case Direction.LEFT:
-        //                 anim.SetTrigger("sheepIdleLeft");
-        //                 break;
-        //             case Direction.RIGHT:
-        //                 anim.SetTrigger("sheepIdleLeft 0");
-        //                 break;
-        //             case Direction.UP:
-        //                 anim.SetTrigger("sheepIdleBackwards");
-        //                 break;
-        //             case Direction.DOWN:
-        //                 anim.SetTrigger("sheepIdleForward");
-        //                 break;
-        //         }
-        //         break;
+        // if (anim.GetInteger("FacingDirection") == 1) {
+        //     spriteRen.flipX = true;
+        // } else {
+        //     spriteRen.flipX = false;
         // }
         switch(currentFacing) {
             case Direction.LEFT:
@@ -228,7 +186,6 @@ public class Person : MonoBehaviour
                     currentFacing = Direction.DOWN;
                     break;
             }
-            TurnSprite();
             return true;
         }
         return false;

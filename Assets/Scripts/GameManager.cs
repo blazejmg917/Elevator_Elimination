@@ -4,19 +4,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    [Serializable]
+    public class TurnChangeEvent : UnityEvent<int>{};
     private int maxFloors;
     private int currentFloor;
     private static GameManager _instance;
     private bool winCon = false;
     private bool loseCon = false;
     [SerializeField][Tooltip("Control style: true is cautious, false is quick")] private bool cautious = true;
-    [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
+    //[SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
     [SerializeField, Tooltip("the current level")]private int currentLevel = -1;
     [SerializeField, Tooltip("if marked true, will try to set up demo level that is the number specified above")]private bool tryDemoLevel = false;
-    [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    //[SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    //[SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
+    [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
+    [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
+    //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     private enum GameState
     {
@@ -61,6 +68,9 @@ public class GameManager : MonoBehaviour
             state = GameState.GameStart;
         } else if (scene.name == "GameOver") {
             state = GameState.GameOver;
+        } else if (scene.name == levelSceneName){
+            state = GameState.GameStart;
+            LevelStart(currentLevel);
         }
     }
     // Update is called once per frame
@@ -70,29 +80,27 @@ public class GameManager : MonoBehaviour
     }
 
     public void Start(){
-        if(!levelHolder){
-            
-            levelHolder = GetComponentInChildren<LevelsHolder>();
-            if(!levelHolder){
-                Debug.LogError("NO LEVEL HOLDER IS FOUND. WILL BE EMPTY");
-            }
-        }
-        if(!cameraFade){
-            cameraFade = transform.GetComponentInChildren<CameraFade>();
-        }
+        
         if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
+            
             LevelStart(currentLevel);
         }
         
     }
 
+    // public Camera GetCamera(){
+    //     return gameCam;
+    // }
+
     public void SetFloors(int max, int current) {
         maxFloors = max;
         currentFloor = current;
+        turnChangeEvent.Invoke(currentFloor);
     }
 
     public void ChangeFloor() {
-        currentFloor--;
+        currentFloor-= 1;
+        turnChangeEvent.Invoke(currentFloor);
         if (currentFloor == 0) {
             GameOver();
         }
@@ -109,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame() {
         //Show tutorial and controller prompts
-        SceneManager.LoadScene("HaleyScene");
+        SceneManager.LoadScene(levelSceneName);
     }
 
     public bool GetWinCon() {
@@ -143,11 +151,17 @@ public class GameManager : MonoBehaviour
     }
 
     public void LevelStart(int id){
-        id--;
-        LevelStructure startLevel = levelHolder.getLevelById(id);
-        TileManager.Instance.LoadLevelList(startLevel, true);
-        GetComponent<ElevatorMove>().HideElevator();
-        cameraFade.StartFadeIn();
+        
+        LevelManager.Instance.LevelStart(id);
+        //turnChangeEvent.Invoke(currentFloor);
+        //currentLevel = id;
+        // eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
+
+        // id--;
+        // LevelStructure startLevel = levelHolder.getLevelById(id);
+        // TileManager.Instance.LoadLevelList(startLevel, true);
+        // eMove.HideElevator();
+        // cameraFade.StartFadeIn();
         
     }
 
@@ -195,6 +209,10 @@ public class GameManager : MonoBehaviour
     public void LevelSelect() {
         //Show Level Select Menu
         SceneManager.LoadScene("LevelSelect");
+    }
+
+    public void OnFadeOutEnd(bool sceneChange){
+        Debug.Log("fade out ended");
     }
 
 
