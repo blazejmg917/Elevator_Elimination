@@ -22,28 +22,28 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 3f;
     private bool isInteractible = false;
     private Person adjacentPerson = null;
-    private Vector3 targetPosition;
+    [SerializeField]private Vector3 targetPosition;
     private TileManager tileMan;
     private GameManager gameMan;
     private bool movePressed = false;
-    private Tile exitTile;
-    private Vector3 exitPosition;
-    private bool isExiting = false;
-    private bool isStarting = true;
+    [SerializeField]private Tile exitTile;
+    [SerializeField]private Vector3 exitPosition;
+    [SerializeField]private bool isExiting = false;
+    [SerializeField]private bool isStarting = true;
     private Vector2 controlDirection;
     private bool movedLeft = false;
     private bool movedRight = false;
     private bool movedUp = false;
     private bool movedDown = false;
-    private bool cautious;
+    [SerializeField]private bool cautious;
     private bool neutral = true;
     private bool hasTapped = false;
     private bool hasKilled = false;
 
-    private bool escaping = false;
-    private bool entering = false;
-    private bool waitingForLevel = true;
-    private Vector3 currentTilePos;
+    [SerializeField]private bool escaping = false;
+    [SerializeField]private bool entering = false;
+    [SerializeField]private bool waitingForLevel = true;
+    [SerializeField]private Vector3 currentTilePos;
     [SerializeField] private Animation gameOverAnimation;
     private Animator anim;
     private SpriteRenderer spriteRen;
@@ -54,10 +54,13 @@ public class PlayerMechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Setup();
+        //Setup();
+        anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
     }
 
     public void WalkIn() {
+        Debug.Log("player entering");
         currentTile = tileMan.GetStartTile();
         currentTilePos = currentTile.transform.position;
         exitTile = currentTile;
@@ -66,15 +69,18 @@ public class PlayerMechanics : MonoBehaviour
         transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
         targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
         waitingForLevel = false;
+        gameObject.SetActive(true);
     }
 
     public void WalkOut() {
         targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
         escaping = true;
         isInteractible = false;
+        MusicScript.Instance.ExitDoorSFX();
     }
 
     public void Setup(){
+        Debug.Log("player setup");
         tileMan = TileManager.Instance;
         gameMan = GameManager.Instance;
         
@@ -106,6 +112,7 @@ public class PlayerMechanics : MonoBehaviour
         if(entering){
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, enterExitSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
+                Debug.Log("player entered");
                 entering = false;
                 levelStart.Invoke();
                 isInteractible = true;
@@ -117,6 +124,7 @@ public class PlayerMechanics : MonoBehaviour
         if(escaping){
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, enterExitSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
+                Debug.Log("player escaped");
                 escaping = false;
                 isExiting = false;
                 waitingForLevel = true;
@@ -259,7 +267,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetLeft() && currentTile.GetLeft().IsWalkable()) {
                         currentTile = currentTile.GetLeft();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -269,7 +277,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetRight() && currentTile.GetRight().IsWalkable()) {
                         currentTile = currentTile.GetRight();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -279,7 +287,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetTop() && currentTile.GetTop().IsWalkable()) {
                         currentTile = currentTile.GetTop();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -289,7 +297,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetBottom() && currentTile.GetBottom().IsWalkable()) {
                         currentTile = currentTile.GetBottom();
                         isInteractible = false;
-                        //Trigger step sound
+                        MusicScript.Instance.StepSFX();
                         
                     } else {
                         //Trigger bump sound
@@ -314,7 +322,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Left)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -323,7 +331,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Right)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -332,7 +340,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Up)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -341,7 +349,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Down)) {
                         tileMan.UpdateLevel();
-                        //Trigger tap noise
+                        MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -367,7 +375,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Left)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -375,7 +383,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Right)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -383,7 +391,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Up)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -391,7 +399,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Down)) {
-                        //Trigger push noise
+                        MusicScript.Instance.PushSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -415,7 +423,8 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
@@ -424,7 +433,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
@@ -433,7 +442,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }
@@ -442,7 +451,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        //Trigger push noise
+                        MusicScript.Instance.StabbyStabby();
                     } else {
                         //Trigger error sound
                     }

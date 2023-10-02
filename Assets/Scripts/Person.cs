@@ -137,6 +137,7 @@ public class Person : MonoBehaviour
                     break;
             }
             return true;
+            MusicScript.Instance.GuhSFX();
             
         }
         return false;
@@ -187,6 +188,7 @@ public class Person : MonoBehaviour
                     break;
             }
             return true;
+            MusicScript.Instance.HuhSFX();
         }
         return false;
     }
@@ -249,6 +251,7 @@ public class Person : MonoBehaviour
                     if (seenPerson.CallAlarmWhenSeen())
                     {
                         GameManager.Instance.SetLoseCon(true);
+                        MusicScript.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
                         //call game over
                         return false;

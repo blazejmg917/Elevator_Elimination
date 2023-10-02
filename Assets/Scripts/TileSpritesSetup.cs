@@ -97,7 +97,7 @@ public class TileSpritesSetup : MonoBehaviour
                 else if(i == 0){
                     newTileSprite = leftColSprites;
                     allTiles[i][j].transform.rotation = Quaternion.Euler(0,0,90);
-                    Debug.Log("tile rotated: " + allTiles[i][j].transform.rotation.eulerAngles + ", " + allTiles[i][j].gameObject.name);
+                    //Debug.Log("tile rotated: " + allTiles[i][j].transform.rotation.eulerAngles + ", " + allTiles[i][j].gameObject.name);
                 }
                 //right
                 else if(i == maxX && j == 1){

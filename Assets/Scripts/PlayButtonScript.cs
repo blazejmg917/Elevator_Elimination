@@ -22,6 +22,7 @@ public class PlayButtonScript : MonoBehaviour
             if (timer == 5) {
                 timerStart = false;
                 timer = 0;
+                GameManager.Instance.SetCurrentLevel(1);
                 GameManager.Instance.StartGame();
             }
         }
