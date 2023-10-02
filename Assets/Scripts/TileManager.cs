@@ -354,6 +354,7 @@ public class TileManager : MonoBehaviour
 
             }
         }
+        GameManager.Instance.ChangeFloor();
         return gameStillRunning;
     }
 
