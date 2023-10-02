@@ -596,6 +596,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1437808734436697417, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: elevator
+      value: 
+      objectReference: {fileID: 63951887}
     - target: {fileID: 2891102605608928194, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
@@ -683,13 +687,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1299070659}
-    - targetCorrespondingSourceObject: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1299070660}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
 --- !u!1 &113928593
 GameObject:
@@ -3272,17 +3270,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 416177936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1022485087 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4447913489044060082, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
-  m_PrefabInstance: {fileID: 103569910}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c353a24a9b5b964c9729455af1f2e0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1041783448
 GameObject:
   m_ObjectHideFlags: 0
@@ -4935,78 +4922,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 416177936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1299070658 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+--- !u!114 &1299070659 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1437808734436697417, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
   m_PrefabInstance: {fileID: 103569910}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1299070659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299070658}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333994dc468552a48a7e6abc382f8b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elevator: {fileID: 63951887}
-  mainGamePos: {x: 0, y: 0, z: -8}
-  OffScreenPos: {x: 0, y: -4, z: -8}
-  transitionTime: 1.5
-  bounceTime: 0.3
-  bounceAmplitude: 0.2
-  demoEnterScreen: 0
-  exitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1022485087}
-        m_TargetAssemblyTypeName: CameraFade, Assembly-CSharp
-        m_MethodName: EndLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  enterEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1299070660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299070658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73531cb6e56b16f43abee8f30d8dd8a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameLevels:
-  - {fileID: 2490581988077251326, guid: 00dc070643adfa24c99c2d74bb944871, type: 3}
-  - {fileID: 8334978259594579878, guid: 463f6f391b9ff4945942a2473360146b, type: 3}
-  - {fileID: 498996999464809408, guid: cbf36938341c05f4283f6a43e53bbdf3, type: 3}
-  - {fileID: 7615598690943165799, guid: 0242737f8b49b7e4a97f8be71b1cf80e, type: 3}
-  - {fileID: 7303588201292976324, guid: 4c2114742f370f64e8b9fcb6667f4afe, type: 3}
 --- !u!1 &1373799889
 GameObject:
   m_ObjectHideFlags: 0

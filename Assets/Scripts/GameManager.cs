@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("the current level")]private int currentLevel = -1;
     [SerializeField, Tooltip("if marked true, will try to set up demo level that is the number specified above")]private bool tryDemoLevel = false;
     [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
+    [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     private enum GameState
     {
@@ -61,6 +63,9 @@ public class GameManager : MonoBehaviour
             state = GameState.GameStart;
         } else if (scene.name == "GameOver") {
             state = GameState.GameOver;
+        } else if (scene.name == levelSceneName){
+            state = GameState.GameStart;
+            LevelStart(currentLevel);
         }
     }
     // Update is called once per frame
@@ -82,6 +87,9 @@ public class GameManager : MonoBehaviour
         }
         if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
             LevelStart(currentLevel);
+        }
+        if(!eMove){
+            eMove = GetComponent<ElevatorMove>();
         }
         
     }
@@ -109,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame() {
         //Show tutorial and controller prompts
-        SceneManager.LoadScene("HaleyScene");
+        SceneManager.LoadScene(levelSceneName);
     }
 
     public bool GetWinCon() {
@@ -143,10 +151,14 @@ public class GameManager : MonoBehaviour
     }
 
     public void LevelStart(int id){
+        
+        if(TileManager.Instance.gameObject){
+            eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform);
+        }
         id--;
         LevelStructure startLevel = levelHolder.getLevelById(id);
         TileManager.Instance.LoadLevelList(startLevel, true);
-        GetComponent<ElevatorMove>().HideElevator();
+        eMove.HideElevator();
         cameraFade.StartFadeIn();
         
     }

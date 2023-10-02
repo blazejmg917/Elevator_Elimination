@@ -122,4 +122,8 @@ public class ElevatorMove : MonoBehaviour
         return start + resultPos + rand;
     }
 
+    public void SetElevatorTransform(Transform t){
+        elevator = t;
+    }
+
 }
