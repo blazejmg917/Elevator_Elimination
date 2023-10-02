@@ -58,7 +58,7 @@ MonoBehaviour:
   recordScratch: {fileID: 8300000, guid: 7a311e10b6f91e348a56e01aaa4b84ff, type: 3}
   push: {fileID: 8300000, guid: ce83f0581a8751640aeaad631124f9ce, type: 3}
   tap: {fileID: 8300000, guid: 0eb3fa6c1bdc4c947ae27eae31aa696c, type: 3}
-  rotate: {fileID: 8300000, guid: 12423069a266d6c4394d6e73d21caa95, type: 3}
+  rotate: {fileID: 8300000, guid: 4a80f85ae7923914f8c733a9104db491, type: 3}
   scream: {fileID: 8300000, guid: ff2be0ecc5864dc4098603e7a2d863a1, type: 3}
   bell: {fileID: 8300000, guid: 587974a91bde89f4f850aded7087fa83, type: 3}
   huh: {fileID: 8300000, guid: a5eece3168917064b9f5bbeb6b1a369b, type: 3}
