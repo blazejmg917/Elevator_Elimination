@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Person : MonoBehaviour
@@ -44,10 +45,12 @@ public class Person : MonoBehaviour
     private bool isMoving = false;
     private Vector3 goalPos = Vector3.zero;
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
+    private Animator anim;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -72,6 +75,10 @@ public class Person : MonoBehaviour
 
     private void OnValidate()
     {
+        anim = GetComponent<Animator>();
+        if (!anim) {
+            return;
+        }
         TurnSprite();
         if(lastFacing  != currentFacing ){
             lastFacing = currentFacing;
@@ -84,6 +91,70 @@ public class Person : MonoBehaviour
     private void TurnSprite()
     {
         //update sprite to match direction
+        // switch(personId) {
+        //     case "BigGuy":
+        //         switch(currentFacing) {
+        //             case Direction.LEFT:
+        //                 anim.SetTrigger("BigGuyIdleLeft");
+        //                 break;
+        //             case Direction.RIGHT:
+        //                 anim.SetTrigger("BigGuyIdleLeft 0");
+        //                 break;
+        //             case Direction.UP:
+        //                 anim.SetTrigger("BigGuyIdleBackward");
+        //                 break;
+        //             case Direction.DOWN:
+        //                 anim.SetTrigger("BigGuyIdleForward");
+        //                 break;
+        //         }
+        //         break;
+        //     case "Target":
+        //         switch(currentFacing) {
+        //             case Direction.LEFT:
+        //                 anim.SetTrigger("targetIdleLeft");
+        //                 break;
+        //             case Direction.RIGHT:
+        //                 anim.SetTrigger("targetIdleLeft 0");
+        //                 break;
+        //             case Direction.UP:
+        //                 anim.SetTrigger("targetIdleBackwards");
+        //                 break;
+        //             case Direction.DOWN:
+        //                 anim.SetTrigger("targetIdleForward");
+        //                 break;
+        //         }
+        //         break;
+        //     case "Bystander":
+        //         switch(currentFacing) {
+        //             case Direction.LEFT:
+        //                 anim.SetTrigger("sheepIdleLeft");
+        //                 break;
+        //             case Direction.RIGHT:
+        //                 anim.SetTrigger("sheepIdleLeft 0");
+        //                 break;
+        //             case Direction.UP:
+        //                 anim.SetTrigger("sheepIdleBackwards");
+        //                 break;
+        //             case Direction.DOWN:
+        //                 anim.SetTrigger("sheepIdleForward");
+        //                 break;
+        //         }
+        //         break;
+        // }
+        switch(currentFacing) {
+            case Direction.LEFT:
+                anim.SetInteger("FacingDirection", 1);
+                break;
+            case Direction.RIGHT:
+                anim.SetInteger("FacingDirection", 3);
+                break;
+            case Direction.UP:
+                anim.SetInteger("FacingDirection", 0);
+                break;
+            case Direction.DOWN:
+                anim.SetInteger("FacingDirection", 2);
+                break;
+        }
     }
 
     public bool OnPush(PlayerMechanics.DirectionFacing dir)
