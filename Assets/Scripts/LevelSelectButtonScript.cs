@@ -8,10 +8,11 @@ public class LevelSelectButtonScript : MonoBehaviour
     [SerializeField] private Sprite pressed;
     private bool timerStart = false;
     private int timer = 0;
+    [SerializeField] private Canvas levelSel;
     // Start is called before the first frame update
     void Start()
     {
-        
+        levelSel.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -22,7 +23,8 @@ public class LevelSelectButtonScript : MonoBehaviour
             if (timer == 50) {
                 timerStart = false;
                 timer = 0;
-                //Move To Level Select
+                transform.parent.gameObject.SetActive(false);
+                levelSel.gameObject.SetActive(true);
             }
         }
     }
