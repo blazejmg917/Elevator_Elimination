@@ -35,6 +35,7 @@ public class PlayerMechanics : MonoBehaviour
     private Vector3 currentTilePos;
     [SerializeField] private Animation gameOverAnimation;
     private Animator anim;
+    private SpriteRenderer spriteRen;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,7 @@ public class PlayerMechanics : MonoBehaviour
         exitPosition = transform.position;
         cautious = gameMan.GetControlStyle();
         anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
     }
 
     void WalkIn() {
@@ -97,6 +99,7 @@ public class PlayerMechanics : MonoBehaviour
                 tileMan.UpdateLevel();
             }
         }
+        UpdateDirection();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
@@ -123,7 +126,6 @@ public class PlayerMechanics : MonoBehaviour
                     neutral = false;
                 }
             }
-            UpdateDirection();
         } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
             if (y < -0.1f) {
                 facing = DirectionFacing.Down;
@@ -142,38 +144,26 @@ public class PlayerMechanics : MonoBehaviour
                     neutral = false;
                 }
             }
-            UpdateDirection();
         }
     }
     
     public void UpdateDirection() {
+        if (anim.GetInteger("Facing Direction") == 1) {
+            spriteRen.flipX = true;
+        } else {
+            spriteRen.flipX = false;
+        }
         switch(facing) {
             case DirectionFacing.Left:
-                // if (transform.localScale.x < 0) {
-                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-                // }
-                GetComponent<SpriteRenderer>().flipX = false;
                 anim.SetInteger("Facing Direction", 3);
                 break;
             case DirectionFacing.Right:
-                // if (transform.localScale.x > 0) {
-                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-                // }
-                GetComponent<SpriteRenderer>().flipX = true;
                 anim.SetInteger("Facing Direction", 1);
                 break;
             case DirectionFacing.Up:
-                // if (transform.localScale.x < 0) {
-                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-                // }
-                GetComponent<SpriteRenderer>().flipX = false;
                 anim.SetInteger("Facing Direction", 0);
                 break;
             case DirectionFacing.Down:
-                // if (transform.localScale.x < 0) {
-                //     transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-                // }
-                GetComponent<SpriteRenderer>().flipX = false;
                 anim.SetInteger("Facing Direction", 2);
                 break;
         }
