@@ -92,7 +92,7 @@ public class TileManager : MonoBehaviour
         }
         ClearLevel();
         tileHolder = Instantiate(levelStructure.gameObject, transform);
-        tileHolder.transform.position = new Vector3(0,0, tileHolder.transform.position.z);
+        tileHolder.transform.position = new Vector3(transform.position.x,transform.position.y, tileHolder.transform.position.z);
         baseLevel = tileHolder.GetComponent<LevelStructure>();
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());

@@ -152,9 +152,9 @@ public class GameManager : MonoBehaviour
 
     public void LevelStart(int id){
         
-        if(TileManager.Instance.gameObject){
-            eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform);
-        }
+
+        eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
+
         id--;
         LevelStructure startLevel = levelHolder.getLevelById(id);
         TileManager.Instance.LoadLevelList(startLevel, true);
