@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerMechanics : MonoBehaviour
@@ -12,9 +13,13 @@ public class PlayerMechanics : MonoBehaviour
         Up,
         Down
     }
+    [System.Serializable]public class PlayerStartEvent : UnityEvent{};
+    [System.Serializable]public class PlayerEscapeEvent : UnityEvent{};
+    [System.Serializable]public class GameOverEvent : UnityEvent{};
     [SerializeField] private DirectionFacing facing = DirectionFacing.Down;
-    private Tile currentTile;
+    [SerializeField, Tooltip("the player's current tile")]private Tile currentTile;
     [SerializeField] private float movementSpeed = 5f;
+    [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 3f;
     private bool isInteractible = false;
     private Person adjacentPerson = null;
     private Vector3 targetPosition;
@@ -32,36 +37,84 @@ public class PlayerMechanics : MonoBehaviour
     private bool movedDown = false;
     private bool cautious;
     private bool neutral = true;
+
+    private bool escaping = false;
+    private bool entering = false;
+    private bool waitingForLevel = true;
     private Vector3 currentTilePos;
     [SerializeField] private Animation gameOverAnimation;
+    private Animator anim;
+    private SpriteRenderer spriteRen;
+    [SerializeField, Tooltip("Starting/exit position")]private Transform startEndPos;
+    [SerializeField, Tooltip("event for when player enters level")]private PlayerStartEvent levelStart = new PlayerStartEvent();
+    [SerializeField, Tooltip("event for when player escapes level")]private PlayerEscapeEvent levelEnd = new PlayerEscapeEvent();
+    [SerializeField, Tooltip("event for when player loses the level")]private GameOverEvent playerFail = new GameOverEvent();
     // Start is called before the first frame update
     void Start()
     {
         tileMan = TileManager.Instance;
         gameMan = GameManager.Instance;
+        
+        if(startEndPos){
+            transform.position = startEndPos.position;
+        }
+        //WalkIn();
+        
+        cautious = gameMan.GetControlStyle();
+        anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
+        gameObject.SetActive(false);
+    }
+
+    public void WalkIn() {
         currentTile = tileMan.GetStartTile();
         currentTilePos = currentTile.transform.position;
         exitTile = currentTile;
-        WalkIn();
-        exitPosition = transform.position;
-        cautious = gameMan.GetControlStyle();
-    }
-
-    void WalkIn() {
+        entering = true;
         gameObject.SetActive(true);
         transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
         targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
+        waitingForLevel = false;
     }
 
-    void WalkOut() {
-        transform.position = Vector3.MoveTowards(transform.position, exitPosition, movementSpeed * Time.fixedDeltaTime);
+    public void WalkOut() {
+        targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
+        escaping = true;
+        isInteractible = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(waitingForLevel){
+            return;
+        }
+        if(entering){
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, enterExitSpeed * Time.fixedDeltaTime);
+            if (transform.position == targetPosition) {
+                entering = false;
+                levelStart.Invoke();
+                isInteractible = true;
+                exitPosition = transform.position;
+            }
+            return;
+        }
+        if(escaping){
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, enterExitSpeed * Time.fixedDeltaTime);
+            if (transform.position == targetPosition) {
+                escaping = false;
+                isExiting = false;
+                waitingForLevel = true;
+                gameObject.SetActive(false);
+                levelEnd.Invoke();
+                
+            }
+            return;
+        }
         if (gameMan.GetLoseCon()) {
-            gameMan.SetLoseCon(false);
+            //Remove return, set to go to game over screen and wait until player clicks on a button to reset lose con
+            return;
+            //gameMan.SetLoseCon(false);
             //gameOverAnimation.Play(gameOverAnimation);
         }
         if (!cautious && Mathf.Abs(controlDirection.x) < 0.1f && Mathf.Abs(controlDirection.y) < 0.1f) {
@@ -90,10 +143,10 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
-                //change sprite to direction facing
                 tileMan.UpdateLevel();
             }
         }
+        UpdateDirection();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
@@ -111,9 +164,6 @@ public class PlayerMechanics : MonoBehaviour
                     movedLeft = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             } else if (x > 0.1f) {
                 facing = DirectionFacing.Right;
                 if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral && isInteractible) {
@@ -121,9 +171,6 @@ public class PlayerMechanics : MonoBehaviour
                     isInteractible = false;
                     movedRight = true;
                     neutral = false;
-                }
-                if (isInteractible) {
-                    //change sprite to direction facing
                 }
             }
         } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
@@ -135,9 +182,6 @@ public class PlayerMechanics : MonoBehaviour
                     movedDown = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             } else if (y > 0.1f) {
                 facing = DirectionFacing.Up;
                 if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral && isInteractible) {
@@ -146,17 +190,36 @@ public class PlayerMechanics : MonoBehaviour
                     movedUp = true;
                     neutral = false;
                 }
-                if (isInteractible) {
-                    //change sprite to direction facing
-                }
             }
+        }
+    }
+    
+    public void UpdateDirection() {
+        // if (anim.GetInteger("Facing Direction") == 1) {
+        //     spriteRen.flipX = true;
+        // } else {
+        //     spriteRen.flipX = false;
+        // }
+        switch(facing) {
+            case DirectionFacing.Left:
+                anim.SetInteger("Facing Direction", 3);
+                break;
+            case DirectionFacing.Right:
+                anim.SetInteger("Facing Direction", 1);
+                break;
+            case DirectionFacing.Up:
+                anim.SetInteger("Facing Direction", 0);
+                break;
+            case DirectionFacing.Down:
+                anim.SetInteger("Facing Direction", 2);
+                break;
         }
     }
 
     public void Move(InputAction.CallbackContext ctx) {
         float pressed = ctx.ReadValue<float>();
         cautious = gameMan.GetControlStyle();
-        //Debug.Log("Move " + pressed);
+        Debug.Log("Move " + pressed);
         if (pressed > 0.5f && isInteractible && !movePressed && cautious) {
             movePressed = true;
             if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon()) {

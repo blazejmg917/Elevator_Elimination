@@ -15,8 +15,10 @@ public class ElevatorMove : MonoBehaviour
     private Vector3 bounceMaxPos = Vector3.zero;
     [SerializeField, Tooltip("Off Screen Position. Will move to this spot on startup and leave it on level complete")]private Vector3 OffScreenPos = Vector3.zero;
     [SerializeField, Tooltip("the time it takes for the elevator to enter and leave")]private float transitionTime = 2;
+    [SerializeField, Tooltip("the time it takes for the level end screen to show up when the level is over")]private float levelEndScreenDelay = 1;
     [SerializeField, Tooltip("the time it takes for the elevator to bounce")]private float bounceTime = .5f;
     [SerializeField, Tooltip("the amplitude of the bounce")]private float bounceAmplitude = .5f;
+    private bool exitDisplayed = false;
     private float transitionTimer;
     private bool enteringScreen = false;
     private bool exitingScreen = false;
@@ -50,10 +52,11 @@ public class ElevatorMove : MonoBehaviour
                 elevator.position = mainGamePos;
                 if(enteringScreen){
                     enteringScreen = false;
-                    
+                    enterEvent.Invoke();
                 }
                 else if(exitingScreen){
                     transitionTimer = transitionTime;
+                    exitDisplayed = false;
                 }
             }
         }
@@ -64,43 +67,54 @@ public class ElevatorMove : MonoBehaviour
             transitionTimer -= Time.fixedDeltaTime;
             //Debug.Log(t);
             if(transitionTimer < 0){
-                enteringScreen = false;
+                //enteringScreen = false;
                 Debug.Log("finished entering");
                 //elevator.position = mainGamePos;
                 bouncing = true;
                 transitionTimer = bounceTime;
-                enterEvent.Invoke();
+                
             }
         }
         else if(exitingScreen){
             float t = transitionTimer / transitionTime;
-            t = 1-t;
+            //t = 1-t;
             elevator.position = Vector3.Lerp(OffScreenPos, mainGamePos, t);
             transitionTimer -= Time.fixedDeltaTime;
+            if(transitionTimer < transitionTime - levelEndScreenDelay && !exitDisplayed){
+                exitEvent.Invoke();
+                exitDisplayed = true;
+            }
             if(transitionTimer < 0){
                 exitingScreen = false;
                 Debug.Log("finished exiting");
                 elevator.position = OffScreenPos;
-                exitEvent.Invoke();
+                
             }
         }
     }
 
-    public void EnterScreen(bool SceneChange){
+    public void HideElevator(){
+        elevator.position = OffScreenPos;
+    }
+
+
+
+    public void EnterScreen(bool SceneChange = false){
         if(SceneChange){
             return;
         }
-        elevator.position = OffScreenPos;
+        HideElevator();
         enteringScreen = true;
         transitionTimer = transitionTime;
         bouncing = false;
         Debug.Log("elevator entering");
     }
-    public void ExitScreen(){
+    public void ExitScreen(bool SceneChange = false){
         exitingScreen = true;
-        transitionTimer = transitionTime;
+        transitionTimer = bounceTime;
         bouncing = true;
         Debug.Log("elevator exiting");
+        HideElevator();
     }
 
     public Vector3 Bouncerp(Vector3 start, Vector3 end, float t){
@@ -115,6 +129,10 @@ public class ElevatorMove : MonoBehaviour
         Vector3 rand = new Vector3(Random.Range(-.01f,.01f), Random.Range(-.01f,.01f), 0);
         //Debug.Log("start: " + start + "\nend: " + end + "resultPos: " + resultPos + "");
         return start + resultPos + rand;
+    }
+
+    public void SetElevatorTransform(Transform t){
+        elevator = t;
     }
 
 }
