@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ElevatorMove : MonoBehaviour
 {
+    [System.Serializable]
+    public class ElevatorEnterEvent : UnityEvent{};
+    [System.Serializable]
+    public class ElevatorExitEvent : UnityEvent{};
     [SerializeField, Tooltip("the elevator object to move. \nShould contain all tiles and people")]private Transform elevator;
     [SerializeField, Tooltip("Main Game Pos. Will move to this spot on startup and leave it on level complete")]private Vector3 mainGamePos = Vector3.zero;
     private Vector3 bounceMaxPos = Vector3.zero;
@@ -16,12 +21,17 @@ public class ElevatorMove : MonoBehaviour
     private bool enteringScreen = false;
     private bool exitingScreen = false;
     private bool bouncing = false;
+    [SerializeField, Tooltip("immediately enter the screen on startup for demos")]private bool demoEnterScreen = false;
+    [SerializeField, Tooltip("the elevator exit event")]private ElevatorExitEvent exitEvent = new ElevatorExitEvent();
+    [SerializeField, Tooltip("the elevator enter event")]private ElevatorEnterEvent enterEvent = new ElevatorEnterEvent();
     
     // Start is called before the first frame update
 
     void Start()
     {
-        EnterScreen();
+        if(demoEnterScreen){
+            EnterScreen(false);
+        }
         bounceMaxPos = mainGamePos + new Vector3(0,1,0);
     }
 
@@ -59,6 +69,7 @@ public class ElevatorMove : MonoBehaviour
                 //elevator.position = mainGamePos;
                 bouncing = true;
                 transitionTimer = bounceTime;
+                enterEvent.Invoke();
             }
         }
         else if(exitingScreen){
@@ -70,11 +81,15 @@ public class ElevatorMove : MonoBehaviour
                 exitingScreen = false;
                 Debug.Log("finished exiting");
                 elevator.position = OffScreenPos;
+                exitEvent.Invoke();
             }
         }
     }
 
-    public void EnterScreen(){
+    public void EnterScreen(bool SceneChange){
+        if(SceneChange){
+            return;
+        }
         elevator.position = OffScreenPos;
         enteringScreen = true;
         transitionTimer = transitionTime;
@@ -101,4 +116,5 @@ public class ElevatorMove : MonoBehaviour
         //Debug.Log("start: " + start + "\nend: " + end + "resultPos: " + resultPos + "");
         return start + resultPos + rand;
     }
+
 }

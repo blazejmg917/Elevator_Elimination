@@ -92,6 +92,7 @@ public class TileManager : MonoBehaviour
         }
         ClearLevel();
         tileHolder = Instantiate(levelStructure.gameObject, transform);
+        tileHolder.transform.position = new Vector3(0,0, tileHolder.transform.position.z);
         baseLevel = tileHolder.GetComponent<LevelStructure>();
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
@@ -297,14 +298,17 @@ public class TileManager : MonoBehaviour
             {
                 DestroyImmediate(t.gameObject);
             }
+            DestroyImmediate(tileHolder,true);
+            
         }
         if(personHolder){
             foreach (Transform t in personHolder.transform.GetComponentInChildren<Transform>())
             {
-                DestroyImmediate(t.gameObject);
+                DestroyImmediate(t.gameObject,true);
             }
             
         }
+        
         #if UNITY_EDITOR
         if(baseLevel){
             EditorUtility.SetDirty(baseLevel);
