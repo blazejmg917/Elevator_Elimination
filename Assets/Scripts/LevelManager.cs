@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour
 {
+    [System.Serializable]public class GameOverEvent : UnityEvent{};
+    [System.Serializable]public class ResetEvent : UnityEvent{};
+    
     [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
     [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
+    [SerializeField, Tooltip("the game over event for this project")]private GameOverEvent gameOver = new GameOverEvent();
+    [SerializeField, Tooltip("event played when level is reset")]private ResetEvent reset = new ResetEvent();
+    
     private static LevelManager _instance;
     public static LevelManager Instance
     {
@@ -51,9 +58,13 @@ public class LevelManager : MonoBehaviour
         
     }
 
+    public void GameOver(){
+        gameOver.Invoke();
+    }
+
     public void LevelStart(int id){
         
-
+        reset.Invoke();
         eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
 
         id--;
