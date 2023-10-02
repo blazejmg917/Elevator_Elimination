@@ -272,12 +272,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cautious: 1
-  levelHolder: {fileID: 0}
+  levelHolder: {fileID: 3125880907315226648}
   currentLevel: -1
   tryDemoLevel: 0
-  cameraFade: {fileID: 0}
+  cameraFade: {fileID: 4447913489044060082}
   levelSceneName: GameLoopSetupScene
-  eMove: {fileID: 0}
+  eMove: {fileID: 1437808734436697417}
   state: 0
   highlightedMenu: Play
 --- !u!114 &1437808734436697417
