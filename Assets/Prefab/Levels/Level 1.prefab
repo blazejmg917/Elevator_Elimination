@@ -150,6 +150,8 @@ MonoBehaviour:
   rightTile: {fileID: 5175354028164077476}
   topTile: {fileID: 5849738166422628600}
   bottomTile: {fileID: 3089571239460322641}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &987747823000326236
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,6 +302,8 @@ MonoBehaviour:
   rightTile: {fileID: 4966373635147662039}
   topTile: {fileID: 1692983553425003690}
   bottomTile: {fileID: 7950189363460487400}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &1024031679886567713
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +454,8 @@ MonoBehaviour:
   rightTile: {fileID: 4349865133452639393}
   topTile: {fileID: 875851138706488414}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &1421950073242525148
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,6 +606,8 @@ MonoBehaviour:
   rightTile: {fileID: 4726676447699077221}
   topTile: {fileID: 5834489578241713769}
   bottomTile: {fileID: 8412620377710414887}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &1977144463753248434
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,6 +758,8 @@ MonoBehaviour:
   rightTile: {fileID: 7354527562281498303}
   topTile: {fileID: 4509803124293329494}
   bottomTile: {fileID: 4726676447699077221}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &2013192649789528203
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +910,8 @@ MonoBehaviour:
   rightTile: {fileID: 3314643021442925781}
   topTile: {fileID: 997556142123581373}
   bottomTile: {fileID: 3756341039907847158}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &2361654329830007731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,6 +1062,8 @@ MonoBehaviour:
   rightTile: {fileID: 8412620377710414887}
   topTile: {fileID: 4406333538250335581}
   bottomTile: {fileID: 74350404720345547}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &2390382939832367095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,6 +1214,8 @@ MonoBehaviour:
   rightTile: {fileID: 822162769960497724}
   topTile: {fileID: 3089571239460322641}
   bottomTile: {fileID: 3666598041425829485}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &2436584046397105357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1350,6 +1366,8 @@ MonoBehaviour:
   rightTile: {fileID: 3089571239460322641}
   topTile: {fileID: 1846633178780164676}
   bottomTile: {fileID: 6544072288106760064}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &2630097132552683257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,6 +1518,8 @@ MonoBehaviour:
   rightTile: {fileID: 5849738166422628600}
   topTile: {fileID: 4531604278911476405}
   bottomTile: {fileID: 1846633178780164676}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &3058127311695844940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,6 +1670,8 @@ MonoBehaviour:
   rightTile: {fileID: 7950189363460487400}
   topTile: {fileID: 7354527562281498303}
   bottomTile: {fileID: 8944092909575421263}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &3188508034409807581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,6 +1822,8 @@ MonoBehaviour:
   rightTile: {fileID: 1876359744863232521}
   topTile: {fileID: 0}
   bottomTile: {fileID: 5783061409274143480}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &3198889524217370766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,6 +1974,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 7605946056403162027}
   bottomTile: {fileID: 8066047953721406408}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &3379649222720527760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,6 +2126,8 @@ MonoBehaviour:
   rightTile: {fileID: 1692983553425003690}
   topTile: {fileID: 5783061409274143480}
   bottomTile: {fileID: 7354527562281498303}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &3898487607615520239
 GameObject:
   m_ObjectHideFlags: 0
@@ -2250,6 +2278,8 @@ MonoBehaviour:
   rightTile: {fileID: 6544072288106760064}
   topTile: {fileID: 4466904351824805568}
   bottomTile: {fileID: 875851138706488414}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &3991624861260793079
 GameObject:
   m_ObjectHideFlags: 0
@@ -2400,6 +2430,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 5830288010213753459}
   bottomTile: {fileID: 3738091875372118831}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &4056295740867766183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,6 +2582,8 @@ MonoBehaviour:
   rightTile: {fileID: 3044332844147218917}
   topTile: {fileID: 4966373635147662039}
   bottomTile: {fileID: 4460873203547363164}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &4075829244919247790
 GameObject:
   m_ObjectHideFlags: 0
@@ -2700,6 +2734,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 3314643021442925781}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &4118721737458889379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,6 +2886,8 @@ MonoBehaviour:
   rightTile: {fileID: 4460873203547363164}
   topTile: {fileID: 7950189363460487400}
   bottomTile: {fileID: 5742299311868493354}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &4127032928327935685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3000,6 +3038,8 @@ MonoBehaviour:
   rightTile: {fileID: 8408955356569002601}
   topTile: {fileID: 6007785333604079708}
   bottomTile: {fileID: 1289231673722631667}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &4974701889671969279
 GameObject:
   m_ObjectHideFlags: 0
@@ -3150,6 +3190,8 @@ MonoBehaviour:
   rightTile: {fileID: 7246234051734508147}
   topTile: {fileID: 4460873203547363164}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5017140791599341220
 GameObject:
   m_ObjectHideFlags: 0
@@ -3300,6 +3342,8 @@ MonoBehaviour:
   rightTile: {fileID: 5830288010213753459}
   topTile: {fileID: 0}
   bottomTile: {fileID: 7542996125205446881}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5036412819587229553
 GameObject:
   m_ObjectHideFlags: 0
@@ -3450,6 +3494,8 @@ MonoBehaviour:
   rightTile: {fileID: 1846633178780164676}
   topTile: {fileID: 2810050955666030724}
   bottomTile: {fileID: 4466904351824805568}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5156411068662073443
 GameObject:
   m_ObjectHideFlags: 0
@@ -3476,7 +3522,7 @@ Transform:
   m_GameObject: {fileID: 5156411068662073443}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3751,6 +3797,8 @@ MonoBehaviour:
   rightTile: {fileID: 1289231673722631667}
   topTile: {fileID: 5175354028164077476}
   bottomTile: {fileID: 822162769960497724}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5685435597767282357
 GameObject:
   m_ObjectHideFlags: 0
@@ -3901,6 +3949,8 @@ MonoBehaviour:
   rightTile: {fileID: 5783061409274143480}
   topTile: {fileID: 6064145573085231786}
   bottomTile: {fileID: 4509803124293329494}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5720395734217761785
 GameObject:
   m_ObjectHideFlags: 0
@@ -4051,6 +4101,8 @@ MonoBehaviour:
   rightTile: {fileID: 6064145573085231786}
   topTile: {fileID: 0}
   bottomTile: {fileID: 5849852242942505406}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5836576448704125314
 GameObject:
   m_ObjectHideFlags: 0
@@ -4201,6 +4253,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 3738091875372118831}
   bottomTile: {fileID: 3044332844147218917}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &5917212816739547457
 GameObject:
   m_ObjectHideFlags: 0
@@ -4351,6 +4405,8 @@ MonoBehaviour:
   rightTile: {fileID: 6007785333604079708}
   topTile: {fileID: 1630324334015110250}
   bottomTile: {fileID: 5175354028164077476}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6431005487026265282
 GameObject:
   m_ObjectHideFlags: 0
@@ -4501,6 +4557,8 @@ MonoBehaviour:
   rightTile: {fileID: 7542996125205446881}
   topTile: {fileID: 1876359744863232521}
   bottomTile: {fileID: 1692983553425003690}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6742236176522321877
 GameObject:
   m_ObjectHideFlags: 0
@@ -4651,6 +4709,8 @@ MonoBehaviour:
   rightTile: {fileID: 2620763370524334350}
   topTile: {fileID: 8412620377710414887}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6742830783028004754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4801,6 +4861,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 8066047953721406408}
   bottomTile: {fileID: 3314643021442925781}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6860398802189669821
 GameObject:
   m_ObjectHideFlags: 0
@@ -4951,6 +5013,8 @@ MonoBehaviour:
   rightTile: {fileID: 5742299311868493354}
   topTile: {fileID: 8944092909575421263}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6882737710188210795
 GameObject:
   m_ObjectHideFlags: 0
@@ -5101,6 +5165,8 @@ MonoBehaviour:
   rightTile: {fileID: 3738091875372118831}
   topTile: {fileID: 7542996125205446881}
   bottomTile: {fileID: 4966373635147662039}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6971457473625299660
 GameObject:
   m_ObjectHideFlags: 0
@@ -5251,6 +5317,8 @@ MonoBehaviour:
   rightTile: {fileID: 9079043797839650995}
   topTile: {fileID: 0}
   bottomTile: {fileID: 6007785333604079708}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &6996225417100793741
 GameObject:
   m_ObjectHideFlags: 0
@@ -5401,6 +5469,8 @@ MonoBehaviour:
   rightTile: {fileID: 8906697904958841558}
   topTile: {fileID: 822162769960497724}
   bottomTile: {fileID: 6022597942058455083}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7109847964507532576
 GameObject:
   m_ObjectHideFlags: 0
@@ -5551,6 +5621,8 @@ MonoBehaviour:
   rightTile: {fileID: 7605946056403162027}
   topTile: {fileID: 9079043797839650995}
   bottomTile: {fileID: 8408955356569002601}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7293065850545446561
 GameObject:
   m_ObjectHideFlags: 0
@@ -5701,6 +5773,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 0}
   bottomTile: {fileID: 7605946056403162027}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7378338173591242841
 GameObject:
   m_ObjectHideFlags: 0
@@ -5851,6 +5925,8 @@ MonoBehaviour:
   rightTile: {fileID: 3756341039907847158}
   topTile: {fileID: 8906697904958841558}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7392591508760629116
 GameObject:
   m_ObjectHideFlags: 0
@@ -6001,6 +6077,8 @@ MonoBehaviour:
   rightTile: {fileID: 8066047953721406408}
   topTile: {fileID: 8408955356569002601}
   bottomTile: {fileID: 997556142123581373}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7453376953570162459
 GameObject:
   m_ObjectHideFlags: 0
@@ -6151,6 +6229,8 @@ MonoBehaviour:
   rightTile: {fileID: 3666598041425829485}
   topTile: {fileID: 6544072288106760064}
   bottomTile: {fileID: 4349865133452639393}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7542876598215877925
 GameObject:
   m_ObjectHideFlags: 0
@@ -6301,6 +6381,8 @@ MonoBehaviour:
   rightTile: {fileID: 8944092909575421263}
   topTile: {fileID: 4726676447699077221}
   bottomTile: {fileID: 2620763370524334350}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7549235305548265357
 GameObject:
   m_ObjectHideFlags: 0
@@ -6451,6 +6533,8 @@ MonoBehaviour:
   rightTile: {fileID: 6022597942058455083}
   topTile: {fileID: 3666598041425829485}
   bottomTile: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7558149573316367574
 GameObject:
   m_ObjectHideFlags: 0
@@ -6601,6 +6685,8 @@ MonoBehaviour:
   rightTile: {fileID: 5849852242942505406}
   topTile: {fileID: 1531936292310717878}
   bottomTile: {fileID: 5705539089691851352}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7737602679314512377
 GameObject:
   m_ObjectHideFlags: 0
@@ -6751,6 +6837,8 @@ MonoBehaviour:
   rightTile: {fileID: 5834489578241713769}
   topTile: {fileID: 5705539089691851352}
   bottomTile: {fileID: 4406333538250335581}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &7962803703494491401
 GameObject:
   m_ObjectHideFlags: 0
@@ -6901,6 +6989,8 @@ MonoBehaviour:
   rightTile: {fileID: 4509803124293329494}
   topTile: {fileID: 5849852242942505406}
   bottomTile: {fileID: 5834489578241713769}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &8034292103962231902
 GameObject:
   m_ObjectHideFlags: 0
@@ -7051,6 +7141,8 @@ MonoBehaviour:
   rightTile: {fileID: 997556142123581373}
   topTile: {fileID: 1289231673722631667}
   bottomTile: {fileID: 8906697904958841558}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &8232219250789246141
 GameObject:
   m_ObjectHideFlags: 0
@@ -7201,6 +7293,8 @@ MonoBehaviour:
   rightTile: {fileID: 4531604278911476405}
   topTile: {fileID: 0}
   bottomTile: {fileID: 2810050955666030724}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &8795213151496696354
 GameObject:
   m_ObjectHideFlags: 0
@@ -7351,6 +7445,8 @@ MonoBehaviour:
   rightTile: {fileID: 0}
   topTile: {fileID: 3044332844147218917}
   bottomTile: {fileID: 7246234051734508147}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
 --- !u!1 &9103039835145939754
 GameObject:
   m_ObjectHideFlags: 0
@@ -7501,3 +7597,5 @@ MonoBehaviour:
   rightTile: {fileID: 1630324334015110250}
   topTile: {fileID: 0}
   bottomTile: {fileID: 5849738166422628600}
+  offset: {x: 0, y: 0, z: 0}
+  sRenderer: {fileID: 0}
