@@ -105,9 +105,22 @@ public class TileManager : MonoBehaviour
     public void LoadLevel(List<ListWrapper<Tile>> tileList)
     {
         this.tilesList = tileList;
+        VerifyLevel();
         LinkTileList();
         GetTilePeople();
         turnChangeEvent.Invoke(baseLevel.GetFloors());
+    }
+
+    public void VerifyLevel(){
+        for (int i = 0; i < tilesList.Count; i++)
+        {
+            for (int j = 0; j < tilesList[i].Count; j++)
+            {
+                if(!tilesList[i][j]){
+                    tilesList[i][j] = tileHolder.transform.GetChild((7 * i) + j).GetComponent<Tile>();
+                }
+            }
+        }
     }
 
     public void GetTilePeople(){

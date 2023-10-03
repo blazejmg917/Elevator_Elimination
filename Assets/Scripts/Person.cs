@@ -33,6 +33,7 @@ public class Person : MonoBehaviour
 
     [SerializeField, Tooltip("this person's id")] private string personId;
 
+    [SerializeField, Tooltip("the sprite for when the player is dead")]private Sprite deadSprite;
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
     [SerializeField, Tooltip("if this person blocks a space")] private bool takesUpSpace = true;
     [SerializeField, Tooltip("if this person will fail the level if seen")] private bool triggerAlarmOnSeen = false;
@@ -269,7 +270,8 @@ public class Person : MonoBehaviour
 
     public void SetDeadSprite()
     {
-
+        GetComponent<SpriteRenderer>().sprite = deadSprite;
+        GetComponent<Animator>().enabled = false;
     }
 
     public bool CallAlarmWhenSeen()
