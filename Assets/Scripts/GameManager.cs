@@ -245,5 +245,9 @@ public class GameManager : MonoBehaviour
         currentLevel = levelID;
     }
 
+    public int GetMaxFloors(){
+        return maxFloors;
+    }
+
 
 }

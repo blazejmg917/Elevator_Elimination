@@ -142,6 +142,7 @@ public class LevelManager : MonoBehaviour
         }
         Debug.Log("Move to next level");
         currentLevel++;
+        //GameManager.
         GameManager.Instance.LevelStart(currentLevel);
     }
 }
