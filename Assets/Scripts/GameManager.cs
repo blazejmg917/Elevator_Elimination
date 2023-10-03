@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     public void LevelStart(int id){
         
         LevelManager.Instance.LevelStart(id);
+        currentLevel = id;
         //turnChangeEvent.Invoke(currentFloor);
         //currentLevel = id;
         // eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);

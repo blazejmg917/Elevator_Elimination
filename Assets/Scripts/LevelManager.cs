@@ -109,7 +109,10 @@ public class LevelManager : MonoBehaviour
         gameOver.Invoke();
     }
 
-    public void LevelStart(int id){
+    public void LevelStart(int id = -1){
+        if(id == -1){
+            id = currentLevel;
+        }
         Debug.Log("starting level");
         reset.Invoke();
         eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
