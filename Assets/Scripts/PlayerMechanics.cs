@@ -109,9 +109,11 @@ public class PlayerMechanics : MonoBehaviour
         facing = DirectionFacing.Down;
         adjacentPerson = null;
         anim.SetFloat("NormalizedTime", initialOffset / 56);
+        initialOffset = 0;
         anim.SetInteger("Facing Direction", 2);
         anim.Rebind();
         anim.Update(0f);
+        hasKilled = false;
     }
 
     // Update is called once per frame
@@ -267,24 +269,21 @@ public class PlayerMechanics : MonoBehaviour
         //anim.speed = 1;
         MusicScript.Instance.RotateSFX();
         //Debug.Log(animOffset);
+        anim.SetFloat("NormalizedTime", animOffset);
         switch(facing) {
             case DirectionFacing.Left:
-                anim.SetFloat("NormalizedTime", animOffset);
                 anim.SetInteger("Facing Direction", 3);
                 //anim.speed = 1;
                 break;
             case DirectionFacing.Right:
-                anim.SetFloat("NormalizedTime", animOffset);
                 anim.SetInteger("Facing Direction", 1);
                 //anim.speed = 1;
                 break;
             case DirectionFacing.Up:
-                anim.SetFloat("NormalizedTime", animOffset);
                 anim.SetInteger("Facing Direction", 0);
                 //anim.speed = 1;
                 break;
             case DirectionFacing.Down:
-                anim.SetFloat("NormalizedTime", animOffset);
                 anim.SetInteger("Facing Direction", 2);
                 //anim.speed = 1;
                 break;

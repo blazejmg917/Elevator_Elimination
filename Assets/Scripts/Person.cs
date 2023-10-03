@@ -48,12 +48,21 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
     private SpriteRenderer spriteRen;
+    private float animOffset;
+    [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
+        if (!anim) {
+            return;
+        }
+        //anim.SetFloat("NormalizedTime", initialOffset / 56);
+        anim.Rebind();
+        anim.Update(0f);
+        TurnSprite();
     }
 
     // Update is called once per frame
@@ -69,7 +78,6 @@ public class Person : MonoBehaviour
                 TileManager.Instance.UpdateLevel();
             }
         }
-        TurnSprite();
     }
 
     public bool TakesUpSpace()
@@ -84,12 +92,12 @@ public class Person : MonoBehaviour
         if (!anim) {
             return;
         }
-        TurnSprite();
         if(lastFacing  != currentFacing ){
             lastFacing = currentFacing;
             if(currentTile){
                 currentTile.SetDirection(currentFacing);
             }
+            TurnSprite();
         }
     }
 
@@ -100,6 +108,8 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
+        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
+        anim.SetFloat("NormalizedTime", animOffset);
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -137,8 +147,8 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            return true;
             MusicScript.Instance.GuhSFX();
+            return true;
             
         }
         return false;
@@ -188,8 +198,9 @@ public class Person : MonoBehaviour
                     currentFacing = Direction.DOWN;
                     break;
             }
-            return true;
+            TurnSprite();
             MusicScript.Instance.HuhSFX();
+            return true;
         }
         return false;
     }

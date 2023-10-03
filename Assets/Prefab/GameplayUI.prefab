@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6652964554773099842
 RectTransform:
   m_ObjectHideFlags: 0
@@ -92,7 +92,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2413914181874000555
 RectTransform:
   m_ObjectHideFlags: 0
@@ -402,7 +402,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6066173972213031256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1352,10 +1352,14 @@ MonoBehaviour:
   arrowSprite: {fileID: 21300000, guid: 1c666b7c6e5d8c54e8714910357fb56b, type: 3}
   onesImage: {fileID: 7438793493078063009}
   tensImage: {fileID: 2862033118244983201}
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  stressColor: {r: 0, g: 0, b: 0, a: 0}
+  stressPercent: 0.25
   bigOnesImage: {fileID: 0}
   arrowImage: {fileID: 0}
   bounceDuration: 0.1
   bounceAmp: 0.1
+  shakeAmp: 0.02
 --- !u!1 &7174681548080566979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,7 +1377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6609364207859860928
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1448,7 +1452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7339620950909669561
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1823,7 +1827,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4948763135718467482
 RectTransform:
   m_ObjectHideFlags: 0
