@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfa1b5557ba83e4abbd9710be676208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPerson: {fileID: 4107128355580331096, guid: 733fe35af6323364d9316d61bb2b9af3, type: 3}
+  currentPerson: {fileID: 0}
   personId: Operator
   personDirection: 1
   leftTile: {fileID: 0}
@@ -903,7 +903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfa1b5557ba83e4abbd9710be676208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPerson: {fileID: 5631578387594810938, guid: 9a8e4fbf3da6b994bbd0ef091638154a, type: 3}
+  currentPerson: {fileID: 0}
   personId: BigGuy
   personDirection: 0
   leftTile: {fileID: 5520143331982703887}
@@ -2886,7 +2886,7 @@ MonoBehaviour:
     - {fileID: 2484123880323284662}
     - {fileID: 2727721387387111760}
     - {fileID: 5005367645346821825}
-  floors: 36
+  floors: 37
 --- !u!1 &3133193395785549083
 GameObject:
   m_ObjectHideFlags: 0
