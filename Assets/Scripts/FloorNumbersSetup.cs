@@ -10,19 +10,37 @@ public class FloorNumbersSetup : MonoBehaviour
     [SerializeField, Tooltip("the arrow to replace the number images")]private Sprite arrowSprite;
     [SerializeField, Tooltip("the ones place image")]private UnityEngine.UI.Image onesImage;
     [SerializeField, Tooltip("the tens place image")]private UnityEngine.UI.Image tensImage;
+    [SerializeField, Tooltip("the default number color")]private Color defaultColor;
+    [SerializeField, Tooltip("the color to display when low on turns")]private Color stressColor;
+    [SerializeField, Tooltip("the percentage of max turns left to turn to stressColor")]private float stressPercent = .25f;
     [SerializeField, Tooltip("the sprite for ones place when on floor 9 or lower")]private UnityEngine.UI.Image bigOnesImage;
     [SerializeField, Tooltip("the sprite for the arrow on floor 9 or lower")]private UnityEngine.UI.Image arrowImage;
     [SerializeField, Tooltip("the length of the bounce when updating (should be very short)")]private float bounceDuration =.1f;
     [SerializeField, Tooltip("the amplitude of the bounce when updating (should be very small)")]private float bounceAmp =.1f;
+    [SerializeField, Tooltip("the max shake amplitude per axis in stress mode")]private float shakeAmp = .02f;
     private Vector3 bounceMaxPos;
     private Vector3 startPos;
     private float bounceTimer = 0;
     private bool bouncing = false;
+    private bool stressed = false;
+    private Vector3 oneStartPos;
+    private Vector3 tenStartPos;
+    private Vector3 bigOneStartPos;
+    private Vector3 arrowStartPos;
+    private bool SetupStartPositions = false;
     // Start is called before the first frame update
     void Start()
     {
+        if(SetupStartPositions){
+            return;
+        }
         startPos = transform.position;
         bounceMaxPos = startPos + new Vector3(0,-1,0);
+        oneStartPos = onesImage.transform.localPosition;
+        bigOneStartPos = bigOnesImage.transform.localPosition;
+        tenStartPos = tensImage.transform.localPosition;
+        arrowStartPos = arrowImage.transform.localPosition;
+        SetupStartPositions = true;
     }
 
     // Update is called once per frame
@@ -41,9 +59,19 @@ public class FloorNumbersSetup : MonoBehaviour
                 
             }
         }
+        else{
+            transform.position = startPos;
+        }
+        if(stressed){
+            onesImage.transform.localPosition = oneStartPos + GetShakeVals();
+            tensImage.transform.localPosition = tenStartPos + GetShakeVals();
+            bigOnesImage.transform.localPosition = bigOneStartPos + GetShakeVals();
+            arrowImage.transform.localPosition = arrowStartPos + GetShakeVals();
+        }
     }
 
     public void SetupNumbers(int floor){
+        int maxFloors = GameManager.Instance.GetMaxFloors();
         if(floor > 99 || floor < 0){
             Debug.LogError("Invalid floor number " + floor);
             return;
@@ -80,10 +108,28 @@ public class FloorNumbersSetup : MonoBehaviour
             }
             
         }
-        Debug.Log("going to floor " + floor);
+        if(!stressed && CheckStressed(floor,maxFloors)){
+            onesImage.color = stressColor;
+            tensImage.color = stressColor;
+            bigOnesImage.color = stressColor;
+            arrowImage.color = stressColor;
+            stressed = true;
+        }
+        else if(stressed && !CheckStressed(floor,maxFloors)){
+            onesImage.color = defaultColor;
+            tensImage.color = defaultColor;
+            bigOnesImage.color = defaultColor;
+            arrowImage.color = defaultColor;
+            stressed = false;
+        }
+        //Debug.Log("going to floor " + floor);
         bouncing = true;
             bounceTimer = bounceDuration;
         
+    }
+
+    public bool CheckStressed(int current, int max){
+        return ((float)current / (float)max <= stressPercent);
     }
     public Vector3 Bouncerp(Vector3 start, Vector3 end, float t){
         if(t >= 1.0f){
@@ -97,5 +143,9 @@ public class FloorNumbersSetup : MonoBehaviour
         Vector3 rand = new Vector3(Random.Range(-.01f,.01f), Random.Range(-.01f,.01f), 0);
         //Debug.Log("start: " + start + "\nend: " + end + "resultPos: " + resultPos + "");
         return start + resultPos + rand;
+    }
+
+    public Vector3 GetShakeVals(){
+        return new Vector3(Random.Range(-shakeAmp,shakeAmp),Random.Range(-shakeAmp,shakeAmp),0);
     }
 }

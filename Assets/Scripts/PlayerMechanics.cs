@@ -80,6 +80,7 @@ public class PlayerMechanics : MonoBehaviour
         isInteractible = false;
         MusicScript.Instance.ExitDoorSFX();
         spriteRen.enabled = false;
+        facing = DirectionFacing.Down;
     }
 
     public void Setup(){
