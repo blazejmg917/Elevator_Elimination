@@ -65,11 +65,13 @@ public class PlayerMechanics : MonoBehaviour
         currentTilePos = currentTile.transform.position;
         exitTile = currentTile;
         entering = true;
-        gameObject.SetActive(true);
+        spriteRen.enabled = true;
+        //gameObject.SetActive(true);
         transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
         targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
         waitingForLevel = false;
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
+        spriteRen.enabled = true;
     }
 
     public void WalkOut() {
@@ -77,6 +79,7 @@ public class PlayerMechanics : MonoBehaviour
         escaping = true;
         isInteractible = false;
         MusicScript.Instance.ExitDoorSFX();
+        spriteRen.enabled = false;
     }
 
     public void Setup(){
@@ -92,7 +95,8 @@ public class PlayerMechanics : MonoBehaviour
         cautious = gameMan.GetControlStyle();
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        spriteRen.enabled = false;
         escaping = false;
         gameMan.SetLoseCon(false);
         gameMan.SetWinCon(false);
@@ -128,7 +132,8 @@ public class PlayerMechanics : MonoBehaviour
                 escaping = false;
                 isExiting = false;
                 waitingForLevel = true;
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
+                spriteRen.enabled = false;
                 levelEnd.Invoke();
                 LevelManager.Instance.EnablePause(false);
             }
@@ -174,7 +179,6 @@ public class PlayerMechanics : MonoBehaviour
             }
         }
         UpdateDirection();
-        MusicScript.Instance.RotateSFX();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
@@ -189,7 +193,11 @@ public class PlayerMechanics : MonoBehaviour
         //Debug.Log("Turn " + x + ", " + y);
         if (Mathf.Abs(x) > Mathf.Abs(y)) {
             if (x < -0.1f) {
-                facing = DirectionFacing.Left;
+                if (facing != DirectionFacing.Left)
+                {
+                    facing = DirectionFacing.Left;
+                    MusicScript.Instance.RotateSFX();
+                }
                 if (!cautious && currentTile.GetLeft() && currentTile.GetLeft().IsWalkable() && !movedLeft && neutral && isInteractible) {
                     currentTile = currentTile.GetLeft();
                     isInteractible = false;
@@ -197,7 +205,11 @@ public class PlayerMechanics : MonoBehaviour
                     neutral = false;
                 }
             } else if (x > 0.1f) {
-                facing = DirectionFacing.Right;
+                if (facing != DirectionFacing.Right)
+                {
+                    facing = DirectionFacing.Right;
+                    MusicScript.Instance.RotateSFX();
+                }
                 if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral && isInteractible) {
                     currentTile = currentTile.GetRight();
                     isInteractible = false;
@@ -207,7 +219,11 @@ public class PlayerMechanics : MonoBehaviour
             }
         } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
             if (y < -0.1f) {
-                facing = DirectionFacing.Down;
+                if (facing != DirectionFacing.Down)
+                {
+                    facing = DirectionFacing.Down;
+                    MusicScript.Instance.RotateSFX();
+                }
                 if (!cautious && currentTile.GetBottom() && currentTile.GetBottom().IsWalkable() && !movedDown && neutral && isInteractible) {
                     currentTile = currentTile.GetBottom();
                     isInteractible = false;
@@ -215,13 +231,23 @@ public class PlayerMechanics : MonoBehaviour
                     neutral = false;
                 }
             } else if (y > 0.1f) {
-                facing = DirectionFacing.Up;
+                if (facing != DirectionFacing.Up)
+                {
+                    facing = DirectionFacing.Up;
+                    MusicScript.Instance.RotateSFX();
+                }
                 if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral && isInteractible) {
                     currentTile = currentTile.GetTop();
                     isInteractible = false;
                     movedUp = true;
                     neutral = false;
                 }
+                if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon() && !cautious) {
+                    //door animation start
+                    isInteractible = false;
+                    isExiting = true;
+
+                } 
             }
         }
     }
@@ -258,13 +284,15 @@ public class PlayerMechanics : MonoBehaviour
         float pressed = ctx.ReadValue<float>();
         cautious = gameMan.GetControlStyle();
         Debug.Log("Move " + pressed);
-        if (pressed > 0.5f && isInteractible && !movePressed && cautious) {
+        if (pressed > 0.5f && isInteractible && !movePressed) {
             movePressed = true;
             if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon()) {
                 //door animation start
                 isInteractible = false;
                 isExiting = true;
+
             } 
+            if(cautious){
             switch(facing) {
                 case DirectionFacing.Left:
                     if (currentTile.GetLeft() && currentTile.GetLeft().IsWalkable()) {
@@ -306,7 +334,7 @@ public class PlayerMechanics : MonoBehaviour
                         //Trigger bump sound
                     }
                     break;
-            }
+            }}
         } else if (pressed <= 0.5f && movePressed) {
             movePressed = false;
         }

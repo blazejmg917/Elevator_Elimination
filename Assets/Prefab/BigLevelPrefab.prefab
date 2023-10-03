@@ -3978,6 +3978,10 @@ PrefabInstance:
       propertyPath: fadeInEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7700142478400137821}
+    - target: {fileID: 7117935499686834451, guid: ec866431b0acb1141aeecbe9a2cda92a, type: 3}
+      propertyPath: orthographic size
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7458109115554552471, guid: ec866431b0acb1141aeecbe9a2cda92a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.07939634

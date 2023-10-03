@@ -10,6 +10,8 @@ public class FloorNumbersSetup : MonoBehaviour
     [SerializeField, Tooltip("the arrow to replace the number images")]private Sprite arrowSprite;
     [SerializeField, Tooltip("the ones place image")]private UnityEngine.UI.Image onesImage;
     [SerializeField, Tooltip("the tens place image")]private UnityEngine.UI.Image tensImage;
+    [SerializeField, Tooltip("the sprite for ones place when on floor 9 or lower")]private UnityEngine.UI.Image bigOnesImage;
+    [SerializeField, Tooltip("the sprite for the arrow on floor 9 or lower")]private UnityEngine.UI.Image arrowImage;
     [SerializeField, Tooltip("the length of the bounce when updating (should be very short)")]private float bounceDuration =.1f;
     [SerializeField, Tooltip("the amplitude of the bounce when updating (should be very small)")]private float bounceAmp =.1f;
     private Vector3 bounceMaxPos;
@@ -46,27 +48,42 @@ public class FloorNumbersSetup : MonoBehaviour
             Debug.LogError("Invalid floor number " + floor);
             return;
         }
-        Debug.Log("going to floor " + floor);
-        int ones = floor / 10;
-        int tens = floor % 10;
-        if(onesImage != null){
-            onesImage.sprite = numbers[ones];
-            // if(ones == 0){
-            //     onesImage.sprite = arrowSprite;
-            // }
+        if(floor < 10){
+            onesImage.enabled = false;
+            tensImage.enabled = false;
+            bigOnesImage.enabled = true;
+            arrowImage.enabled = true;
+            bigOnesImage.sprite = numbers[floor];
         }
         else{
-            Debug.Log("no image for the ones place floor number");
-        }
-        if(tensImage != null){
-            tensImage.sprite = numbers[tens];
+            onesImage.enabled = true;
+            tensImage.enabled = true;
+            bigOnesImage.enabled = false;
+            arrowImage.enabled = false;
+            int ones = floor / 10;
+            int tens = floor % 10;
+            if(onesImage != null){
+                onesImage.sprite = numbers[ones];
+                // if(ones == 0){
+                //     onesImage.sprite = arrowSprite;
+                // }
+            }
+            else{
+                Debug.Log("no image for the ones place floor number");
+            }
+            if(tensImage != null){
+                tensImage.sprite = numbers[tens];
+                
+            }
+            else{
+                Debug.Log("no image for the ones place floor number");
+            }
             
         }
-        else{
-            Debug.Log("no image for the ones place floor number");
-        }
+        Debug.Log("going to floor " + floor);
         bouncing = true;
-        bounceTimer = bounceDuration;
+            bounceTimer = bounceDuration;
+        
     }
     public Vector3 Bouncerp(Vector3 start, Vector3 end, float t){
         if(t >= 1.0f){
