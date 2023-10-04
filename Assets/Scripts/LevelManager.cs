@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField, Tooltip("the pause menu")]private GameObject pauseMenu;
     [SerializeField, Tooltip("the tutorial dialog holder")]private TutorialHolder tHolder;
     [SerializeField, Tooltip("if the game is paused")]private bool paused;
+    [SerializeField, Tooltip("mark true to skip tutorials")]private bool skipTutorials = false;
     private bool pausePressed = false;
     private bool pauseAllowed = false;
     [SerializeField, Tooltip("the game over event for this project")]private GameOverEvent gameOver = new GameOverEvent();
@@ -155,6 +156,9 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.LevelStart(currentLevel);
     }
     public bool CheckLevelForTutorial(int level = -1){
+        if(skipTutorials){
+            return false;
+        }
         if(level == -1){
             level = currentLevel;
         }
