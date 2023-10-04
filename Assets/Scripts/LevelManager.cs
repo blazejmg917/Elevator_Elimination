@@ -9,18 +9,24 @@ public class LevelManager : MonoBehaviour
     [System.Serializable]public class GameOverEvent : UnityEvent{};
     [System.Serializable]public class ResetEvent : UnityEvent{};
     [System.Serializable]public class LevelCompleteEvent : UnityEvent<bool>{};
+    [System.Serializable]public class TutorialStartEvent : UnityEvent<DialogNode>{};
+    [System.Serializable]public class TutorialEndEvent : UnityEvent{};
     
     [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
     [SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
     [SerializeField, Tooltip("the pause menu")]private GameObject pauseMenu;
+    [SerializeField, Tooltip("the tutorial dialog holder")]private TutorialHolder tHolder;
     [SerializeField, Tooltip("if the game is paused")]private bool paused;
     private bool pausePressed = false;
     private bool pauseAllowed = false;
     [SerializeField, Tooltip("the game over event for this project")]private GameOverEvent gameOver = new GameOverEvent();
     [SerializeField, Tooltip("event played when level is reset")]private ResetEvent reset = new ResetEvent();
     [SerializeField, Tooltip("event played when level is completed")]private LevelCompleteEvent levelComplete = new LevelCompleteEvent();
+    [SerializeField, Tooltip("event played when tutorial dialog should start")]private TutorialStartEvent tutorialStart = new TutorialStartEvent();
+    [SerializeField, Tooltip("event played when tutorial dialog completes")]private TutorialEndEvent tutorialEnd = new TutorialEndEvent();
+    private bool waitingForTutorial = false;
     [SerializeField, Tooltip("current level ")]private int currentLevel = 0;
     [SerializeField, Tooltip("mark true once player has completed final level")]private bool completedFinalLevel = false;
     
@@ -60,6 +66,9 @@ public class LevelManager : MonoBehaviour
         }
         if(pauseMenu){
             pauseMenu.SetActive(false);
+        }
+        if(!tHolder){
+            tHolder = transform.GetComponentInChildren<TutorialHolder>();
         }
         paused = false;
         UnPause();
@@ -144,5 +153,26 @@ public class LevelManager : MonoBehaviour
         currentLevel++;
         //GameManager.
         GameManager.Instance.LevelStart(currentLevel);
+    }
+    public bool CheckLevelForTutorial(int level = -1){
+        if(level == -1){
+            level = currentLevel;
+        }
+        DialogNode tutorialNode;
+        if(!tHolder.getTutorialNode(level, out tutorialNode)){
+            Debug.Log("No tutorial nodes found");
+            return false;
+        }
+        tutorialStart.Invoke(tutorialNode);
+        waitingForTutorial = true;
+        return true;
+    }
+
+    public void TutorialComplete(){
+        if(waitingForTutorial){
+            waitingForTutorial = false;
+            tutorialEnd.Invoke();
+            Debug.Log("tutorial complete");
+        }
     }
 }

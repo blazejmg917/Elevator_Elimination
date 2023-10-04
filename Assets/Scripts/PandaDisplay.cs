@@ -7,11 +7,14 @@ public class PandaDisplay : MonoBehaviour
 {
     [System.Serializable]
     public class PandaFinishEvent : UnityEvent{};
+    [System.Serializable]
+    public class PandaEndTutorialEvent : UnityEvent{};
 
     public enum TalkType{
         WIN,
         LOSE,
-        WINFINAL
+        WINFINAL,
+        TUTORIAL
     }
 
     [SerializeField, Tooltip("the delay between the panda screen spawning and the panda text displaying")]private float pandaTalkStartDelay = 1.3f;
@@ -19,10 +22,12 @@ public class PandaDisplay : MonoBehaviour
     private float pandaTimer = 0;
     private bool pandaWaitingToTalk;
     private bool pandaWaitingToLeave;
+    private DialogNode storedNode;
     [SerializeField, Tooltip("the panda screen object")]private GameObject pandaScreen;
     [SerializeField, Tooltip("the panda screen animator")]private Animator pandaScreenAnim;
     [SerializeField, Tooltip("the panda talk script")]private PandaTalk pandaTalk;
-    [SerializeField, Tooltip("event for when panda is done displaying")]private PandaFinishEvent pandaComplete = new PandaFinishEvent();
+    [SerializeField, Tooltip("event for when panda is done displaying")]private PandaFinishEvent pandaLevelEndComplete = new PandaFinishEvent();
+    [SerializeField, Tooltip("event for when panda is done displaying a tutorial")]private PandaEndTutorialEvent pandaTutorialComplete = new PandaEndTutorialEvent();
     [SerializeField, Tooltip("which type of dialog to start for the pands")]private TalkType talkType;
     // Start is called before the first frame update
     void Start()
@@ -39,8 +44,11 @@ public class PandaDisplay : MonoBehaviour
         else{
             if(pandaWaitingToLeave){
                 pandaWaitingToLeave=false;
-                if(talkType != TalkType.LOSE){
-                    pandaComplete.Invoke();
+                if(talkType == TalkType.TUTORIAL){
+                    pandaTutorialComplete.Invoke();
+                }
+                else if(talkType != TalkType.LOSE){
+                    pandaLevelEndComplete.Invoke();
                 }
                 pandaScreen.SetActive(false);
                 gameObject.SetActive(false);
@@ -57,9 +65,25 @@ public class PandaDisplay : MonoBehaviour
                     case TalkType.LOSE:
                         pandaTalk.DisplayLoseDialog();
                         break;
+                    case TalkType.TUTORIAL:
+                        if(!storedNode){
+                            Debug.LogError("PANDA DISPLAY TRYING TO DISPLAY NULL DIALOG NODE");
+                        }
+                        pandaTalk.DisplayDialog(storedNode);
+                        storedNode = null;
+                        break;
                 }
             }
         }
+    }
+
+    public void ShowPandaDialog(DialogNode dNode){
+        if(pandaWaitingToLeave){
+            return;
+        }
+        storedNode = dNode;
+        talkType = TalkType.TUTORIAL;
+        ShowPanda();
     }
 
 
@@ -67,8 +91,7 @@ public class PandaDisplay : MonoBehaviour
         if(pandaWaitingToLeave){
             return;
         }
-        gameObject.SetActive(true);
-        pandaScreen.SetActive(true);
+        
         //start panda animation
         if(finalWin){
             talkType = TalkType.WINFINAL;
@@ -76,17 +99,21 @@ public class PandaDisplay : MonoBehaviour
         else{
             talkType = TalkType.WIN;
         }
-        pandaWaitingToTalk = true;
-        pandaTimer = pandaTalkStartDelay;
+        ShowPanda();
+        
     }
 
     public void ShowPandaLoss(){
         if(pandaWaitingToLeave){
             return;
         }
+        talkType = TalkType.LOSE;
+        ShowPanda();
+    }
+
+    public void ShowPanda(){
         gameObject.SetActive(true);
         pandaScreen.SetActive(true);
-        talkType = TalkType.LOSE;
         pandaWaitingToTalk = true;
         pandaTimer = pandaTalkStartDelay;
     }
