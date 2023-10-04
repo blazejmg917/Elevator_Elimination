@@ -126,17 +126,11 @@ public class DialogManager : MonoBehaviour
         if(currentDialog == null){
             yield break;
         }
-        GameObject[] startDisplays;
-        if(currentDialog.OnStartTextScroll(out startDisplays)){
-            //handle start displays
-        }
+        
         canTakeInput = true;
         yield return StartCoroutine(typewriter.Typewrite(currentDialog.GetSpecialTextBox(), currentDialog.getDialog(), currentDialog.GetSpecialTextSpeed()));
 
-        GameObject[] endDisplays;
-        if(currentDialog.OnEndTextScroll(out endDisplays)){
-            //handle end displays
-        }
+        
         currentDialogRunning = false;
         if(currentDialog.AutoContinue()){
             GoToNextDialog();

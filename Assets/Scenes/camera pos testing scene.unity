@@ -10614,6 +10614,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 66023133}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: skipTutorials
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: reset.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}

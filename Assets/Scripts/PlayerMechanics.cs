@@ -256,7 +256,7 @@ public class PlayerMechanics : MonoBehaviour
                     movedUp = true;
                     neutral = false;
                 }
-                if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon() && !cautious) {
+                if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon() && !cautious && isInteractible) {
                     //door animation start
                     isInteractible = false;
                     isExiting = true;
