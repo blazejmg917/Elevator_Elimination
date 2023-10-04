@@ -51,6 +51,8 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField, Tooltip("event for when player enters level")]private PlayerStartEvent levelStart = new PlayerStartEvent();
     [SerializeField, Tooltip("event for when player escapes level")]private PlayerEscapeEvent levelEnd = new PlayerEscapeEvent();
     [SerializeField, Tooltip("event for when player loses the level")]private GameOverEvent playerFail = new GameOverEvent();
+    private float animOffset;
+    [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     // Start is called before the first frame update
     void Start()
     {
@@ -106,6 +108,12 @@ public class PlayerMechanics : MonoBehaviour
         isInteractible=false;
         facing = DirectionFacing.Down;
         adjacentPerson = null;
+        anim.SetFloat("NormalizedTime", initialOffset / 56);
+        initialOffset = 0;
+        anim.SetInteger("Facing Direction", 2);
+        anim.Rebind();
+        anim.Update(0f);
+        hasKilled = false;
     }
 
     // Update is called once per frame
@@ -158,7 +166,6 @@ public class PlayerMechanics : MonoBehaviour
             if (transform.position == targetPosition) {
                 isStarting = false;
                 isInteractible = true;
-               
             }
         }
         if (!isInteractible && gameMan.GetWinCon() && isExiting && !gameMan.GetLoseCon() && !isStarting) {
@@ -179,11 +186,11 @@ public class PlayerMechanics : MonoBehaviour
                 }
             }
         }
-        UpdateDirection();
+        //UpdateDirection();
     }
 
     public void Turn(InputAction.CallbackContext ctx) {
-        anim.speed = 10000;
+        //anim.speed = 10000;
         if(gameMan.GetLoseCon() || waitingForLevel || LevelManager.Instance.IsPaused()){
             return;
         }
@@ -196,8 +203,9 @@ public class PlayerMechanics : MonoBehaviour
             if (x < -0.1f) {
                 if (facing != DirectionFacing.Left)
                 {
+                    animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
                     facing = DirectionFacing.Left;
-                    MusicScript.Instance.RotateSFX();
+                    UpdateDirection();
                 }
                 if (!cautious && currentTile.GetLeft() && currentTile.GetLeft().IsWalkable() && !movedLeft && neutral && isInteractible) {
                     currentTile = currentTile.GetLeft();
@@ -208,8 +216,9 @@ public class PlayerMechanics : MonoBehaviour
             } else if (x > 0.1f) {
                 if (facing != DirectionFacing.Right)
                 {
+                    animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
                     facing = DirectionFacing.Right;
-                    MusicScript.Instance.RotateSFX();
+                    UpdateDirection();
                 }
                 if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral && isInteractible) {
                     currentTile = currentTile.GetRight();
@@ -222,8 +231,9 @@ public class PlayerMechanics : MonoBehaviour
             if (y < -0.1f) {
                 if (facing != DirectionFacing.Down)
                 {
+                    animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
                     facing = DirectionFacing.Down;
-                    MusicScript.Instance.RotateSFX();
+                    UpdateDirection();
                 }
                 if (!cautious && currentTile.GetBottom() && currentTile.GetBottom().IsWalkable() && !movedDown && neutral && isInteractible) {
                     currentTile = currentTile.GetBottom();
@@ -234,8 +244,9 @@ public class PlayerMechanics : MonoBehaviour
             } else if (y > 0.1f) {
                 if (facing != DirectionFacing.Up)
                 {
+                    animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
                     facing = DirectionFacing.Up;
-                    MusicScript.Instance.RotateSFX();
+                    UpdateDirection();
                 }
                 if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral && isInteractible) {
                     currentTile = currentTile.GetTop();
@@ -255,10 +266,12 @@ public class PlayerMechanics : MonoBehaviour
     
     public void UpdateDirection() {
         //sets the anim speed back to one (was super high to get through end of last anim)
-        anim.speed = 1;
+        //anim.speed = 1;
+        MusicScript.Instance.RotateSFX();
+        //Debug.Log(animOffset);
+        anim.SetFloat("NormalizedTime", animOffset);
         switch(facing) {
             case DirectionFacing.Left:
-                
                 anim.SetInteger("Facing Direction", 3);
                 //anim.speed = 1;
                 break;
@@ -267,7 +280,6 @@ public class PlayerMechanics : MonoBehaviour
                 //anim.speed = 1;
                 break;
             case DirectionFacing.Up:
-                
                 anim.SetInteger("Facing Direction", 0);
                 //anim.speed = 1;
                 break;

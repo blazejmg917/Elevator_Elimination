@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayButtonScript : MonoBehaviour
+public class MenuButton : MonoBehaviour
 {
     [SerializeField] private Sprite pressed;
     [SerializeField] private String typeOfButton;
@@ -12,7 +12,9 @@ public class PlayButtonScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (levelSel) {
+            levelSel.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
