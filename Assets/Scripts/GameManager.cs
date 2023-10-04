@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Generating new game manager");
                 }
             }
+            
             return _instance;
         }
     }
@@ -89,6 +90,9 @@ public class GameManager : MonoBehaviour
         if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
             
             LevelStart(currentLevel);
+        }
+        if(Instance != this){
+            Destroy(gameObject);
         }
         
     }

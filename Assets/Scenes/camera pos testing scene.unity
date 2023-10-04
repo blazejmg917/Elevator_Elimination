@@ -1086,6 +1086,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 1
   pushSpeed: 5
+  initialOffset: 4
 --- !u!1 &296790909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,6 +2074,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 1
   pushSpeed: 0
+  initialOffset: 4
 --- !u!1 &518244968
 GameObject:
   m_ObjectHideFlags: 0
@@ -2701,6 +2703,7 @@ MonoBehaviour:
     canBeKilled: 1
     canSee: 0
   pushSpeed: 5
+  initialOffset: 4
 --- !u!1 &595360103
 GameObject:
   m_ObjectHideFlags: 0
@@ -3268,6 +3271,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!212 &638895840
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3392,6 +3396,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!212 &639628368
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5309,6 +5314,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!1 &1048291037
 GameObject:
   m_ObjectHideFlags: 0
@@ -6302,6 +6308,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 1
   pushSpeed: 0
+  initialOffset: 4
 --- !u!1 &1364979985
 GameObject:
   m_ObjectHideFlags: 0
@@ -7897,6 +7904,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!1 &1705374665
 GameObject:
   m_ObjectHideFlags: 0
@@ -8872,6 +8880,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!212 &1880969283
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9134,6 +9143,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &1885969663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9577,6 +9587,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!1 &2051004279
 GameObject:
   m_ObjectHideFlags: 0
@@ -10144,6 +10155,7 @@ MonoBehaviour:
     canBeKilled: 0
     canSee: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!212 &2146492670
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10577,14 +10589,6 @@ PrefabInstance:
       propertyPath: tileStart.x
       value: -0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
-      propertyPath: gameLevels.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
-      propertyPath: gameLevels.Array.data[5]
-      value: 
-      objectReference: {fileID: 5438245054856195726, guid: 76be8feeb263cdc41a14a52dc60cd3f9, type: 3}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: pauseMenu
       value: 

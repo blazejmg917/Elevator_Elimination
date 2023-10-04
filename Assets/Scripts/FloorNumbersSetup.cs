@@ -68,6 +68,12 @@ public class FloorNumbersSetup : MonoBehaviour
             bigOnesImage.transform.localPosition = bigOneStartPos + GetShakeVals();
             arrowImage.transform.localPosition = arrowStartPos + GetShakeVals();
         }
+        else{
+            onesImage.transform.localPosition = oneStartPos;
+            tensImage.transform.localPosition = tenStartPos;
+            bigOnesImage.transform.localPosition = bigOneStartPos;
+            arrowImage.transform.localPosition = arrowStartPos;
+        }
     }
 
     public void SetupNumbers(int floor){

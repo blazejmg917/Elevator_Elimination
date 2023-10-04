@@ -127,7 +127,7 @@ public class LevelManager : MonoBehaviour
 
     public void CompleteLevel(){
         
-        if(currentLevel + 1 < levelHolder.GetLevelsCount()){
+        if(currentLevel < levelHolder.GetLevelsCount()){
             
         }
         else{
