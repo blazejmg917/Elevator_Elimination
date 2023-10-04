@@ -74,6 +74,7 @@ public class PlayerMechanics : MonoBehaviour
         waitingForLevel = false;
         //gameObject.SetActive(true);
         spriteRen.enabled = true;
+        MusicScript.Instance.BellSFX();
     }
 
     public void WalkOut() {
@@ -144,6 +145,7 @@ public class PlayerMechanics : MonoBehaviour
                 //gameObject.SetActive(false);
                 spriteRen.enabled = false;
                 levelEnd.Invoke();
+                MusicScript.Instance.MischiefManaged();
                 LevelManager.Instance.EnablePause(false);
             }
             return;

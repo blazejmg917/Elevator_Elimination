@@ -94,10 +94,12 @@ public class MusicScript : MonoBehaviour
         currentVolume = alteredVolume;
     }
 
-    public void MischiefManaged()
+    public void MischiefManaged(bool playRecordScratch = true)
     {
         alteredSource.volume = 0;
-        sfx.PlayOneShot(recordScratch, 0.25f);
+        if(playRecordScratch){
+            sfx.PlayOneShot(recordScratch, 0.25f);
+        }
         StartCoroutine(FadeAudioSource.StartFade(normalSource, .65f, normalVolume)); // middle value is how long to fade in
         currentSource = normalSource;
         currentVolume = normalVolume;

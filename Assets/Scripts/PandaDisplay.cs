@@ -14,7 +14,8 @@ public class PandaDisplay : MonoBehaviour
         WINFINAL
     }
 
-    [SerializeField, Tooltip("the delay between the panda screen spawning and the panda text displaying")]private float pandaTalkDelay = 1;
+    [SerializeField, Tooltip("the delay between the panda screen spawning and the panda text displaying")]private float pandaTalkStartDelay = 1.3f;
+    [SerializeField, Tooltip("the delay between the panda screen spawning and the panda text displaying")]private float pandaTalkEndDelay = 1.5f;
     private float pandaTimer = 0;
     private bool pandaWaitingToTalk;
     private bool pandaWaitingToLeave;
@@ -76,7 +77,7 @@ public class PandaDisplay : MonoBehaviour
             talkType = TalkType.WIN;
         }
         pandaWaitingToTalk = true;
-        pandaTimer = pandaTalkDelay;
+        pandaTimer = pandaTalkStartDelay;
     }
 
     public void ShowPandaLoss(){
@@ -87,7 +88,7 @@ public class PandaDisplay : MonoBehaviour
         pandaScreen.SetActive(true);
         talkType = TalkType.LOSE;
         pandaWaitingToTalk = true;
-        pandaTimer = pandaTalkDelay;
+        pandaTimer = pandaTalkStartDelay;
     }
 
     public void CancelPanda(bool callEndDialog = true){
@@ -97,8 +98,9 @@ public class PandaDisplay : MonoBehaviour
         if(callEndDialog){
             DialogManager.Instance.EndDialog();
         }
+        pandaScreenAnim.SetTrigger("CloseWindow");
         //start screen turn off visual
-        pandaTimer = pandaTalkDelay;
+        pandaTimer = pandaTalkEndDelay;
         pandaWaitingToLeave = true;
         
     }
