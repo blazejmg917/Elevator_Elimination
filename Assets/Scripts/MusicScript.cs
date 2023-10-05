@@ -84,7 +84,7 @@ public class MusicScript : MonoBehaviour
 
     public void UnpauseAdjust()
     {
-        StartCoroutine(FadeAudioSource.StartFade(normalSource, .1f, currentVolume));
+        StartCoroutine(FadeAudioSource.StartFade(currentSource, .1f, currentVolume));
     }
 
     public void StabbyStabby()

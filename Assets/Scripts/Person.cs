@@ -70,7 +70,7 @@ public class Person : MonoBehaviour
     {
         if (isMoving)
         {
-            goalPos = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+            goalPos = currentTile.GetPersonLocation();//new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, goalPos, pushSpeed * Time.fixedDeltaTime);
             if(transform.position == goalPos)
             {

@@ -70,7 +70,7 @@ public class PlayerMechanics : MonoBehaviour
         spriteRen.enabled = true;
         //gameObject.SetActive(true);
         transform.position = new Vector3(currentTilePos.x, currentTilePos.y + 0.25f, transform.position.z);
-        targetPosition = new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
+        targetPosition = currentTile.GetPersonLocation();//new Vector3(currentTilePos.x, currentTilePos.y, transform.position.z);
         waitingForLevel = false;
         //gameObject.SetActive(true);
         spriteRen.enabled = true;
@@ -178,7 +178,7 @@ public class PlayerMechanics : MonoBehaviour
             }
         }
         if (!isInteractible && !isExiting && !gameMan.GetLoseCon() && !isStarting) {
-            targetPosition = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+            targetPosition = currentTile.GetPersonLocation();//new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;

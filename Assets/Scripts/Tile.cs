@@ -145,4 +145,8 @@ public class Tile : MonoBehaviour
     public void SetOffset(Vector3 tileOffset){
         offset = tileOffset;
     }
+
+    public Vector3 GetOffset(){
+        return offset;
+    }
 }

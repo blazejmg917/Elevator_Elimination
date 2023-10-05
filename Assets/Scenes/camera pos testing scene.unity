@@ -10240,6 +10240,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -10.4991455
       objectReference: {fileID: 0}
+    - target: {fileID: 1320694105056259612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: autoContinue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1329071897002131744, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ReferenceResolution.x
       value: 64
@@ -10267,6 +10271,10 @@ PrefabInstance:
     - target: {fileID: 1631927653782348741, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_SortingLayerID
       value: 878100583
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682879983975170011, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.225801
       objectReference: {fileID: 0}
     - target: {fileID: 1733954552819886440, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_SortingLayer
@@ -10467,7 +10475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3385407610036117133, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_text
-      value: Press to Continue
+      value: Press Z to Continue
       objectReference: {fileID: 0}
     - target: {fileID: 3643619529351668529, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_Name
@@ -10609,13 +10617,45 @@ PrefabInstance:
       propertyPath: tileStart.x
       value: -0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[0]
+      value: 
+      objectReference: {fileID: 8095350742020930875, guid: eda180e80bce4b6449fb7a675f98f611, type: 3}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[1]
+      value: 
+      objectReference: {fileID: 2490581988077251326, guid: 00dc070643adfa24c99c2d74bb944871, type: 3}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[2]
+      value: 
+      objectReference: {fileID: 8334978259594579878, guid: 463f6f391b9ff4945942a2473360146b, type: 3}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[3]
+      value: 
+      objectReference: {fileID: 498996999464809408, guid: cbf36938341c05f4283f6a43e53bbdf3, type: 3}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[4]
+      value: 
+      objectReference: {fileID: 7615598690943165799, guid: 0242737f8b49b7e4a97f8be71b1cf80e, type: 3}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[5]
+      value: 
+      objectReference: {fileID: 7303588201292976324, guid: 4c2114742f370f64e8b9fcb6667f4afe, type: 3}
+    - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: gameLevels.Array.data[6]
+      value: 
+      objectReference: {fileID: 5438245054856195726, guid: 76be8feeb263cdc41a14a52dc60cd3f9, type: 3}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 66023133}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: skipTutorials
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: reset.m_PersistentCalls.m_Calls.Array.size
@@ -11153,6 +11193,14 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 878100583
       objectReference: {fileID: 0}
+    - target: {fileID: 8146997350084276125, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.326
+      objectReference: {fileID: 0}
+    - target: {fileID: 8146997350084276125, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.19
+      objectReference: {fileID: 0}
     - target: {fileID: 8181420105740911708, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: autoContinue
       value: 0
@@ -11213,6 +11261,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 5.69
       objectReference: {fileID: 0}
+    - target: {fileID: 8847079709445398148, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: dialogContinueActions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847079709445398148, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: dialogContinueActions.Array.data[0].m_Reference
+      value: 
+      objectReference: {fileID: -4333898765838471584, guid: b3930281e176907488e317d8414ef9b6, type: 3}
+    - target: {fileID: 8847079709445398148, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: dialogContinueActions.Array.data[1].m_Reference
+      value: 
+      objectReference: {fileID: 1463651859957043994, guid: b3930281e176907488e317d8414ef9b6, type: 3}
+    - target: {fileID: 8847079709445398148, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: dialogContinueActions.Array.data[2].m_Reference
+      value: 
+      objectReference: {fileID: 1463651859957043994, guid: b3930281e176907488e317d8414ef9b6, type: 3}
+    - target: {fileID: 8847079709445398148, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: dialogContinueActions.Array.data[3].m_Reference
+      value: 
+      objectReference: {fileID: 1463651859957043994, guid: b3930281e176907488e317d8414ef9b6, type: 3}
     - target: {fileID: 8972034759690538617, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_SizeDelta.x
       value: 38
@@ -11444,16 +11512,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
       propertyPath: tutorialDialogs.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
       propertyPath: tutorialDialogs.Array.data[1].level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
+      propertyPath: tutorialDialogs.Array.data[2].level
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
+      propertyPath: tutorialDialogs.Array.data[3].level
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
       propertyPath: tutorialDialogs.Array.data[1].dialog
       value: 
+      objectReference: {fileID: 2166154250605690030, guid: 522fb9298bdb2bc47ae5ff542f7f3ba0, type: 3}
+    - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
+      propertyPath: tutorialDialogs.Array.data[2].dialog
+      value: 
       objectReference: {fileID: 9105585527902165019, guid: 97738ebb31ce04048a0b65e7aa7b9c28, type: 3}
+    - target: {fileID: 3531350727377089279, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
+      propertyPath: tutorialDialogs.Array.data[3].dialog
+      value: 
+      objectReference: {fileID: 1703246649558458621, guid: da18534bc97de254b99cbb9631981506, type: 3}
     - target: {fileID: 3833001066261130831, guid: 7a74b408fe47f184d9401e83dfd76047, type: 3}
       propertyPath: m_Name
       value: TutorialHolder

@@ -110,10 +110,12 @@ public class LevelManager : MonoBehaviour
     public void Pause(){
         paused = true;
         pauseMenu.SetActive(true);
+        MusicScript.Instance.PauseAdjust();
     }
     public void UnPause(){
         paused = false;
         pauseMenu.SetActive(false);
+        MusicScript.Instance.UnpauseAdjust();
     }
     public void GameOver(){
         gameOver.Invoke();
