@@ -82,14 +82,14 @@ public class MusicScript : MonoBehaviour
 
     public void UnpauseAdjust()
     {
-        StartCoroutine(FadeAudioSource.StartFade(normalSource, .1f, currentVolume));
+        StartCoroutine(FadeAudioSource.StartFade(currentSource, .1f, currentVolume));
     }
 
     public void StabbyStabby()
     {
         normalSource.volume = 0;
         sfx.PlayOneShot(stab);
-        StartCoroutine(FadeAudioSource.StartFade(alteredSource, .3f, alteredVolume)); // middle value is how long to fade in
+        StartCoroutine(FadeAudioSource.StartFade(alteredSource, .15f, alteredVolume)); // middle value is how long to fade in
         currentSource = alteredSource;
         currentVolume = alteredVolume;
     }
@@ -116,7 +116,7 @@ public class MusicScript : MonoBehaviour
     }
     public void RotateSFX()
     { 
-        sfx.PlayOneShot(rotate);
+        sfx.PlayOneShot(rotate, .2f);
     }
     public void ScreamSFX()
     {
@@ -128,11 +128,11 @@ public class MusicScript : MonoBehaviour
     }
     public void HuhSFX()
     {
-        sfx.PlayOneShot(huh);
+        sfx.PlayOneShot(huh, .8f);
     }
     public void GuhSFX()
     {
-        sfx.PlayOneShot(guh);
+        sfx.PlayOneShot(guh, .8f);
     }
     public void PandaStaticSFX()
     {
@@ -144,7 +144,7 @@ public class MusicScript : MonoBehaviour
     }
     public void StepSFX()
     {
-        sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)]);
+        sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.8f);
     }
     
 

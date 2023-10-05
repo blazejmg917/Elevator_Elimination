@@ -51,9 +51,9 @@ MonoBehaviour:
   alteredSource: {fileID: 5371146277936776810}
   sfx: {fileID: 2033902414459609880}
   normalMusic: {fileID: 8300000, guid: fc637c02833fdc544892030f25aec301, type: 3}
-  normalVolume: 0.5
+  normalVolume: 0.45
   alteredMusic: {fileID: 8300000, guid: 729796161c311d84a88021bf1f9d873f, type: 3}
-  alteredVolume: 0.8
+  alteredVolume: 0.85
   stab: {fileID: 8300000, guid: 49c52bf74686b64489558016aa39a096, type: 3}
   recordScratch: {fileID: 8300000, guid: 7a311e10b6f91e348a56e01aaa4b84ff, type: 3}
   push: {fileID: 8300000, guid: ce83f0581a8751640aeaad631124f9ce, type: 3}

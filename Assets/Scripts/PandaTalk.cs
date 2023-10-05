@@ -30,6 +30,10 @@ public class PandaTalk : MonoBehaviour
     }
 
     public void DisplayDialog(DialogNode node){
+        if(!gameObject.activeSelf){
+            Debug.Log("displaying object cancelled by retry");
+            return;
+        }
         DialogManager.Instance.StartDialog(node);
         MusicScript.Instance.PandaStaticSFX();
     }

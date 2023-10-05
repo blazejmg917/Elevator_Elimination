@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7983058850544507538
+--- !u!1001 &7450389366364292801
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,12 +10,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2351812036259377285, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
       propertyPath: contents
-      value: Agent, look out for that Crocodile.
+      value: These elevators are starting to get crowded.
       objectReference: {fileID: 0}
     - target: {fileID: 2351812036259377285, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
       propertyPath: nextNode
       value: 
-      objectReference: {fileID: 3662437758597705852}
+      objectReference: {fileID: 1485637342045313811}
     - target: {fileID: 5467105565975757485, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8370988804584039116, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
       propertyPath: m_Name
-      value: Croc Tutorial
+      value: Grave Tutorial
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -66,26 +66,26 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8370988804584039116, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3662437758597705852}
+      addedObject: {fileID: 1485637342045313811}
   m_SourcePrefab: {fileID: 100100000, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
---- !u!1 &1937177091598366814 stripped
+--- !u!1 &1391225603591316493 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8370988804584039116, guid: ff3f69ba162f00448ba28c4436960964, type: 3}
-  m_PrefabInstance: {fileID: 7983058850544507538}
+  m_PrefabInstance: {fileID: 7450389366364292801}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3662437758597705852
+--- !u!114 &1485637342045313811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937177091598366814}
+  m_GameObject: {fileID: 1391225603591316493}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contents: He looks too big to push, you'll have to distract him instead
+  contents: Feel free to disrespect some graves as long as no one sees.
   textBox: {fileID: 0}
   charPerSec: -1
   continueOnInput: 1

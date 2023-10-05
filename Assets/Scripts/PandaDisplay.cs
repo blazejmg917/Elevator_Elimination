@@ -54,6 +54,7 @@ public class PandaDisplay : MonoBehaviour
                 gameObject.SetActive(false);
             }
             if(pandaWaitingToTalk){
+                
                 pandaWaitingToTalk = false;
                 switch(talkType){
                     case TalkType.WIN:
@@ -131,7 +132,7 @@ public class PandaDisplay : MonoBehaviour
         //start screen turn off visual
         pandaTimer = pandaTalkEndDelay;
         pandaWaitingToLeave = true;
-        
+        pandaWaitingToTalk = false;
     }
     public void CancelPandaInstant(){
         Debug.Log("kill the fucking panda");

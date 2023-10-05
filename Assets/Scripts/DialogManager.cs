@@ -92,7 +92,9 @@ public class DialogManager : MonoBehaviour
 
     public bool StartDialog(DialogNode thisDialog){
         dialogStart.Invoke();
-        
+        if(!thisDialog){
+            return false;
+        }
         Debug.Log("dialog manager has received dialog");
         displayingDialog = true;
         dialogObject.SetActive(true);
@@ -110,7 +112,11 @@ public class DialogManager : MonoBehaviour
             return;
         }
         
-        
+        if(!gameObject.activeSelf){
+            EndDialog();
+            Debug.Log("stopped breaker error");
+            return;
+        }
         StartCoroutine("DisplayDialog");
 
     }
@@ -132,12 +138,15 @@ public class DialogManager : MonoBehaviour
 
         
         currentDialogRunning = false;
-        if(currentDialog.AutoContinue()){
+        if(currentDialog && currentDialog.AutoContinue()){
             GoToNextDialog();
+        }
+        else if (!currentDialog){
+            EndDialog();
         }
         else{
             canTakeInput = true;
-            if(currentDialog.DisplayContinueText()){
+            if(currentDialog && currentDialog.DisplayContinueText()){
                 continueText.gameObject.SetActive(true);
             }
         }
@@ -159,6 +168,7 @@ public class DialogManager : MonoBehaviour
     //cancels the current dialog midway through and closes the dialog window. requires a few extra steps, but ensures safety
     public void CancelDialog(){
         typewriter.StopText();
+        StopAllCoroutines();
         EndDialog();
     }
 
