@@ -14,10 +14,12 @@ public class MusicScript : MonoBehaviour
     public AudioSource sfx;
 
     public AudioClip normalMusic;
-    public float normalVolume = 0.5f;
+    [SerializeField]
+    private float normalVolume;
 
     public AudioClip alteredMusic;
-    public float alteredVolume = 0.5f;
+    [SerializeField]
+    private float alteredVolume;
 
 
     // all sfx will be played as oneshots through sfx
@@ -89,7 +91,7 @@ public class MusicScript : MonoBehaviour
     {
         normalSource.volume = 0;
         sfx.PlayOneShot(stab);
-        StartCoroutine(FadeAudioSource.StartFade(alteredSource, .15f, alteredVolume)); // middle value is how long to fade in
+        StartCoroutine(FadeAudioSource.StartFade(alteredSource, .25f, alteredVolume)); // middle value is how long to fade in
         currentSource = alteredSource;
         currentVolume = alteredVolume;
     }
@@ -116,7 +118,7 @@ public class MusicScript : MonoBehaviour
     }
     public void RotateSFX()
     { 
-        sfx.PlayOneShot(rotate, .2f);
+        sfx.PlayOneShot(rotate, 0.25f);
     }
     public void ScreamSFX()
     {
@@ -128,11 +130,11 @@ public class MusicScript : MonoBehaviour
     }
     public void HuhSFX()
     {
-        sfx.PlayOneShot(huh, .8f);
+        sfx.PlayOneShot(huh, .6f);
     }
     public void GuhSFX()
     {
-        sfx.PlayOneShot(guh, .8f);
+        sfx.PlayOneShot(guh, .6f);
     }
     public void PandaStaticSFX()
     {
@@ -144,7 +146,7 @@ public class MusicScript : MonoBehaviour
     }
     public void StepSFX()
     {
-        sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.8f);
+        sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.6f);
     }
     
 
