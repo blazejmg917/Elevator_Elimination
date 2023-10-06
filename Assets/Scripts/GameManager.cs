@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Generating new game manager");
                 }
             }
+            
             return _instance;
         }
     }
@@ -89,6 +90,9 @@ public class GameManager : MonoBehaviour
         if(tryDemoLevel && SceneManager.GetActiveScene().name != "MainMenu"){
             
             LevelStart(currentLevel);
+        }
+        if(Instance != this){
+            Destroy(gameObject);
         }
         
     }
@@ -169,6 +173,7 @@ public class GameManager : MonoBehaviour
     public void LevelStart(int id){
         
         LevelManager.Instance.LevelStart(id);
+        currentLevel = id;
         //turnChangeEvent.Invoke(currentFloor);
         //currentLevel = id;
         // eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
@@ -242,6 +247,10 @@ public class GameManager : MonoBehaviour
 
     public void SetCurrentLevel(int levelID) {
         currentLevel = levelID;
+    }
+
+    public int GetMaxFloors(){
+        return maxFloors;
     }
 
 

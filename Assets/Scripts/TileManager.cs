@@ -105,9 +105,22 @@ public class TileManager : MonoBehaviour
     public void LoadLevel(List<ListWrapper<Tile>> tileList)
     {
         this.tilesList = tileList;
+        VerifyLevel();
         LinkTileList();
         GetTilePeople();
         turnChangeEvent.Invoke(baseLevel.GetFloors());
+    }
+
+    public void VerifyLevel(){
+        for (int i = 0; i < tilesList.Count; i++)
+        {
+            for (int j = 0; j < tilesList[i].Count; j++)
+            {
+                if(!tilesList[i][j]){
+                    tilesList[i][j] = tileHolder.transform.GetChild((7 * i) + j).GetComponent<Tile>();
+                }
+            }
+        }
     }
 
     public void GetTilePeople(){
@@ -121,6 +134,7 @@ public class TileManager : MonoBehaviour
         for(int i = 0; i < tilesList.Count; i++){
             for(int j = 0; j < tilesList[i].Count; j++){
                 Tile thisTile = tilesList[i][j];
+                thisTile.SetOffset(thisTile.GetOffset() + new Vector3(0,0,-.001f * (tilesList[i].Count - j)));
                 if(thisTile.GetPersonId() != null && thisTile.GetPersonId() != ""){
                     //Debug.Log("looking for person " + thisTile.GetPersonId());
                     
@@ -129,7 +143,7 @@ public class TileManager : MonoBehaviour
                         GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
                         //Person personScript = thisPerson.GetComponent<Person>()
                         //thisPerson.transform.parent = personHolder.transform;
-                        thisPerson.transform.position = thisTile.GetPersonLocation() + new Vector3(0,0,-.001f * (tilesList[i].Count - j));
+                        thisPerson.transform.position = thisTile.GetPersonLocation(); //+ new Vector3(0,0,-.001f * (tilesList[i].Count - j));
                         Person thisPersonScript = thisPerson.GetComponent<Person>();
                         thisPersonScript.SetCurrentTile(thisTile);
                         thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());

@@ -3978,6 +3978,10 @@ PrefabInstance:
       propertyPath: fadeInEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7700142478400137821}
+    - target: {fileID: 7117935499686834451, guid: ec866431b0acb1141aeecbe9a2cda92a, type: 3}
+      propertyPath: orthographic size
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7458109115554552471, guid: ec866431b0acb1141aeecbe9a2cda92a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.07939634
@@ -4086,6 +4090,7 @@ MonoBehaviour:
   - {fileID: 498996999464809408, guid: cbf36938341c05f4283f6a43e53bbdf3, type: 3}
   - {fileID: 7615598690943165799, guid: 0242737f8b49b7e4a97f8be71b1cf80e, type: 3}
   - {fileID: 7303588201292976324, guid: 4c2114742f370f64e8b9fcb6667f4afe, type: 3}
+  - {fileID: 5438245054856195726, guid: 76be8feeb263cdc41a14a52dc60cd3f9, type: 3}
 --- !u!114 &7700142478400137821 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1875232600837099281, guid: ec866431b0acb1141aeecbe9a2cda92a, type: 3}

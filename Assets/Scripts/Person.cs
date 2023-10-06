@@ -33,6 +33,7 @@ public class Person : MonoBehaviour
 
     [SerializeField, Tooltip("this person's id")] private string personId;
 
+    [SerializeField, Tooltip("the sprite for when the player is dead")]private Sprite deadSprite;
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
     [SerializeField, Tooltip("if this person blocks a space")] private bool takesUpSpace = true;
     [SerializeField, Tooltip("if this person will fail the level if seen")] private bool triggerAlarmOnSeen = false;
@@ -47,12 +48,21 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
     private SpriteRenderer spriteRen;
+    private float animOffset;
+    [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
+        if (!anim) {
+            return;
+        }
+        //anim.SetFloat("NormalizedTime", initialOffset / 56);
+        anim.Rebind();
+        anim.Update(0f);
+        TurnSprite();
     }
 
     // Update is called once per frame
@@ -60,7 +70,7 @@ public class Person : MonoBehaviour
     {
         if (isMoving)
         {
-            goalPos = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+            goalPos = currentTile.GetPersonLocation();//new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, goalPos, pushSpeed * Time.fixedDeltaTime);
             if(transform.position == goalPos)
             {
@@ -68,7 +78,6 @@ public class Person : MonoBehaviour
                 TileManager.Instance.UpdateLevel();
             }
         }
-        TurnSprite();
     }
 
     public bool TakesUpSpace()
@@ -83,12 +92,12 @@ public class Person : MonoBehaviour
         if (!anim) {
             return;
         }
-        TurnSprite();
         if(lastFacing  != currentFacing ){
             lastFacing = currentFacing;
             if(currentTile){
                 currentTile.SetDirection(currentFacing);
             }
+            TurnSprite();
         }
     }
 
@@ -99,6 +108,8 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
+        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
+        anim.SetFloat("NormalizedTime", animOffset);
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -136,8 +147,8 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            return true;
             MusicScript.Instance.GuhSFX();
+            return true;
             
         }
         return false;
@@ -187,8 +198,9 @@ public class Person : MonoBehaviour
                     currentFacing = Direction.DOWN;
                     break;
             }
-            return true;
+            TurnSprite();
             MusicScript.Instance.HuhSFX();
+            return true;
         }
         return false;
     }
@@ -269,7 +281,8 @@ public class Person : MonoBehaviour
 
     public void SetDeadSprite()
     {
-
+        GetComponent<SpriteRenderer>().sprite = deadSprite;
+        GetComponent<Animator>().enabled = false;
     }
 
     public bool CallAlarmWhenSeen()

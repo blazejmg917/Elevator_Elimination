@@ -20,12 +20,21 @@ public class PandaTalk : MonoBehaviour
     }
 
     public void DisplayWinDialog(){
-        DialogManager.Instance.StartDialog(LevelWinDialog);
+        DisplayDialog(LevelWinDialog);
     }
     public void DisplayFinalWinDialog(){
-        DialogManager.Instance.StartDialog(LastLevelWinDialog);
+        DisplayDialog(LastLevelWinDialog);
     }
     public void DisplayLoseDialog(){
-        DialogManager.Instance.StartDialog(LevelLoseDialog);
+        DisplayDialog(LevelLoseDialog);
+    }
+
+    public void DisplayDialog(DialogNode node){
+        if(!gameObject.activeSelf){
+            Debug.Log("displaying object cancelled by retry");
+            return;
+        }
+        DialogManager.Instance.StartDialog(node);
+        MusicScript.Instance.PandaStaticSFX();
     }
 }

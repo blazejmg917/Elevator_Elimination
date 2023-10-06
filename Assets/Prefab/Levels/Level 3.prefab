@@ -1250,15 +1250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileList:
   - list:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  - list:
-    - {fileID: 0}
+    - {fileID: 6516039844823696892}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
@@ -1305,7 +1297,15 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-  floors: 22
+  - list:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  floors: 24
 --- !u!1 &1699482010346770776
 GameObject:
   m_ObjectHideFlags: 0

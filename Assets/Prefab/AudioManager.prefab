@@ -50,22 +50,26 @@ MonoBehaviour:
   normalSource: {fileID: 4131222619279753048}
   alteredSource: {fileID: 5371146277936776810}
   sfx: {fileID: 2033902414459609880}
-  normalMusic: {fileID: 8300000, guid: cdd5a7267d947764fb9ad804ad3abc77, type: 3}
-  normalVolume: 0.5
-  alteredMusic: {fileID: 8300000, guid: 0140793ceadda9f42a09c6c0ff478d7c, type: 3}
-  alteredVolume: 0.5
+  normalMusic: {fileID: 8300000, guid: dbd5ecb1ef93cce4c9e11d0695f4faae, type: 3}
+  normalVolume: 0.4
+  alteredMusic: {fileID: 8300000, guid: 2882f54f5be23344fae5bd801ae47d5a, type: 3}
+  alteredVolume: 0.75
   stab: {fileID: 8300000, guid: 49c52bf74686b64489558016aa39a096, type: 3}
   recordScratch: {fileID: 8300000, guid: 7a311e10b6f91e348a56e01aaa4b84ff, type: 3}
   push: {fileID: 8300000, guid: ce83f0581a8751640aeaad631124f9ce, type: 3}
   tap: {fileID: 8300000, guid: 0eb3fa6c1bdc4c947ae27eae31aa696c, type: 3}
-  rotate: {fileID: 8300000, guid: 12423069a266d6c4394d6e73d21caa95, type: 3}
-  scream: {fileID: 8300000, guid: d400c669853a04644afeb0063de3e46c, type: 3}
+  rotate: {fileID: 8300000, guid: 4a80f85ae7923914f8c733a9104db491, type: 3}
+  scream: {fileID: 8300000, guid: ff2be0ecc5864dc4098603e7a2d863a1, type: 3}
   bell: {fileID: 8300000, guid: 587974a91bde89f4f850aded7087fa83, type: 3}
   huh: {fileID: 8300000, guid: a5eece3168917064b9f5bbeb6b1a369b, type: 3}
   guh: {fileID: 8300000, guid: d2cec7f2b1f84984caacd9c172add474, type: 3}
   pandaStatic: {fileID: 8300000, guid: d96991ac15c88ff49ae9f9816bd7845c, type: 3}
   exitDoor: {fileID: 8300000, guid: 5292cb95c212c3e41999915099f4b49c, type: 3}
-  steps: []
+  steps:
+  - {fileID: 8300000, guid: 54ca158528d72774a886eca126d55d76, type: 3}
+  - {fileID: 8300000, guid: 695636e54bc5c534bb0fee74663c1adf, type: 3}
+  - {fileID: 8300000, guid: 4829352a349934542833df6583810f25, type: 3}
+  - {fileID: 8300000, guid: b9b8ccf15aaa4514cbe912fc7300651e, type: 3}
 --- !u!82 &4131222619279753048
 AudioSource:
   m_ObjectHideFlags: 0

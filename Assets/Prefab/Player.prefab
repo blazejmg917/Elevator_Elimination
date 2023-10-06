@@ -48,8 +48,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facing: 3
+  currentTile: {fileID: 0}
   movementSpeed: 5
+  enterExitSpeed: 3
+  targetPosition: {x: 0, y: 0, z: 0}
+  exitTile: {fileID: 0}
+  exitPosition: {x: 0, y: 0, z: 0}
+  isExiting: 0
+  isStarting: 1
+  cautious: 0
+  escaping: 0
+  entering: 0
+  waitingForLevel: 1
+  currentTilePos: {x: 0, y: 0, z: 0}
   gameOverAnimation: {fileID: 0}
+  startEndPos: {fileID: 0}
+  levelStart:
+    m_PersistentCalls:
+      m_Calls: []
+  levelEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  playerFail:
+    m_PersistentCalls:
+      m_Calls: []
+  animOffset: 5
 --- !u!212 &6779383192895689382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -215,6 +238,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c2a74310-297b-4059-aa31-118122b378cf
     m_ActionName: MenuActions/Menuing[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4138d483-f6ae-4c87-8e70-0aa2ce1c6716
+    m_ActionName: Controls/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Controls

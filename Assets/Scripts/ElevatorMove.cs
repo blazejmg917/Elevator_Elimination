@@ -9,6 +9,8 @@ public class ElevatorMove : MonoBehaviour
     [System.Serializable]
     public class ElevatorEnterEvent : UnityEvent{};
     [System.Serializable]
+    public class ElevatorCompleteEvent : UnityEvent{};
+    [System.Serializable]
     public class ElevatorExitEvent : UnityEvent{};
     [SerializeField, Tooltip("the elevator object to move. \nShould contain all tiles and people")]private Transform elevator;
     [SerializeField, Tooltip("Main Game Pos. Will move to this spot on startup and leave it on level complete")]private Vector3 mainGamePos = Vector3.zero;
@@ -26,6 +28,7 @@ public class ElevatorMove : MonoBehaviour
     [SerializeField, Tooltip("immediately enter the screen on startup for demos")]private bool demoEnterScreen = false;
     [SerializeField, Tooltip("the elevator exit event")]private ElevatorExitEvent exitEvent = new ElevatorExitEvent();
     [SerializeField, Tooltip("the elevator enter event")]private ElevatorEnterEvent enterEvent = new ElevatorEnterEvent();
+    [SerializeField, Tooltip("the elevator event that is only played if the elevator is done entering and there is no tutorial to play")]private ElevatorCompleteEvent completeEvent = new ElevatorCompleteEvent();
     
     // Start is called before the first frame update
 
@@ -52,7 +55,14 @@ public class ElevatorMove : MonoBehaviour
                 elevator.position = mainGamePos;
                 if(enteringScreen){
                     enteringScreen = false;
-                    enterEvent.Invoke();
+                    if(LevelManager.Instance.CheckLevelForTutorial()){
+                        enterEvent.Invoke();
+                        Debug.Log("waiting to start level for tutorials");
+                    }
+                    else{
+                        completeEvent.Invoke();
+                        Debug.Log("starting level because elevator is complete and there's no tutorials");
+                    }
                 }
                 else if(exitingScreen){
                     transitionTimer = transitionTime;
