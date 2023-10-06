@@ -514,4 +514,20 @@ public class PlayerMechanics : MonoBehaviour
     public void UpdateControlStyle() {
         cautious = !cautious;
     }
+
+    private bool pressedRestart = false;
+    public void Restart(InputAction.CallbackContext ctx){
+        
+        float pressed = ctx.ReadValue<float>();
+        if(pressed > .5 && !pressedRestart){
+            pressedRestart = true;
+            if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused()){
+            return;
+        }
+            GameManager.Instance.GameOver();
+        }
+        else if(pressed <= .5){
+            pressedRestart = false;
+        }
+    }
 }
