@@ -72,7 +72,7 @@ MonoBehaviour:
   playerFail:
     m_PersistentCalls:
       m_Calls: []
-  animOffset: 5
+  initialOffset: 4
 --- !u!212 &6779383192895689382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -242,6 +242,26 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4138d483-f6ae-4c87-8e70-0aa2ce1c6716
     m_ActionName: Controls/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e97477f1-aca3-4557-8f92-822ecc5b21c2
+    m_ActionName: Controls/GiveUp[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2512153970089200166}
+        m_TargetAssemblyTypeName: PlayerMechanics, Assembly-CSharp
+        m_MethodName: Undo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7fb55dd5-c217-4d86-aee4-3ae830e3128b
+    m_ActionName: Controls/Undo[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Controls

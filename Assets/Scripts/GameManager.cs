@@ -116,6 +116,11 @@ public class GameManager : MonoBehaviour
         return currentFloor;
     }
 
+    public int UndoFloor() {
+        currentFloor += 2;
+        return currentFloor;
+    }
+
     public void GameOver(string reason = "") {
         Debug.Log("GMGO " + reason);
         //reload scene with UI popup

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -12,6 +14,16 @@ public class PlayerMechanics : MonoBehaviour
         Right,
         Up,
         Down
+    }
+    public enum Action
+    {
+        MoveLeft,
+        MoveRight,
+        MoveUp,
+        MoveDown,
+        Tap,
+        Push,
+        Kill,
     }
     [System.Serializable]public class PlayerStartEvent : UnityEvent{};
     [System.Serializable]public class PlayerEscapeEvent : UnityEvent{};
@@ -39,6 +51,7 @@ public class PlayerMechanics : MonoBehaviour
     private bool neutral = true;
     private bool hasTapped = false;
     private bool hasKilled = false;
+    private bool hasPushed = false;
 
     [SerializeField]private bool escaping = false;
     [SerializeField]private bool entering = false;
@@ -53,6 +66,9 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField, Tooltip("event for when player loses the level")]private GameOverEvent playerFail = new GameOverEvent();
     private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    private Stack<Action> actions;
+    private Stack<DirectionFacing> directions;
+    private bool undoPressed = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -90,6 +106,8 @@ public class PlayerMechanics : MonoBehaviour
         Debug.Log("player setup");
         tileMan = TileManager.Instance;
         gameMan = GameManager.Instance;
+        actions = new Stack<Action>();
+        directions = new Stack<DirectionFacing>();
         
         if(startEndPos){
             transform.position = startEndPos.position;
@@ -182,6 +200,7 @@ public class PlayerMechanics : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.fixedDeltaTime);
             if (transform.position == targetPosition) {
                 isInteractible = true;
+                undoPressed = false;
                 MusicScript.Instance.StepSFX();
                 if (!tileMan.UpdateLevel()){
                     GameManager.Instance.GameOver("SEEN");
@@ -214,6 +233,8 @@ public class PlayerMechanics : MonoBehaviour
                     isInteractible = false;
                     movedLeft = true;
                     neutral = false;
+                    actions.Push(Action.MoveLeft);
+                    directions.Push(facing);
                 }
             } else if (x > 0.1f) {
                 if (facing != DirectionFacing.Right)
@@ -227,6 +248,8 @@ public class PlayerMechanics : MonoBehaviour
                     isInteractible = false;
                     movedRight = true;
                     neutral = false;
+                    actions.Push(Action.MoveRight);
+                    directions.Push(facing);
                 }
             }
         } else if (Mathf.Abs(x) < Mathf.Abs(y)) {
@@ -242,6 +265,8 @@ public class PlayerMechanics : MonoBehaviour
                     isInteractible = false;
                     movedDown = true;
                     neutral = false;
+                    actions.Push(Action.MoveDown);
+                    directions.Push(facing);
                 }
             } else if (y > 0.1f) {
                 if (facing != DirectionFacing.Up)
@@ -255,6 +280,8 @@ public class PlayerMechanics : MonoBehaviour
                     isInteractible = false;
                     movedUp = true;
                     neutral = false;
+                    actions.Push(Action.MoveUp);
+                    directions.Push(facing);
                 }
                 if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon() && !cautious && isInteractible) {
                     //door animation start
@@ -313,7 +340,9 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetLeft() && currentTile.GetLeft().IsWalkable()) {
                         currentTile = currentTile.GetLeft();
                         isInteractible = false;
-                        MusicScript.Instance.StepSFX();
+                        //MusicScript.Instance.StepSFX();
+                        actions.Push(Action.MoveLeft);
+                        directions.Push(facing);
                         
                     } else {
                         //Trigger bump sound
@@ -323,7 +352,9 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetRight() && currentTile.GetRight().IsWalkable()) {
                         currentTile = currentTile.GetRight();
                         isInteractible = false;
-                        MusicScript.Instance.StepSFX();
+                        //MusicScript.Instance.StepSFX();
+                        actions.Push(Action.MoveRight);
+                        directions.Push(facing);
                         
                     } else {
                         //Trigger bump sound
@@ -333,7 +364,9 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetTop() && currentTile.GetTop().IsWalkable()) {
                         currentTile = currentTile.GetTop();
                         isInteractible = false;
-                        MusicScript.Instance.StepSFX();
+                        //MusicScript.Instance.StepSFX();
+                        actions.Push(Action.MoveUp);
+                        directions.Push(facing);
                         
                     } else {
                         //Trigger bump sound
@@ -343,7 +376,9 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetBottom() && currentTile.GetBottom().IsWalkable()) {
                         currentTile = currentTile.GetBottom();
                         isInteractible = false;
-                        MusicScript.Instance.StepSFX();
+                        //MusicScript.Instance.StepSFX();
+                        actions.Push(Action.MoveDown);
+                        directions.Push(facing);
                         
                     } else {
                         //Trigger bump sound
@@ -401,11 +436,14 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
+            actions.Push(Action.Tap);
+            directions.Push(facing);
+            //tileMan.AddLevelState();
         } else if(pressed <=.5) {
             hasTapped = false;
             adjacentPerson = null;
         }
-        else{
+        else {
             adjacentPerson = null;
         }
     }
@@ -416,7 +454,8 @@ public class PlayerMechanics : MonoBehaviour
         }
         float pressed = ctx.ReadValue<float>();
         //Debug.Log("Push " + pressed);
-        if (pressed > 0.5f && isInteractible) {
+        if (pressed > 0.5f && isInteractible && !hasPushed) {
+            hasPushed = true;
             switch(facing) {
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
@@ -451,6 +490,13 @@ public class PlayerMechanics : MonoBehaviour
                     }
                     break;
             }
+            actions.Push(Action.Push);
+            directions.Push(facing);
+            
+            //tileMan.AddLevelState();
+        } else if (pressed <= 0.5f && hasPushed) {
+            adjacentPerson = null;
+            hasPushed = false;
         } else {
             adjacentPerson = null;
         }
@@ -510,6 +556,95 @@ public class PlayerMechanics : MonoBehaviour
         else{
             adjacentPerson = null;
         }
+    }
+    public void Undo(InputAction.CallbackContext ctx) {
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused() || actions.Count == 0 || hasKilled){
+            return;
+        }
+        Debug.Log("Undo");
+        Debug.Log(actions.Count);
+        if (ctx.ReadValue<float>() > 0.5f && isInteractible && !movePressed) {
+            movePressed = true;
+            Action lastAction = actions.Pop();
+            DirectionFacing lastDirection = directions.Pop();
+            Debug.Log(lastAction.ToString() + ", " + lastDirection.ToString());
+            facing = lastDirection;
+            UpdateDirection();
+
+            switch(lastAction) {
+                case Action.MoveLeft:
+                    currentTile = currentTile.GetRight();
+                    targetPosition = currentTile.transform.position;
+                    isInteractible = false;
+                    movePressed = false;
+
+                    break;
+                case Action.MoveRight:
+                    currentTile = currentTile.GetLeft();
+                    targetPosition = currentTile.transform.position;
+                    isInteractible = false;
+                    movePressed = false;
+
+                    break;
+                case Action.MoveUp:
+                    currentTile = currentTile.GetBottom();
+                    targetPosition = currentTile.transform.position;
+                    isInteractible = false;
+                    movePressed = false;
+
+                    break;
+                case Action.MoveDown:
+                    currentTile = currentTile.GetTop();
+                    targetPosition = currentTile.transform.position;
+                    isInteractible = false;
+                    movePressed = false;
+                    
+                    break;
+                case Action.Tap:
+                    isInteractible = false;
+                    hasTapped = false;
+                    if (GetAdjacentPerson()) {
+                        GetAdjacentPerson().UndoTap();
+                    }
+                    break;
+                case Action.Push:
+                    isInteractible = false;
+                    hasPushed = false;
+                    Debug.Log("hi");
+                    if (GetAdjacentPerson()) {
+                        GetAdjacentPerson().UndoPush();
+                    }
+                    break;
+                case Action.Kill:
+                    break;
+                default:
+                    //No more actions
+                    break;
+            }
+            //tileMan.UndoLevelState();
+            gameMan.UndoFloor();
+        } else if (ctx.ReadValue<float>() <= 0.5f && undoPressed) {
+            undoPressed = false;
+        }
+    }
+
+    public Person GetAdjacentPerson() {
+        Person per = null;
+        switch(facing) {
+            case DirectionFacing.Left:
+                per = currentTile.GetLeft().GetPerson();
+                break;
+            case DirectionFacing.Right:
+                per = currentTile.GetRight().GetPerson();
+                break;
+            case DirectionFacing.Up:
+                per = currentTile.GetTop().GetPerson();
+                break;
+            case DirectionFacing.Down:
+                per = currentTile.GetBottom().GetPerson();
+                break;
+        }
+        return per;
     }
     public void UpdateControlStyle() {
         cautious = !cautious;

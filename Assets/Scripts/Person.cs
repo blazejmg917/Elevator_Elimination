@@ -75,9 +75,13 @@ public class Person : MonoBehaviour
     private SpriteRenderer spriteRen;
     private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    private Stack<Vector3> positions;
+    private Stack<Direction> directions;
     // Start is called before the first frame update
     void Start()
     {
+        positions = new Stack<Vector3>();
+        directions = new Stack<Direction>();
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
@@ -190,6 +194,26 @@ public class Person : MonoBehaviour
         }
         return false;
     }
+    public void AddPush(Vector3 pos) {
+        positions.Push(pos);
+    }
+
+    public void AddDirection(Direction dir) {
+        directions.Push(dir);
+    }
+
+    public void UndoPush() {
+        if (positions.Count != 0) {
+            isMoving = true;
+            goalPos = positions.Pop();
+        }
+    }
+
+    public void UndoTap() {
+        if (directions.Count != 0) {
+            currentFacing = directions.Pop();
+        }
+    }
 
     private void BeforeInteract(){
         HandleActions(behavior.beforeInteract);
@@ -283,6 +307,7 @@ public class Person : MonoBehaviour
         {
             BeforeInteract();
             currentTile.SetPerson(null);
+            positions.Push(currentTile.transform.position);
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
@@ -315,6 +340,7 @@ public class Person : MonoBehaviour
                     currentFacing = Direction.DOWN;
                     break;
             }
+            directions.Push(currentFacing);
             TurnSprite();
             MusicScript.Instance.HuhSFX();
             AfterInteract();
