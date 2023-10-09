@@ -149,7 +149,9 @@ public class TileManager : MonoBehaviour
                         thisPerson.transform.position = thisTile.GetPersonLocation(); //+ new Vector3(0,0,-.001f * (tilesList[i].Count - j));
                         Person thisPersonScript = thisPerson.GetComponent<Person>();
                         thisPersonScript.SetCurrentTile(thisTile);
-                        thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
+                        if(thisPersonScript.GetDirection() != Person.Direction.NONE){
+                            thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
+                        }
 
                         thisTile.SetPerson(thisPerson.GetComponent<Person>());
                         if(thisPerson.GetComponent<Person>().IsTarget()){

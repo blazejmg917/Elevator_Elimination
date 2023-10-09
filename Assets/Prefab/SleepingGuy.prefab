@@ -29,6 +29,10 @@ PrefabInstance:
       value: SleepyGuy
       objectReference: {fileID: 0}
     - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: pushSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
       propertyPath: behavior.canSee
       value: 1
       objectReference: {fileID: 0}
@@ -38,7 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
       propertyPath: behavior.canTurn
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: behavior.afterInteract.alertSurrounding
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4016027158723458509, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
       propertyPath: m_LocalPosition.x
