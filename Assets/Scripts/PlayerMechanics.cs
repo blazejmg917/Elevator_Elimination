@@ -184,7 +184,7 @@ public class PlayerMechanics : MonoBehaviour
                 isInteractible = true;
                 MusicScript.Instance.StepSFX();
                 if (!tileMan.UpdateLevel()){
-                    GameManager.Instance.GameOver();
+                    GameManager.Instance.GameOver("SEEN");
                 }
             }
         }

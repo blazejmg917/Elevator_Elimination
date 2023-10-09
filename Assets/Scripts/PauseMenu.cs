@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
     public void Retry(){
         pauseMenu.SetActive(false);
         LevelManager.Instance.UnPause();
-        GameManager.Instance.SetLoseCon(true);
+        GameManager.Instance.GameOver();
     }
 
     public void Resume(){

@@ -111,19 +111,20 @@ public class GameManager : MonoBehaviour
         currentFloor-= 1;
         //turnChangeEvent.Invoke(currentFloor);
         if (currentFloor <= 0) {
-            GameOver();
+            GameOver("TURNS");
         }
         return currentFloor;
     }
 
-    public void GameOver() {
+    public void GameOver(string reason = "") {
+        Debug.Log("GMGO " + reason);
         //reload scene with UI popup
         //SceneManager.LoadScene("GameOver");
         //gameOver.Invoke();
         if(!loseCon){
             SetLoseCon(true);
         }
-        LevelManager.Instance.GameOver();
+        LevelManager.Instance.GameOver(reason);
     }
 
     public void TransitionLevel() {
@@ -149,9 +150,9 @@ public class GameManager : MonoBehaviour
 
     public void SetLoseCon(bool con) {
         loseCon = con;
-        if(loseCon){
-            GameOver();
-        }
+        // if(loseCon){
+        //     GameOver("SET MANUALLY");
+        // }
     }
 
     public bool GetControlStyle() {
