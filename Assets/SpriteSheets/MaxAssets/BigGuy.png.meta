@@ -114,9 +114,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 6
+        y: 4
         width: 16
-        height: 23
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,9 +135,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 6
+        y: 4
         width: 16
-        height: 23
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,9 +156,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 6
+        y: 4
         width: 16
-        height: 23
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,9 +177,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 6
+        y: 4
         width: 16
-        height: 23
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -198,9 +198,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 6
+        y: 4
         width: 16
-        height: 23
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -219,9 +219,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 6
+        y: 4
         width: 16
-        height: 23
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,6 +231,48 @@ TextureImporter:
       bones: []
       spriteID: 7dcea6d92654e0d4280b0fd0e2e0b083
       internalID: 565408677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BigGuy_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 4
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65a58af85d8d3014798dbd0e1fcaae23
+      internalID: -928738359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BigGuy_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 4
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d0fb88cabae87c488929e116c1c65bd
+      internalID: 1782560509
       vertices: []
       indices: 
       edges: []
@@ -252,6 +294,8 @@ TextureImporter:
       BigGuy_3: -823725312
       BigGuy_4: -410936139
       BigGuy_5: 565408677
+      BigGuy_6: -928738359
+      BigGuy_7: 1782560509
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
