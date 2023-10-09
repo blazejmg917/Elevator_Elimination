@@ -6,6 +6,9 @@ public class PandaTalk : MonoBehaviour
 {
     [SerializeField]DialogNode LevelWinDialog;
     [SerializeField]DialogNode LevelLoseDialog;
+    [SerializeField]DialogNode LevelLoseTurnsDialog;
+    [SerializeField]DialogNode LevelLoseSeenDialog;
+    [SerializeField]DialogNode LevelLoseEatenDialog;
     [SerializeField]DialogNode LastLevelWinDialog;
     // Start is called before the first frame update
     void Start()
@@ -27,6 +30,15 @@ public class PandaTalk : MonoBehaviour
     }
     public void DisplayLoseDialog(){
         DisplayDialog(LevelLoseDialog);
+    }
+    public void DisplayLoseSeenDialog(){
+        DisplayDialog(LevelLoseSeenDialog);
+    }
+    public void DisplayLoseEatenDialog(){
+        DisplayDialog(LevelLoseEatenDialog);
+    }
+    public void DisplayLoseTurnsDialog(){
+        DisplayDialog(LevelLoseTurnsDialog);
     }
 
     public void DisplayDialog(DialogNode node){

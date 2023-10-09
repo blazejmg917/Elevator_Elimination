@@ -265,7 +265,7 @@ public class Person : MonoBehaviour
             }
         }
         if(actions.soundAlarm){
-            GameManager.Instance.SetLoseCon(true);
+            GameManager.Instance.GameOver("SEEN");
         }
     }
 
@@ -341,7 +341,7 @@ public class Person : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.SetLoseCon(true);
+                GameManager.Instance.GameOver("EATEN");
                 //call level failed
                 return true;
             }
@@ -385,7 +385,7 @@ public class Person : MonoBehaviour
                     Debug.Log("Seen");
                     if (seenPerson.CallAlarmWhenSeen())
                     {
-                        GameManager.Instance.SetLoseCon(true);
+                        GameManager.Instance.GameOver("SEEN");
                         MusicScript.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
                         //call game over

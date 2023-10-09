@@ -103,7 +103,7 @@ public class Typewriter : MonoBehaviour
     //write text as typewriter
     public IEnumerator Typewrite(TMP_Text textBox, string text, float charPerSec)
     {
-        Debug.Log("typewriting!");
+        //Debug.Log("typewriting!");
         if(textBox == null){
             textBox = defaultTextBox;
         }

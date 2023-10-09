@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class LevelManager : MonoBehaviour
 {
-    [System.Serializable]public class GameOverEvent : UnityEvent{};
+    [System.Serializable]public class GameOverEvent : UnityEvent<string>{};
     [System.Serializable]public class ResetEvent : UnityEvent{};
     [System.Serializable]public class LevelCompleteEvent : UnityEvent<bool>{};
     [System.Serializable]public class TutorialStartEvent : UnityEvent<DialogNode>{};
@@ -119,8 +119,9 @@ public class LevelManager : MonoBehaviour
         pauseMenu.SetActive(false);
         MusicScript.Instance.UnpauseAdjust();
     }
-    public void GameOver(){
-        gameOver.Invoke();
+    public void GameOver(string reason = ""){
+        Debug.Log("LMGO " + reason);
+        gameOver.Invoke(reason);
     }
 
     public void LevelStart(int id = -1){

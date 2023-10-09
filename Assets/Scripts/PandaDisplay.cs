@@ -29,6 +29,7 @@ public class PandaDisplay : MonoBehaviour
     [SerializeField, Tooltip("event for when panda is done displaying")]private PandaFinishEvent pandaLevelEndComplete = new PandaFinishEvent();
     [SerializeField, Tooltip("event for when panda is done displaying a tutorial")]private PandaEndTutorialEvent pandaTutorialComplete = new PandaEndTutorialEvent();
     [SerializeField, Tooltip("which type of dialog to start for the pands")]private TalkType talkType;
+    [SerializeField, Tooltip("the reason for game loss")]private string failReason = "";
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +65,21 @@ public class PandaDisplay : MonoBehaviour
                         pandaTalk.DisplayFinalWinDialog();
                         break;
                     case TalkType.LOSE:
-                        pandaTalk.DisplayLoseDialog();
+                        switch(failReason){
+                            case "SEEN":
+                                pandaTalk.DisplayLoseSeenDialog();
+                                break;
+                            case "TURNS":
+                                pandaTalk.DisplayLoseTurnsDialog();
+                                break;
+                            case "EATEN":
+                                pandaTalk.DisplayLoseEatenDialog();
+                                break;
+                            default:
+                                pandaTalk.DisplayLoseDialog();
+                                break;
+                        }
+                        failReason = "";
                         break;
                     case TalkType.TUTORIAL:
                         if(!storedNode){
@@ -104,12 +119,14 @@ public class PandaDisplay : MonoBehaviour
         
     }
 
-    public void ShowPandaLoss(){
+    public void ShowPandaLoss(string reason){
         if(pandaWaitingToLeave){
             Debug.Log("skipping animation cause it's already leaving");
             return;
         }
+        Debug.Log("Lost with reason " + reason);
         talkType = TalkType.LOSE;
+        failReason = reason;
         ShowPanda();
     }
 

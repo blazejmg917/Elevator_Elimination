@@ -1085,6 +1085,23 @@ MonoBehaviour:
     canTurn: 1
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 5
   initialOffset: 4
 --- !u!1 &296790909
@@ -2073,6 +2090,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &518244968
@@ -2702,6 +2736,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 1
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 5
   initialOffset: 4
 --- !u!1 &595360103
@@ -3270,6 +3321,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &638895840
@@ -3395,6 +3463,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &639628368
@@ -5313,6 +5398,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &1048291037
@@ -5991,7 +6093,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7406894344344193610, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
   m_PrefabInstance: {fileID: 304733483235312071}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2017089623}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fbbce33154599b4c8dd69cbb955073e, type: 3}
@@ -6307,6 +6409,23 @@ MonoBehaviour:
     canTurn: 1
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &1364979985
@@ -7903,6 +8022,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &1705374665
@@ -8879,6 +9015,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &1880969283
@@ -9142,6 +9295,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!114 &1885969663
@@ -9586,8 +9756,96 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
+--- !u!1 &2017089623 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7232435349558930002, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+  m_PrefabInstance: {fileID: 304733483235312071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2017089624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017089623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: Someone got eaten! It's chaos in there! What are you doing?
+  textBox: {fileID: 0}
+  charPerSec: -1
+  continueOnInput: 1
+  autoContinue: 0
+  isDummy: 0
+  dialogEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  nextNode: {fileID: 0}
+--- !u!114 &2017089625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017089623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: What are you doing, Agent? You took too long!
+  textBox: {fileID: 0}
+  charPerSec: -1
+  continueOnInput: 1
+  autoContinue: 0
+  isDummy: 0
+  dialogEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  nextNode: {fileID: 0}
+--- !u!114 &2017089626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017089623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: What are you doing, Agent? Someone saw the body!
+  textBox: {fileID: 0}
+  charPerSec: -1
+  continueOnInput: 1
+  autoContinue: 0
+  isDummy: 0
+  dialogEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  nextNode: {fileID: 0}
 --- !u!1 &2051004279
 GameObject:
   m_ObjectHideFlags: 0
@@ -10154,6 +10412,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &2146492670
@@ -10256,6 +10531,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1420644441695956642, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: LevelLoseSeenDialog
+      value: 
+      objectReference: {fileID: 2017089626}
+    - target: {fileID: 1420644441695956642, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: LevelLoseEatenDialog
+      value: 
+      objectReference: {fileID: 2017089624}
+    - target: {fileID: 1420644441695956642, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: LevelLoseTurnsDialog
+      value: 
+      objectReference: {fileID: 2017089625}
     - target: {fileID: 1451807662499532941, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_SortingLayer
       value: 4
@@ -10687,7 +10974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5909178480742143612, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[2].m_Target
@@ -11401,6 +11688,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7080029512795347950, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 304733483235312075}
+    - targetCorrespondingSourceObject: {fileID: 7232435349558930002, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2017089626}
+    - targetCorrespondingSourceObject: {fileID: 7232435349558930002, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2017089625}
+    - targetCorrespondingSourceObject: {fileID: 7232435349558930002, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2017089624}
   m_SourcePrefab: {fileID: 100100000, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
 --- !u!114 &304733483235312072 stripped
 MonoBehaviour:
@@ -11492,6 +11788,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c2a74310-297b-4059-aa31-118122b378cf
     m_ActionName: MenuActions/Menuing[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e97477f1-aca3-4557-8f92-822ecc5b21c2
+    m_ActionName: Controls/GiveUp[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Controls
