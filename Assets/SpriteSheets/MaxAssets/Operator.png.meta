@@ -114,9 +114,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 6
+        y: 4
         width: 16
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,9 +135,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 6
+        y: 4
         width: 16
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,7 +145,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c7adaaa7174e884da0af2eca768b123
+      spriteID: 2e6345e0e401e9748b319f86b1983399
       internalID: -1374645900
       vertices: []
       indices: 
@@ -156,9 +156,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 6
+        y: 4
         width: 16
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,7 +166,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9cbe4945f5db5d34aa86f1fa0182ea1d
+      spriteID: 2bf5fb12808bc094fbc3ab1a89c53f46
       internalID: -214059848
       vertices: []
       indices: 
@@ -177,9 +177,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 6
+        y: 4
         width: 16
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,7 +187,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be7ad2e4dc452834db9df4b821fa0988
+      spriteID: baa002534f37f494ea2d2ffcf8aae391
       internalID: 699862857
       vertices: []
       indices: 
@@ -198,9 +198,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 6
+        y: 4
         width: 16
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,7 +208,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3498af3b45dffe469957bc61730ccbf
+      spriteID: ce0f7d0bc7e6a694ab51620b6c0e024b
       internalID: 1691708130
       vertices: []
       indices: 
@@ -219,9 +219,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 6
+        y: 4
         width: 16
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,8 +229,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5623fb25884086f45a18415f1aabdef2
+      spriteID: 414d05d12ed3a314f94d85f25a16dc86
       internalID: 819910865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Operator_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 4
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a21cf4acf28b956448e6080cbc760a73
+      internalID: -1999962238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Operator_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 4
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4b7b17d6195b414987842126d39e88c
+      internalID: -280142902
       vertices: []
       indices: 
       edges: []
@@ -252,6 +294,8 @@ TextureImporter:
       Operator_3: 699862857
       Operator_4: 1691708130
       Operator_5: 819910865
+      Operator_6: -1999962238
+      Operator_7: -280142902
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
