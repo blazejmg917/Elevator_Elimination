@@ -126,7 +126,6 @@ public class Person : MonoBehaviour
         if (!anim) {
             return;
         }
-        BeforeInteract();
         if(lastFacing  != currentFacing ){
             lastFacing = currentFacing;
             if(currentTile){
@@ -134,11 +133,13 @@ public class Person : MonoBehaviour
             }
             TurnSprite();
         }
-        AfterInteract();
     }
 
     private void TurnSprite()
     {
+        if(!anim){
+            return;
+        }
         // if (anim.GetInteger("FacingDirection") == 1) {
         //     spriteRen.flipX = true;
         // } else {
@@ -191,20 +192,58 @@ public class Person : MonoBehaviour
     }
 
     private void BeforeInteract(){
-
+        HandleActions(behavior.beforeInteract);
     }
 
     private void AfterInteract(){
-        
+        HandleActions(behavior.afterInteract);
     }
 
 
 
     private void OnSeePlayer(){
-
+        HandleActions(behavior.onSeePlayer);
     }
 
     private void HandleActions(personUniqueActions actions){
+        if(actions.alertSurrounding){
+            //check top
+            Tile thisTile = currentTile.GetTop();
+            while(thisTile){
+                if(thisTile && thisTile.GetPerson()){
+                    thisTile.GetPerson().SetDirection(Direction.DOWN);
+                    
+                }
+                thisTile = thisTile.GetTop();
+            }
+            //check bottom
+            thisTile = currentTile.GetBottom();
+            while(thisTile){
+                if(thisTile && thisTile.GetPerson()){
+                    thisTile.GetPerson().SetDirection(Direction.UP);
+                    
+                }
+                thisTile = thisTile.GetBottom();
+            }
+            //check right
+            thisTile = currentTile.GetRight();
+            while(thisTile){
+                if(thisTile && thisTile.GetPerson()){
+                    thisTile.GetPerson().SetDirection(Direction.LEFT);
+                    
+                }
+                thisTile = thisTile.GetRight();
+            }
+            //check left
+            thisTile = currentTile.GetLeft();
+            while(thisTile){
+                if(thisTile && thisTile.GetPerson()){
+                    thisTile.GetPerson().SetDirection(Direction.RIGHT);
+                    
+                }
+                thisTile = thisTile.GetLeft();
+            }
+        }
         if(actions.eatInFront){
             Tile frontTile = null;
             switch(currentFacing){
@@ -224,6 +263,9 @@ public class Person : MonoBehaviour
             if(frontTile && frontTile.GetPerson() && frontTile.GetPerson().IsEdible()){
                 frontTile.GetPerson().OnKill(true);
             }
+        }
+        if(actions.soundAlarm){
+            GameManager.Instance.SetLoseCon(true);
         }
     }
 
@@ -254,6 +296,7 @@ public class Person : MonoBehaviour
     {
         if (behavior.canTurn)
         {
+            BeforeInteract();
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -274,6 +317,7 @@ public class Person : MonoBehaviour
             }
             TurnSprite();
             MusicScript.Instance.HuhSFX();
+            AfterInteract();
             return true;
         }
         return false;
@@ -308,6 +352,7 @@ public class Person : MonoBehaviour
 
     public bool OnFloorChange()
     {
+        HandleActions(behavior.onTurnChange);
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         while (!sightlineCleared)
@@ -380,7 +425,10 @@ public class Person : MonoBehaviour
     }
 
     public void SetDirection(Direction direction){
-        currentFacing = direction;
+        if(currentFacing != Direction.NONE){
+            currentFacing = direction;
+        }
+        TurnSprite();
 
     }
     
