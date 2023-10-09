@@ -1085,6 +1085,23 @@ MonoBehaviour:
     canTurn: 1
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 5
   initialOffset: 4
 --- !u!1 &296790909
@@ -2073,6 +2090,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &518244968
@@ -2702,6 +2736,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 1
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 5
   initialOffset: 4
 --- !u!1 &595360103
@@ -3270,6 +3321,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &638895840
@@ -3395,6 +3463,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &639628368
@@ -5313,6 +5398,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &1048291037
@@ -6307,6 +6409,23 @@ MonoBehaviour:
     canTurn: 1
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &1364979985
@@ -7903,6 +8022,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &1705374665
@@ -8879,6 +9015,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &1880969283
@@ -9142,6 +9295,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!114 &1885969663
@@ -9586,6 +9756,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!1 &2051004279
@@ -10154,6 +10341,23 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
   initialOffset: 4
 --- !u!212 &2146492670
@@ -10617,6 +10821,14 @@ PrefabInstance:
       propertyPath: tileStart.x
       value: -0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5457259913997820876, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: tileOffset.y
+      value: 0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457259913997820876, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: tileOffset.z
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: gameLevels.Array.size
       value: 7
@@ -10832,6 +11044,10 @@ PrefabInstance:
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160800002061401147, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: initialOffset
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6160800002061401147, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: levelEnd.m_PersistentCalls.m_Calls.Array.size

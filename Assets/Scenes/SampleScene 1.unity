@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -166,7 +167,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &504636030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,6 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -381,7 +401,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &571217431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Target
+  deadSprite: {fileID: 0}
   isTarget: 1
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -577,7 +616,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 1
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 5
+  initialOffset: 4
 --- !u!4 &682827731
 Transform:
   m_ObjectHideFlags: 0
@@ -630,6 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -641,7 +699,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &1201232931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,6 +829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -764,7 +841,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &1252269925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,6 +972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Operator
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -888,7 +984,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!95 &1273718673
 Animator:
   serializedVersion: 5
@@ -1021,6 +1135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Bystander
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -1032,7 +1147,25 @@ MonoBehaviour:
     canTurn: 1
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 5
+  initialOffset: 4
 --- !u!95 &1278081617
 Animator:
   serializedVersion: 5
@@ -1153,6 +1286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -1164,7 +1298,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &1550465884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1274,6 +1426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84ea7999f162f84f81be1c069f01eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentFloor: 0
   cautious: 1
   currentLevel: -1
   tryDemoLevel: 0
@@ -1321,6 +1474,9 @@ MonoBehaviour:
   enterEvent:
     m_PersistentCalls:
       m_Calls: []
+  completeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1682259300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,6 +1509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -1364,7 +1521,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &1682259302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1476,6 +1651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -1487,7 +1663,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &1964823435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1599,6 +1793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
   triggerAlarmOnSeen: 0
@@ -1610,7 +1805,25 @@ MonoBehaviour:
     canTurn: 0
     canBeKilled: 0
     canSee: 0
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &2085674863
 MonoBehaviour:
   m_ObjectHideFlags: 0
