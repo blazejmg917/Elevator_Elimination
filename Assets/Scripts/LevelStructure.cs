@@ -8,6 +8,7 @@ public class LevelStructure : MonoBehaviour
     [SerializeField, Tooltip("the level structure of tiles"), ReadOnly(true)] private Tile[,] tiles = new Tile[,] { };
     [SerializeField, Tooltip("the level structure of tiles"), ReadOnly(true)] private List<TileManager.ListWrapper<Tile>> tileList = new List<TileManager.ListWrapper<Tile>>();
     [SerializeField, Tooltip("the number of floors for this level")] private int floors = 20;
+    //[SerializeField, Tooltip("How many targets there are in this level")]private int numTargets = 1;
     // Start is called before the first frame update
     public Tile[,] GetTiles()
     {
@@ -35,4 +36,8 @@ public class LevelStructure : MonoBehaviour
     public int GetFloors(){
         return floors;
     }
+
+    // public int GetNumTargets(){
+    //     return numTargets;
+    // }
 }

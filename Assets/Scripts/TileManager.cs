@@ -50,7 +50,7 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
     [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
     
-
+    private int TargetCount = 0;
     private static TileManager _instance;
     public static TileManager Instance
     {
@@ -97,10 +97,12 @@ public class TileManager : MonoBehaviour
         }
         ClearLevel();
         tileHolder = Instantiate(levelStructure.gameObject, transform);
-        tileHolder.transform.position = new Vector3(transform.position.x,transform.position.y, tileHolder.transform.position.z);
+        tileHolder.transform.localPosition = new Vector3(0,0,tileHolder.transform.localPosition.z);
+        //tileHolder.transform.position = new Vector3(transform.position.x,transform.position.y, tileHolder.transform.position.z);
         baseLevel = tileHolder.GetComponent<LevelStructure>();
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        LevelManager.Instance.SetNumTargets(TargetCount);
     }
     public void LoadLevel(List<ListWrapper<Tile>> tileList)
     {
@@ -124,6 +126,7 @@ public class TileManager : MonoBehaviour
     }
 
     public void GetTilePeople(){
+        TargetCount = 0;
         //Debug.Log("looking for tile people");
         //personHolder = PersonManager.Instance.GetPHolder().gameObject;
         //personHolder.transform.parent = transform;
@@ -149,6 +152,9 @@ public class TileManager : MonoBehaviour
                         thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
 
                         thisTile.SetPerson(thisPerson.GetComponent<Person>());
+                        if(thisPerson.GetComponent<Person>().IsTarget()){
+                            TargetCount++;
+                        }
                     }
                 }
                 
