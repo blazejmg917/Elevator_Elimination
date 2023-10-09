@@ -80,6 +80,10 @@ public class Person : MonoBehaviour
         }
     }
 
+    public bool IsTarget(){
+        return isTarget;
+    }
+
     public bool TakesUpSpace()
     {
         return takesUpSpace;
@@ -214,7 +218,8 @@ public class Person : MonoBehaviour
                 SetDeadSprite();
                 takesUpSpace = false;
                 triggerAlarmOnSeen = true;
-                GameManager.Instance.SetWinCon(true);
+                LevelManager.Instance.TargetKilled();
+                //GameManager.Instance.SetWinCon(true);
                 //call target killed
                 return true;
             }

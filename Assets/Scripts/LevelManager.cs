@@ -30,6 +30,8 @@ public class LevelManager : MonoBehaviour
     private bool waitingForTutorial = false;
     [SerializeField, Tooltip("current level ")]private int currentLevel = 0;
     [SerializeField, Tooltip("mark true once player has completed final level")]private bool completedFinalLevel = false;
+    [SerializeField, Tooltip("the number of targets left to be killed in the current level")]private int numTargets = 0;
+
     
     private static LevelManager _instance;
     public static LevelManager Instance
@@ -151,6 +153,7 @@ public class LevelManager : MonoBehaviour
     public void NextLevel(){
         if(completedFinalLevel){
             GameManager.Instance.QuitToMenu();
+            return;
         }
         Debug.Log("Move to next level");
         currentLevel++;
@@ -180,5 +183,16 @@ public class LevelManager : MonoBehaviour
             tutorialEnd.Invoke();
             Debug.Log("tutorial complete");
         }
+    }
+
+    public void TargetKilled(){
+        numTargets--;
+        if(numTargets <= 0){
+            GameManager.Instance.SetWinCon(true);
+        }
+    }
+
+    public void SetNumTargets(int howManyTargets = 1){
+        numTargets = howManyTargets;
     }
 }
