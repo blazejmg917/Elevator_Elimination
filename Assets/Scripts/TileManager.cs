@@ -50,7 +50,7 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
     [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
     
-
+    private int TargetCount = 0;
     private static TileManager _instance;
     public static TileManager Instance
     {
@@ -97,10 +97,12 @@ public class TileManager : MonoBehaviour
         }
         ClearLevel();
         tileHolder = Instantiate(levelStructure.gameObject, transform);
-        tileHolder.transform.position = new Vector3(transform.position.x,transform.position.y, tileHolder.transform.position.z);
+        tileHolder.transform.localPosition = new Vector3(0,0,tileHolder.transform.localPosition.z);
+        //tileHolder.transform.position = new Vector3(transform.position.x,transform.position.y, tileHolder.transform.position.z);
         baseLevel = tileHolder.GetComponent<LevelStructure>();
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        LevelManager.Instance.SetNumTargets(TargetCount);
     }
     public void LoadLevel(List<ListWrapper<Tile>> tileList)
     {
@@ -124,6 +126,7 @@ public class TileManager : MonoBehaviour
     }
 
     public void GetTilePeople(){
+        TargetCount = 0;
         //Debug.Log("looking for tile people");
         //personHolder = PersonManager.Instance.GetPHolder().gameObject;
         //personHolder.transform.parent = transform;
@@ -134,6 +137,7 @@ public class TileManager : MonoBehaviour
         for(int i = 0; i < tilesList.Count; i++){
             for(int j = 0; j < tilesList[i].Count; j++){
                 Tile thisTile = tilesList[i][j];
+                thisTile.SetOffset(thisTile.GetOffset() + new Vector3(0,0,-.001f * (tilesList[i].Count - j)));
                 if(thisTile.GetPersonId() != null && thisTile.GetPersonId() != ""){
                     //Debug.Log("looking for person " + thisTile.GetPersonId());
                     
@@ -142,12 +146,15 @@ public class TileManager : MonoBehaviour
                         GameObject thisPerson = Instantiate(personPrefab, personHolder.transform);
                         //Person personScript = thisPerson.GetComponent<Person>()
                         //thisPerson.transform.parent = personHolder.transform;
-                        thisPerson.transform.position = thisTile.GetPersonLocation() + new Vector3(0,0,-.001f * (tilesList[i].Count - j));
+                        thisPerson.transform.position = thisTile.GetPersonLocation(); //+ new Vector3(0,0,-.001f * (tilesList[i].Count - j));
                         Person thisPersonScript = thisPerson.GetComponent<Person>();
                         thisPersonScript.SetCurrentTile(thisTile);
                         thisPersonScript.SetDirection(thisTile.GetComponent<Tile>().GetDirection());
 
                         thisTile.SetPerson(thisPerson.GetComponent<Person>());
+                        if(thisPerson.GetComponent<Person>().IsTarget()){
+                            TargetCount++;
+                        }
                     }
                 }
                 

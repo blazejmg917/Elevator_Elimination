@@ -21,7 +21,7 @@ public class PandaDisplay : MonoBehaviour
     [SerializeField, Tooltip("the delay between the panda screen spawning and the panda text displaying")]private float pandaTalkEndDelay = 1.5f;
     private float pandaTimer = 0;
     private bool pandaWaitingToTalk;
-    private bool pandaWaitingToLeave;
+    [SerializeField]private bool pandaWaitingToLeave;
     private DialogNode storedNode;
     [SerializeField, Tooltip("the panda screen object")]private GameObject pandaScreen;
     [SerializeField, Tooltip("the panda screen animator")]private Animator pandaScreenAnim;
@@ -54,6 +54,7 @@ public class PandaDisplay : MonoBehaviour
                 gameObject.SetActive(false);
             }
             if(pandaWaitingToTalk){
+                
                 pandaWaitingToTalk = false;
                 switch(talkType){
                     case TalkType.WIN:
@@ -105,6 +106,7 @@ public class PandaDisplay : MonoBehaviour
 
     public void ShowPandaLoss(){
         if(pandaWaitingToLeave){
+            Debug.Log("skipping animation cause it's already leaving");
             return;
         }
         talkType = TalkType.LOSE;
@@ -112,6 +114,7 @@ public class PandaDisplay : MonoBehaviour
     }
 
     public void ShowPanda(){
+        Debug.Log("show panda");
         gameObject.SetActive(true);
         pandaScreen.SetActive(true);
         pandaWaitingToTalk = true;
@@ -119,7 +122,7 @@ public class PandaDisplay : MonoBehaviour
     }
 
     public void CancelPanda(bool callEndDialog = true){
-        if(pandaWaitingToLeave){
+        if(pandaWaitingToLeave || !gameObject.activeSelf){
             return;
         }
         if(callEndDialog){
@@ -129,7 +132,7 @@ public class PandaDisplay : MonoBehaviour
         //start screen turn off visual
         pandaTimer = pandaTalkEndDelay;
         pandaWaitingToLeave = true;
-        
+        pandaWaitingToTalk = false;
     }
     public void CancelPandaInstant(){
         Debug.Log("kill the fucking panda");

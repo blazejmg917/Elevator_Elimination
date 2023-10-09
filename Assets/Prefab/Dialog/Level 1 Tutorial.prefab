@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6014801795395532210}
   - component: {fileID: 6141100558135857993}
   - component: {fileID: 2610883915974822662}
+  - component: {fileID: 6669236175387011054}
   - component: {fileID: 3478677260526542227}
   - component: {fileID: 6368991137080409664}
   m_Layer: 0
@@ -106,8 +107,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contents: That sheep there is just a bystander. You can push them or distract them
-    with a tap so they don't see the body
+  contents: That sheep there is just a bystander, make sure they don't see the body.
+  textBox: {fileID: 0}
+  charPerSec: -1
+  continueOnInput: 1
+  autoContinue: 0
+  isDummy: 0
+  dialogEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  nextNode: {fileID: 6669236175387011054}
+--- !u!114 &6669236175387011054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059605203143669651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: ' You can push them out of the way or distract them with a tap'
   textBox: {fileID: 0}
   charPerSec: -1
   continueOnInput: 1

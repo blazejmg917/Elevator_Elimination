@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398566a668553074d9584dbc6b24bd9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contents: He looks to big to push, you'll have to distract him instead
+  contents: He looks too big to push, you'll have to distract him instead
   textBox: {fileID: 0}
   charPerSec: -1
   continueOnInput: 1
