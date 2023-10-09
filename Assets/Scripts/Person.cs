@@ -1,7 +1,9 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Person : MonoBehaviour
@@ -14,6 +16,17 @@ public class Person : MonoBehaviour
         DOWN,
         NONE
     }
+    [System.Serializable]public struct personUniqueActions{
+        [Tooltip("If this personw ill try to eat a person directly in front of them")]public bool eatInFront;
+        [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
+        [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
+
+        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true){
+            eatInFront = hungry;
+            alertSurrounding = loud;
+            soundAlarm = skeptical;
+        }
+    }
     [System.Serializable]
     public struct personBehavior
     {
@@ -21,13 +34,25 @@ public class Person : MonoBehaviour
         [Tooltip("if this character can be turned")] public bool canTurn;
         [Tooltip("if this character can be killed")] public bool canBeKilled;
         [Tooltip("if this character can see")] public bool canSee;
+        [Tooltip("if this character can be eaten")]public bool canEat;
 
-        public personBehavior(bool pushable = true, bool turnable = true, bool killable = true, bool hasSight = true)
+        [Tooltip("the actions this character can take before being interacted with")]public personUniqueActions beforeInteract;
+        [Tooltip("the actions this character can take after being interacted with")]public personUniqueActions afterInteract;
+        [Tooltip("the actions this character can take on turn change")]public personUniqueActions onTurnChange;
+        [Tooltip("NOT WORKING YET. PLACEHOLDER \n the actions this character can take when they see the player")]public personUniqueActions onSeePlayer;
+        
+
+        public personBehavior(bool pushable = true, bool turnable = true, bool killable = true, bool hasSight = true, bool yummy = true)
         {
             canPush = pushable;
             canTurn = turnable;
             canBeKilled = killable;
             canSee = hasSight;
+            canEat = yummy;
+            beforeInteract = new personUniqueActions();
+            afterInteract = new personUniqueActions();
+            onTurnChange = new personUniqueActions();
+            onSeePlayer = new personUniqueActions();
         }
     }
 
@@ -75,6 +100,7 @@ public class Person : MonoBehaviour
             if(transform.position == goalPos)
             {
                 isMoving = false;
+                AfterInteract();
                 TileManager.Instance.UpdateLevel();
             }
         }
@@ -82,6 +108,10 @@ public class Person : MonoBehaviour
 
     public bool IsTarget(){
         return isTarget;
+    }
+
+    public bool IsEdible(){
+        return behavior.canEat;
     }
 
     public bool TakesUpSpace()
@@ -96,6 +126,7 @@ public class Person : MonoBehaviour
         if (!anim) {
             return;
         }
+        BeforeInteract();
         if(lastFacing  != currentFacing ){
             lastFacing = currentFacing;
             if(currentTile){
@@ -103,6 +134,7 @@ public class Person : MonoBehaviour
             }
             TurnSprite();
         }
+        AfterInteract();
     }
 
     private void TurnSprite()
@@ -134,6 +166,7 @@ public class Person : MonoBehaviour
     {
         if (behavior.canPush && !isMoving)
         {
+            
             switch (dir) {
                 case PlayerMechanics.DirectionFacing.Left:
                     TryMove(currentTile.GetLeft());
@@ -153,9 +186,45 @@ public class Person : MonoBehaviour
             }
             MusicScript.Instance.GuhSFX();
             return true;
-            
         }
         return false;
+    }
+
+    private void BeforeInteract(){
+
+    }
+
+    private void AfterInteract(){
+        
+    }
+
+
+
+    private void OnSeePlayer(){
+
+    }
+
+    private void HandleActions(personUniqueActions actions){
+        if(actions.eatInFront){
+            Tile frontTile = null;
+            switch(currentFacing){
+                case Direction.LEFT:
+                    frontTile = currentTile.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    frontTile = currentTile.GetRight();
+                    break;
+                case Direction.UP:
+                    frontTile = currentTile.GetTop();
+                    break;
+                case Direction.DOWN:
+                    frontTile = currentTile.GetBottom();
+                    break;
+            }
+            if(frontTile && frontTile.GetPerson() && frontTile.GetPerson().IsEdible()){
+                frontTile.GetPerson().OnKill(true);
+            }
+        }
     }
 
     public string GetId(){
@@ -170,6 +239,7 @@ public class Person : MonoBehaviour
         }
         if (newTile.IsWalkable())
         {
+            BeforeInteract();
             currentTile.SetPerson(null);
             currentTile = newTile;
             newTile.SetPerson(this);
@@ -209,15 +279,17 @@ public class Person : MonoBehaviour
         return false;
     }
 
-    public bool OnKill()
+    public bool OnKill(bool overrideKillable = false)
     {
-        if (behavior.canBeKilled)
+        if (behavior.canBeKilled || overrideKillable)
         {
+            SetDeadSprite();
+            takesUpSpace = false;
+            triggerAlarmOnSeen = true;
             if (isTarget)
             {
-                SetDeadSprite();
-                takesUpSpace = false;
-                triggerAlarmOnSeen = true;
+                
+                
                 LevelManager.Instance.TargetKilled();
                 //GameManager.Instance.SetWinCon(true);
                 //call target killed
@@ -225,6 +297,7 @@ public class Person : MonoBehaviour
             }
             else
             {
+                GameManager.Instance.SetLoseCon(true);
                 //call level failed
                 return true;
             }
