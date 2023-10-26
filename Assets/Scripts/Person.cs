@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
@@ -73,15 +74,15 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
     private SpriteRenderer spriteRen;
+    //Offsets the animation time to sync up with the people around it
     private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
-    private Stack<Vector3> positions;
-    private Stack<Direction> directions;
+    //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
+    private Stack<(Tile tile, Direction direction, int floorNumber)> states;
     // Start is called before the first frame update
     void Start()
     {
-        positions = new Stack<Vector3>();
-        directions = new Stack<Direction>();
+        states = new Stack<(Tile, Direction, int)>();
         transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
@@ -194,24 +195,25 @@ public class Person : MonoBehaviour
         }
         return false;
     }
-    public void AddPush(Vector3 pos) {
-        positions.Push(pos);
-    }
 
-    public void AddDirection(Direction dir) {
-        directions.Push(dir);
-    }
-
-    public void UndoPush() {
-        if (positions.Count != 0) {
-            isMoving = true;
-            goalPos = positions.Pop();
-        }
-    }
-
-    public void UndoTap() {
-        if (directions.Count != 0) {
-            currentFacing = directions.Pop();
+    /*
+     * Undoes tap or push depending on if the floor number of the last action matches the current floor
+     */
+    public void UndoState() {
+        if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+            Tile lastTile = states.Peek().tile;
+            if (currentTile.transform.position != lastTile.transform.position) {
+                currentTile.SetPerson(null);
+                currentTile = lastTile;
+                lastTile.SetPerson(this);
+                isMoving = true;
+            }
+            Direction lastFacing = states.Peek().direction;
+            if (currentFacing != lastFacing) {
+                currentFacing = lastFacing;
+                TurnSprite();
+            }
+            states.Pop();
         }
     }
 
@@ -306,8 +308,9 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             currentTile.SetPerson(null);
-            positions.Push(currentTile.transform.position);
+            //positions.Push(currentTile.transform.position);
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
@@ -322,6 +325,7 @@ public class Person : MonoBehaviour
         if (behavior.canTurn)
         {
             BeforeInteract();
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -340,7 +344,6 @@ public class Person : MonoBehaviour
                     currentFacing = Direction.DOWN;
                     break;
             }
-            directions.Push(currentFacing);
             TurnSprite();
             MusicScript.Instance.HuhSFX();
             AfterInteract();
@@ -419,7 +422,6 @@ public class Person : MonoBehaviour
                     }
                     return true;
                 }
-
             }
             else {
                 return true;
@@ -455,7 +457,5 @@ public class Person : MonoBehaviour
             currentFacing = direction;
         }
         TurnSprite();
-
     }
-    
 }
