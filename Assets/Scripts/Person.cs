@@ -18,7 +18,7 @@ public class Person : MonoBehaviour
         NONE
     }
     [System.Serializable]public struct personUniqueActions{
-        [Tooltip("If this personw ill try to eat a person directly in front of them")]public bool eatInFront;
+        [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
 
@@ -58,6 +58,9 @@ public class Person : MonoBehaviour
     }
 
     [SerializeField, Tooltip("this person's id")] private string personId;
+
+    [SerializeField, Tooltip("the key used for this person in level creation")]
+    private string personKey;
 
     [SerializeField, Tooltip("the sprite for when the player is dead")]private Sprite deadSprite;
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
@@ -457,5 +460,10 @@ public class Person : MonoBehaviour
             currentFacing = direction;
         }
         TurnSprite();
+    }
+
+    public string GetKey()
+    {
+        return personKey;
     }
 }

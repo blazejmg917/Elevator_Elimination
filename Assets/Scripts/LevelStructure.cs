@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class LevelStructure : MonoBehaviour
 {
+    [SerializeField, Tooltip("the name of this level")]
+    private string levelName = "";
+    [SerializeField, Tooltip("the creator of this level")]
+    private string creatorName = "";
     [SerializeField, Tooltip("the level structure of tiles"), ReadOnly(true)] private Tile[,] tiles = new Tile[,] { };
     [SerializeField, Tooltip("the level structure of tiles"), ReadOnly(true)] private List<TileManager.ListWrapper<Tile>> tileList = new List<TileManager.ListWrapper<Tile>>();
     [SerializeField, Tooltip("the number of floors for this level")] private int floors = 20;
@@ -36,6 +40,26 @@ public class LevelStructure : MonoBehaviour
     public int GetFloors(){
         return floors;
     }
+
+    public string GetLevelName()
+    {
+        return levelName;
+    }
+    public string GetCreator()
+    {
+        return levelName;
+    }
+
+    public void SetLevelName(string newName)
+    {
+        levelName = newName;
+    }
+
+    public void SetCreatorName(string newName)
+    {
+        creatorName = newName;
+    }
+
 
     // public int GetNumTargets(){
     //     return numTargets;
