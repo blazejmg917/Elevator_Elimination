@@ -6,6 +6,7 @@ public class PersonHolder : MonoBehaviour
 {
     [SerializeField, Tooltip("a list of the all the people prefabs that have been created for the game")]List<GameObject> people = new List<GameObject>();
     Dictionary<string, GameObject> peopleMap = new Dictionary<string, GameObject>();
+    Dictionary<string, string> peopleKeyMap = new Dictionary<string, string>();
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +22,12 @@ public class PersonHolder : MonoBehaviour
     public void UpdateMap(){
         Debug.Log("updating person map: " + people + ", " +people.Count);
         peopleMap = new Dictionary<string, GameObject>();
-        foreach(GameObject person in people){
-            peopleMap.Add(person.GetComponent<Person>().GetId(),person);
+        peopleKeyMap = new Dictionary<string, string>();
+        foreach(GameObject person in people)
+        {
+            Person personScript = person.GetComponent<Person>();
+            peopleMap.Add(personScript.GetId(),person);
+            peopleKeyMap.Add(personScript.GetKey().ToUpper(),personScript.GetId());
         }
     }
 
@@ -34,6 +39,17 @@ public class PersonHolder : MonoBehaviour
         Debug.Log("Could not find person with id of " + id);
         return null;
 
+    }
+
+    public string GetIdByKey(string key)
+    {
+        string result;
+        if (peopleKeyMap.TryGetValue(key, out result))
+        {
+            return result;
+        }
+        Debug.Log("Could not find id for person with key of " + key);
+        return null;
     }
 
     // void OnValidate(){

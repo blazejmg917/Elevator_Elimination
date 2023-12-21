@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4286fcbf512bee84f9b7a0a7dcc07597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelName: Level2
+  creatorName: Max
   tileList:
   - list:
     - {fileID: 5156956223628161513}

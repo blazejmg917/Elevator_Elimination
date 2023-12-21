@@ -102,12 +102,20 @@ public class Tile : MonoBehaviour
         return currentPerson;
     }
 
-    public void SetPerson(Person per) {
+    public void SetPerson(Person per, bool updateID = false) {
         currentPerson = per;
+        if (updateID)
+        {
+            SetPersonId(currentPerson.GetId());
+        }
     }
 
     public string GetPersonId(){
         return personId;
+    }
+    public void SetPersonId(string id)
+    {
+        personId = id;
     }
 
     public Person.Direction GetDirection(){

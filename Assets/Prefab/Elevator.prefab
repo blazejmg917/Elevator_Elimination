@@ -655,6 +655,7 @@ GameObject:
   - component: {fileID: 4550746527282812818}
   - component: {fileID: 891440120313869381}
   - component: {fileID: 8758258291080227175}
+  - component: {fileID: 6478355290011617836}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -725,6 +726,7 @@ MonoBehaviour:
   tileHolder: {fileID: 2133373131028679176}
   personHolder: {fileID: 3530963456393664605}
   spritesSetup: {fileID: 1978576382999452240}
+  io: {fileID: 0}
   tileSize: {x: 1, y: 1, z: 0}
   tileStart: {x: 0, y: 0, z: 0}
   tileOffset: {x: 0, y: 0, z: 0}
@@ -762,6 +764,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadStructure: {fileID: 2490581988077251326, guid: 00dc070643adfa24c99c2d74bb944871, type: 3}
   overwriteLevel: 1
+--- !u!114 &6478355290011617836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8868977130571946511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f50024f1dcdcd4f40961831d51ecd372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  folderFilePath: /Custom/Levels
+  tilePrefab: {fileID: 2577321018060466692, guid: edaf83ab3bbcb804499f1cdb8e74d0ee, type: 3}
+  EmptyTileMarker: X
 --- !u!1001 &29639743506096790
 PrefabInstance:
   m_ObjectHideFlags: 0
