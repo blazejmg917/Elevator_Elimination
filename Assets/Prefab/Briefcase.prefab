@@ -25,6 +25,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: personKey
+      value: BC
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
       propertyPath: behavior.canPush
       value: 1
       objectReference: {fileID: 0}

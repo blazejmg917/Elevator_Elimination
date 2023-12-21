@@ -41,6 +41,9 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("tile holder object")] private GameObject tileHolder;
     [SerializeField, Tooltip("person holder object")]private GameObject personHolder;
     [SerializeField, Tooltip("the tile sprite setup script")]private TileSpritesSetup spritesSetup;
+
+    [SerializeField, Tooltip("the elevator IO class for reading and writing to file structure")]
+    private ElevatorIO io;
     [Header("tile fields")]
     [SerializeField, Tooltip("the size of each tile object. only used if there's no collider on tiles")] private Vector3 tileSize;
     private Vector3 realTileSize;
@@ -77,6 +80,15 @@ public class TileManager : MonoBehaviour
         }
         if(!spritesSetup){
             spritesSetup = FindObjectOfType<TileSpritesSetup>();
+        }
+
+        if (!io)
+        {
+            io = GetComponent<ElevatorIO>();
+            if (!io)
+            {
+                io = gameObject.AddComponent<ElevatorIO>();
+            }
         }
     }
 
@@ -130,7 +142,11 @@ public class TileManager : MonoBehaviour
         //Debug.Log("looking for tile people");
         //personHolder = PersonManager.Instance.GetPHolder().gameObject;
         //personHolder.transform.parent = transform;
-        personHolder = PersonManager.Instance.GetPHolder().gameObject;
+        if (!personHolder)
+        {
+            personHolder = PersonManager.Instance.GetPHolder().gameObject;
+        }
+
         PersonHolder pHolder = personHolder.GetComponent<PersonHolder>();
         pHolder.UpdateMap();
         //Debug.Log("tile lists " + tilesList.Count +", "+ tilesList[0].Count);
@@ -402,5 +418,21 @@ public class TileManager : MonoBehaviour
             }
         }
         spritesSetup.UpdateSprites(tilesList);
+    }
+
+    public string ConvertPersonKeyToID(string key)
+    {
+        return personHolder.GetComponent<PersonHolder>().GetIdByKey(key);
+    }
+
+    public GameObject GetPersonFromID(string id)
+    {
+        return personHolder.GetComponent<PersonHolder>().GetPersonById(id);
+    }
+
+    public void SaveLevelToFile()
+    {
+        int error;
+        io.WriteToFile(baseLevel, out error, "testLevel");
     }
 }
