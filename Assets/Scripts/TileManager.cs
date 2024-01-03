@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -90,6 +91,31 @@ public class TileManager : MonoBehaviour
                 io = gameObject.AddComponent<ElevatorIO>();
             }
         }
+    }
+
+    public void LoadLevelFromFile(string filename, bool overrideLevel = false)
+    {
+        if (!overrideLevel)
+        {
+            Debug.LogWarning("tried to overwrite data in inspector with level from file");
+            return;
+        }
+
+        Debug.Log("TileManager attempting to load level from file " + filename);
+        SetupElevatorList(7,7, overrideLevel);
+        int errorCode = 0;
+        io.ReadFromFile(filename, baseLevel, out errorCode);
+        if (errorCode != 0)
+        {
+            Debug.Log("Level Failed to Load: error code " + errorCode);
+            ClearLevel();
+            return;
+        }
+        Debug.Log("succesfully loaded level");
+        LoadLevel(baseLevel.GetTileList());
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        LevelManager.Instance.SetNumTargets(TargetCount);
+
     }
 
     public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
@@ -252,14 +278,18 @@ public class TileManager : MonoBehaviour
             tileHolder = new GameObject("Tile Holder");
             tileHolder.transform.parent = transform;
         }
+        tileHolder.transform.localPosition = new Vector3(0, 0, 0);
 
         tilesList = new List<ListWrapper<Tile>>();
-        for(int i = 0; i < xSize; i++)
+        Debug.Log("creating tiles with start at: " + tileStart + ", and size of " + realTileSize);
+        for (int i = 0; i < xSize; i++)
         {
             tilesList.Add(new ListWrapper<Tile>());
             for(int j = 0; j < ySize; j++)
             {
-                GameObject newTileObj = Instantiate(tilePrefab, new Vector3(tileStart.x + realTileSize.x * i, tileStart.y + realTileSize.y * j, tileStart.z), tilePrefab.transform.rotation, tileHolder.transform);
+                
+                GameObject newTileObj = Instantiate(tilePrefab, tileHolder.transform);
+                newTileObj.transform.localPosition = new Vector3(tileStart.x + realTileSize.x * i, tileStart.y + realTileSize.y * j, newTileObj.transform.localPosition.z);
                 newTileObj.name = "Tile " + i + ", " + j;
                 Tile newTile = newTileObj.GetComponent<Tile>();
                 if (!newTile)
@@ -434,5 +464,10 @@ public class TileManager : MonoBehaviour
     {
         int error;
         io.WriteToFile(baseLevel, out error, "testLevel");
+    }
+
+    public void UpdatePersonMap()
+    {
+        personHolder.GetComponent<PersonHolder>().UpdateMap();
     }
 }
