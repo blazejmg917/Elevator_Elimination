@@ -130,11 +130,13 @@ public class ElevatorIO : MonoBehaviour
                 sb.Append("\n");
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    Tile tile = tiles[(tiles[i].Count - 1) - j][i];
+                    Tile tile = tiles[j][(tiles.Count - 1) - i];
                     if (!tile)
                     {
                         sb.Append(EmptyTileMarker);
-                        sb.Append(";");
+                        if(j != tiles[i].Count - 1)
+                            sb.Append(";");
+                        
                         continue;
                     }
 
@@ -143,7 +145,8 @@ public class ElevatorIO : MonoBehaviour
                     if (!person)
                     {
                         sb.Append(EmptyTileMarker);
-                        sb.Append(";");
+                        if (j != tiles[i].Count - 1)
+                            sb.Append(";");
                         continue;
                     }
 
@@ -165,7 +168,8 @@ public class ElevatorIO : MonoBehaviour
                     sb.Append(person.GetKey());
                     sb.Append(",");
                     sb.Append(GetDirectionSignifier(person.GetDirection()));
-                    sb.Append(";");
+                    if (j != tiles[i].Count - 1)
+                        sb.Append(";");
 
 
                 }
@@ -245,10 +249,10 @@ public class ElevatorIO : MonoBehaviour
             Debug.Log("UNKNOWN ERROR TRYING TO READ FROM FILE");
             return false;
         }
-
+        Debug.Log("read: " + fileString);
         //try parsing data
         string[] fileStrings = fileString.Split("\n");
-
+        Debug.Log("split: " + fileStrings.Length);
         if (fileStrings.Length != 9)
         {
             errorCode = INVALIDLEVELSTRUCTURE;
@@ -277,11 +281,12 @@ public class ElevatorIO : MonoBehaviour
         GameObject owner = level.gameObject;
         for (int i = 2; i < fileStrings.Length; i++)
         {
+            Debug.Log("row: " + fileStrings[i].Trim());
             string[] levelRow = fileStrings[i].Trim().Split(";");
             if (levelRow.Length != 7)
             {
                 errorCode = INVALIDLEVELSTRUCTURE;
-                Debug.LogError("INVALID LEVEL STRUCTURE SIZE");
+                Debug.LogError("INVALID LEVEL STRUCTURE SIZE: " + levelRow.Length);
                 return false;
             }
             for (int j = 0; j < levelRow.Length; j++)
@@ -299,7 +304,7 @@ public class ElevatorIO : MonoBehaviour
                 }
 
                 Tile tile = tileList[j][((fileStrings.Length - 1) - i)];
-                string personId = TileManager.Instance.ConvertPersonKeyToID(tileStrings[1].Trim());
+                string personId = TileManager.Instance.ConvertPersonKeyToID(tileStrings[0].Trim());
                 if (personId == null)
                 {
                     errorCode = INVALIDPERSON;
