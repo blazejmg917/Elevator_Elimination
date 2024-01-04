@@ -214,7 +214,14 @@ public class TileManager : MonoBehaviour
         {
             for (int j = 0; j < tilesList[i].Count; j++)
             {
-                if(i > 0)
+
+                tilesList[i][j].gameObject.layer = LayerMask.NameToLayer("Tile");
+                if (!tilesList[i][j].GetComponent<TileHighlight>())
+                {
+                    tilesList[i][j].gameObject.AddComponent<TileHighlight>();
+                }
+
+                if (i > 0)
                 {
                     //Debug.Log("top: "+ i +", " + j);
                     tilesList[i][j].SetLeft(tilesList[i - 1][ j]);
@@ -239,6 +246,7 @@ public class TileManager : MonoBehaviour
                 tilesList[i][j].SetOffset(tileOffset);
             }
         }
+        
         startTile = tilesList[tilesList.Count / 2][ tilesList[0].Count-1];
         SetupTileSprites();
     }
@@ -469,5 +477,10 @@ public class TileManager : MonoBehaviour
     public void UpdatePersonMap()
     {
         personHolder.GetComponent<PersonHolder>().UpdateMap();
+    }
+
+    public Transform GetPersonHolderTransform()
+    {
+        return personHolder.transform;
     }
 }

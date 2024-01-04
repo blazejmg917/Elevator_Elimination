@@ -466,4 +466,9 @@ public class Person : MonoBehaviour
     {
         return personKey;
     }
+
+    public void SetColor(Color color)
+    {
+        spriteRen.color = color;
+    }
 }
