@@ -9,6 +9,8 @@ public class Draggable : MonoBehaviour
     //[SerializeField, Tooltip("the current transform to follow")]
     //private Transform dragFollowPoint;
     private bool dragged = false;
+
+    [SerializeField]private bool wasPlaced = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,12 +25,23 @@ public class Draggable : MonoBehaviour
     {
         if (dragged)
         {
-            transform.position = Input.mousePosition + (dragAttachPoint.position - transform.position);
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector3(mousePos.x, mousePos.y, 0) + (dragAttachPoint.position - transform.position);
         }
     }
 
     public void SetDragging(bool dragging)
     {
         dragged = dragging;
+    }
+
+    public void SetPlaced()
+    {
+        wasPlaced = true;
+    }
+
+    public bool WasPlaced()
+    {
+        return wasPlaced;
     }
 }

@@ -21,7 +21,8 @@ public class TileHighlight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        renderer = GetComponent<SpriteRenderer>();
+        tileScript = GetComponent<Tile>();
     }
 
     // Update is called once per frame
@@ -32,6 +33,7 @@ public class TileHighlight : MonoBehaviour
 
     public void SetDefaultColor()
     {
+        //Debug.Log("set default color");
         renderer.color = defaultColor;
         if (tileScript.GetPerson())
         {
@@ -41,7 +43,8 @@ public class TileHighlight : MonoBehaviour
 
     public void SetHoverColor(bool dragging)
     {
-        if (dragging && tileScript.GetPerson())
+        //Debug.Log("Set hover color");
+        if (dragging && !tileScript.CanPlaceHere())
         {
             renderer.color = errorColor;
         }

@@ -29,11 +29,28 @@ public class DraggableSpawner : MonoBehaviour
 
     public GameObject GetPrefab()
     {
-        return Instantiate(prefab);
+        GameObject draggable = Instantiate(prefab);
+        Person person = draggable.GetComponent<Person>();
+        if (person && person.HasDirection())
+        {
+            person.SetDirection(Person.Direction.DOWN);
+        }
+        else if (person && !person.HasDirection())
+        {
+            person.SetDirection(Person.Direction.NONE);
+        }
+
+        return draggable;
     }
 
     public void SetPrefab(GameObject newPrefab)
     {
         prefab = newPrefab;
     }
+
+    //public void OnMouseDown()
+    //{
+    //    Debug.Log("mouse down on spawner");
+    //    MouseFollowCreationScene.Instance.Grab(GetPrefab());
+    //}
 }

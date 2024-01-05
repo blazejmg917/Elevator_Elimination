@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     //[SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
     //[SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
     [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
+
+    [SerializeField,Tooltip("the filepath of the level to load when transitioning to the level editor scene. If empty, signifies making a new level")]
+    private string levelCreationFilename = "";
     // [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
     // [SerializeField, Tooltip("event played on game loss")]private GameLoseEvent gameOver = new GameLoseEvent();
     //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
@@ -77,6 +80,9 @@ public class GameManager : MonoBehaviour
         } else if (scene.name == levelSceneName){
             state = GameState.GameStart;
             LevelStart(currentLevel);
+        } else if (scene.name == "Level Creation Scene")
+        {
+            StartLevelCreator();
         }
     }
     // Update is called once per frame
@@ -267,6 +273,23 @@ public class GameManager : MonoBehaviour
 
     public int GetMaxFloors(){
         return maxFloors;
+    }
+
+    public void SetCreationLevelFilename(string filename)
+    {
+        levelCreationFilename = filename;
+    }
+
+    public void StartLevelCreator()
+    {
+        if (String.IsNullOrWhiteSpace(levelCreationFilename))
+        {
+            TileManager.Instance.SetupElevatorList(7,7,true);
+        }
+        else
+        {
+            TileManager.Instance.LoadLevelFromFile(levelCreationFilename, true);
+        }
     }
 
 

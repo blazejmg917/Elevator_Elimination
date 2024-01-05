@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4540510367576665654}
   - component: {fileID: 8614403576690391907}
   - component: {fileID: 7919002424278712389}
+  - component: {fileID: 8758730216164099152}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -55,6 +56,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 0}
   currentFacing: 0
+  hasDirection: 1
   behavior:
     canPush: 0
     canTurn: 0
@@ -152,3 +154,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8758730216164099152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457604167940142058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111d1a2c6ec5f5548902b9b270d670fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragAttachPoint: {fileID: 0}
+  wasPlaced: 0
