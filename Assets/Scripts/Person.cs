@@ -70,6 +70,8 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("the Tile this Person is on")] private Tile currentTile;
     [SerializeField, Tooltip("the direction this person is facing")]private Direction currentFacing = Direction.LEFT;
     private Direction lastFacing;
+    [SerializeField, Tooltip("if this object has any direction to it. If not, will be set to no direction by default")]
+    private bool hasDirection;
     [SerializeField, Tooltip("this person's behavior")] private personBehavior behavior = new personBehavior();
 
     private bool isMoving = false;
@@ -85,8 +87,16 @@ public class Person : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!hasDirection)
+        {
+            currentFacing = Direction.NONE;
+        }
         states = new Stack<(Tile, Direction, int)>();
-        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        if (currentTile)
+        {
+            transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        }
+
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
         if (!anim) {
@@ -465,5 +475,15 @@ public class Person : MonoBehaviour
     public string GetKey()
     {
         return personKey;
+    }
+
+    public void SetColor(Color color)
+    {
+        spriteRen.color = color;
+    }
+
+    public bool HasDirection()
+    {
+        return hasDirection;
     }
 }

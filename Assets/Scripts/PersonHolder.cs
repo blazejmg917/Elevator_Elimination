@@ -52,6 +52,11 @@ public class PersonHolder : MonoBehaviour
         return null;
     }
 
+    public List<GameObject> GetPersonList()
+    {
+        return people;
+    }
+
     // void OnValidate(){
     //     foreach()
     // }

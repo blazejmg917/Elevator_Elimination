@@ -21,6 +21,7 @@ public class ElevatorIO : MonoBehaviour
     public static int INVALIDDIRECTION = 9;
     public static int NOTARGETS = 10;
     public static int BLOCKEDDOORWAY = 11;
+    public static int INVALIDTURNCOUNT = 12;
 
 
     [SerializeField, Tooltip("the filepath where the custom levels are stored. Added onto the end of the default application filepath")]
@@ -52,8 +53,12 @@ public class ElevatorIO : MonoBehaviour
         
     }
 
-    public bool WriteToFile(LevelStructure level, out int errorCode, string fileName, bool overwrite = false)
+    public bool WriteToFile(LevelStructure level, out int errorCode, string fileName = "", bool overwrite = false)
     {
+        if (fileName == "")
+        {
+            fileName = level.GetLevelName();
+        }
         int numTargets = 0;
         errorCode = 0;
         if (!level)
@@ -95,6 +100,25 @@ public class ElevatorIO : MonoBehaviour
             return false;
         }
 
+        string turnCount;
+        try
+        {
+            int floors = level.GetFloors();
+            if (floors < 0 || floors > 99)
+            {
+                errorCode = INVALIDTURNCOUNT;
+                Debug.LogError("INVALID TURN COUNT: " + level.GetFloors());
+                return false;
+            }
+            turnCount = floors.ToString();
+        }
+        catch (Exception e)
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + level.GetFloors());
+            return false;
+        }
+
         string levelString;
         //try writing levelstructure to a string
         try
@@ -104,6 +128,8 @@ public class ElevatorIO : MonoBehaviour
             sb.Append(levelName);
             sb.Append("\n");
             sb.Append(creatorName);
+            sb.Append("\n");
+            sb.Append(turnCount);
             List<TileManager.ListWrapper<Tile>> tiles = level.GetTileList();
             if (tiles.Count != 7)
             {
@@ -175,6 +201,16 @@ public class ElevatorIO : MonoBehaviour
                 }
                 
             }
+
+            //check for valid targets
+            if (numTargets < 1)
+            {
+                errorCode = NOTARGETS;
+                Debug.LogError("LEVEL HAS NO TARGETS");
+                sb.Clear();
+                return false;
+            }
+
             levelString = sb.ToString();
             sb.Clear();
         }
@@ -184,6 +220,7 @@ public class ElevatorIO : MonoBehaviour
             Debug.LogError("UNKNOWN ERROR BUILDING STRING");
             return false;
         }
+
 
         //now that the string has been written, write it to a file
         try
@@ -201,13 +238,7 @@ public class ElevatorIO : MonoBehaviour
         }
 
 
-        //check for valid targets
-        if (numTargets < 1)
-        {
-            errorCode = NOTARGETS;
-            Debug.LogError("LEVEL HAS NO TARGETS");
-            return false;
-        }
+        
 
         return true;
 
@@ -253,7 +284,7 @@ public class ElevatorIO : MonoBehaviour
         //try parsing data
         string[] fileStrings = fileString.Split("\n");
         Debug.Log("split: " + fileStrings.Length);
-        if (fileStrings.Length != 9)
+        if (fileStrings.Length != 10)
         {
             errorCode = INVALIDLEVELSTRUCTURE;
             Debug.LogError("INVALID LEVEL STRUCTURE SIZE");
@@ -278,8 +309,36 @@ public class ElevatorIO : MonoBehaviour
         }
         level.SetCreatorName(creatorName);
 
+        string levelCount = fileStrings[2].Trim();
+        if (levelCount == null || string.IsNullOrWhiteSpace(levelCount))
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + levelCount);
+            return false;
+        }
+
+        int floors;
+        try
+        {
+            floors = int.Parse(levelCount);
+            if (floors < 0 || floors > 99)
+            {
+                errorCode = INVALIDTURNCOUNT;
+                Debug.LogError("INVALID TURN COUNT: " + floors);
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + levelCount);
+            return false;
+        }
+
+        level.SetFloors(floors);
+
         GameObject owner = level.gameObject;
-        for (int i = 2; i < fileStrings.Length; i++)
+        for (int i = 3; i < fileStrings.Length; i++)
         {
             Debug.Log("row: " + fileStrings[i].Trim());
             string[] levelRow = fileStrings[i].Trim().Split(";");

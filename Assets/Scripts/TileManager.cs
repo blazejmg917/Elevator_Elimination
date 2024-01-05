@@ -11,6 +11,8 @@ public class TileManager : MonoBehaviour
     [System.Serializable]
     public class TurnChangeEvent : UnityEvent<int>{};
     [System.Serializable]
+    public class LevelLoadEvent : UnityEvent<string,string,int> { };
+    [System.Serializable]
     public class ListWrapper<T>{
         public List<T> list = new List<T>();
         public T this[int key]
@@ -53,7 +55,9 @@ public class TileManager : MonoBehaviour
     [SerializeField, Tooltip("the tile structure file to load in")] private LevelStructure baseLevel;
     [SerializeField, Tooltip("the starting tile for the player to enter and exit from")] private Tile startTile;
     [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
-    
+
+    [SerializeField, Tooltip("event played when a level is loaded into the manager")] private LevelLoadEvent levelLoaded = new LevelLoadEvent();
+
     private int TargetCount = 0;
     private static TileManager _instance;
     public static TileManager Instance
@@ -115,7 +119,7 @@ public class TileManager : MonoBehaviour
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
         LevelManager.Instance.SetNumTargets(TargetCount);
-
+        levelLoaded.Invoke(baseLevel.GetLevelName(), baseLevel.GetCreator(), baseLevel.GetFloors());
     }
 
     public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)
@@ -141,6 +145,7 @@ public class TileManager : MonoBehaviour
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
         LevelManager.Instance.SetNumTargets(TargetCount);
+        levelLoaded.Invoke(baseLevel.GetLevelName(), baseLevel.GetCreator(), baseLevel.GetFloors());
     }
     public void LoadLevel(List<ListWrapper<Tile>> tileList)
     {
@@ -199,6 +204,12 @@ public class TileManager : MonoBehaviour
                         if(thisPerson.GetComponent<Person>().IsTarget()){
                             TargetCount++;
                         }
+
+                        if (thisPerson.GetComponent<Draggable>())
+                        {
+                            Debug.Log("setting placed");
+                            thisPerson.GetComponent<Draggable>().SetPlaced();
+                        }
                     }
                 }
                 
@@ -214,7 +225,14 @@ public class TileManager : MonoBehaviour
         {
             for (int j = 0; j < tilesList[i].Count; j++)
             {
-                if(i > 0)
+                tilesList[i][j].SetEntry(false);
+                tilesList[i][j].gameObject.layer = LayerMask.NameToLayer("Tile");
+                if (!tilesList[i][j].GetComponent<TileHighlight>())
+                {
+                    tilesList[i][j].gameObject.AddComponent<TileHighlight>();
+                }
+
+                if (i > 0)
                 {
                     //Debug.Log("top: "+ i +", " + j);
                     tilesList[i][j].SetLeft(tilesList[i - 1][ j]);
@@ -240,6 +258,7 @@ public class TileManager : MonoBehaviour
             }
         }
         startTile = tilesList[tilesList.Count / 2][ tilesList[0].Count-1];
+        startTile.SetEntry(true);
         SetupTileSprites();
     }
 
@@ -336,7 +355,9 @@ public class TileManager : MonoBehaviour
         }
     #if UNITY_EDITOR
     EditorUtility.SetDirty(baseLevel);
-    #endif
+    //EditorUtility.SetDirty(gameObject);
+    //EditorUtility.SetDirty(tileHolder);
+#endif
     }
 
     private void ClearLevel()
@@ -403,7 +424,13 @@ public class TileManager : MonoBehaviour
         if(baseLevel){
             EditorUtility.SetDirty(baseLevel);
         }
-    #endif
+
+        if (tileHolder)
+        {
+            //EditorUtility.SetDirty(tileHolder);
+        }
+        //EditorUtility.SetDirty(gameObject);
+#endif
     }
 
     public bool UpdateLevel()
@@ -460,14 +487,40 @@ public class TileManager : MonoBehaviour
         return personHolder.GetComponent<PersonHolder>().GetPersonById(id);
     }
 
-    public void SaveLevelToFile()
+    public int SaveLevelToFile()
     {
         int error;
-        io.WriteToFile(baseLevel, out error, "testLevel");
+        io.WriteToFile(baseLevel, out error);
+        return error;
     }
 
     public void UpdatePersonMap()
     {
         personHolder.GetComponent<PersonHolder>().UpdateMap();
+    }
+
+    public Transform GetPersonHolderTransform()
+    {
+        return personHolder.transform;
+    }
+
+    public void SetName(string newName)
+    {
+        baseLevel.SetLevelName(newName);
+    }
+
+    public void SetCreatorName(string newName)
+    {
+        baseLevel.SetCreatorName(newName);
+    }
+
+    public void SetFloorCount(int floorCount)
+    {
+        baseLevel.SetFloors(floorCount);
+    }
+
+    public List<GameObject> GetPeople()
+    {
+        return personHolder.GetComponent<PersonHolder>().GetPersonList();
     }
 }

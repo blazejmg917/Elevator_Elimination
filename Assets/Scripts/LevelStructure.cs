@@ -41,6 +41,11 @@ public class LevelStructure : MonoBehaviour
         return floors;
     }
 
+    public void SetFloors(int floorCount)
+    {
+        floors = floorCount;
+    }
+
     public string GetLevelName()
     {
         return levelName;
