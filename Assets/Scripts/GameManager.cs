@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
         if (Instance != this) return;
         if (scene.name == "MainMenu") {
             state = GameState.MainMenu;
+            SetCreationLevelFilename("");
+            SetCurrentLevel(0);
         } else if (scene.name == "HaleyTest") {
             state = GameState.GameStart;
         } else if (scene.name == "GameOver") {

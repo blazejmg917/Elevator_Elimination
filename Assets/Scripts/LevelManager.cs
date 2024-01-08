@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,8 +30,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField, Tooltip("event played when tutorial dialog completes")]private TutorialEndEvent tutorialEnd = new TutorialEndEvent();
     private bool waitingForTutorial = false;
     [SerializeField, Tooltip("current level ")]private int currentLevel = 0;
+    [SerializeField, Tooltip("current custom level filename")] private string currentLevelFile = "";
     [SerializeField, Tooltip("mark true once player has completed final level")]private bool completedFinalLevel = false;
     [SerializeField, Tooltip("the number of targets left to be killed in the current level")]private int numTargets = 0;
+    private bool customLevel = false;
 
     
     private static LevelManager _instance;
@@ -124,6 +127,22 @@ public class LevelManager : MonoBehaviour
         gameOver.Invoke(reason);
     }
 
+    public void CustomLevelStart(string filename = "")
+    {
+        customLevel = true;
+        if (String.IsNullOrEmpty(filename))
+        {
+            filename = currentLevelFile;
+        }
+        Debug.Log("starting custom level");
+        reset.Invoke();
+        eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
+        currentLevelFile = filename;
+        TileManager.Instance.LoadLevelFromFile(filename, true);
+        eMove.HideElevator();
+        cameraFade.StartFadeIn();
+    }
+
     public void LevelStart(int id = -1){
         if(id == -1){
             id = currentLevel;
@@ -142,7 +161,7 @@ public class LevelManager : MonoBehaviour
 
     public void CompleteLevel(){
         
-        if(currentLevel < levelHolder.GetLevelsCount()){
+        if(currentLevel < levelHolder.GetLevelsCount() && !customLevel){
             
         }
         else{

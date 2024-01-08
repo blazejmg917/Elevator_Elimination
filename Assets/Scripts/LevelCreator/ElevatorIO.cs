@@ -22,6 +22,7 @@ public class ElevatorIO : MonoBehaviour
     public static int NOTARGETS = 10;
     public static int BLOCKEDDOORWAY = 11;
     public static int INVALIDTURNCOUNT = 12;
+    public static int BUSY = -2;
 
 
     [SerializeField, Tooltip("the filepath where the custom levels are stored. Added onto the end of the default application filepath")]
@@ -33,7 +34,7 @@ public class ElevatorIO : MonoBehaviour
     [SerializeField, Tooltip("the symbol that represents an empty tile")]
     private string EmptyTileMarker = "X";
     //marked true if actively reading from or writing to a file to avoid duplicates
-    private bool handingReadWrite = false;
+    private bool handlingReadWrite = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +56,13 @@ public class ElevatorIO : MonoBehaviour
 
     public bool WriteToFile(LevelStructure level, out int errorCode, string fileName = "", bool overwrite = false)
     {
+        if (handlingReadWrite)
+        {
+            errorCode = BUSY;
+            Debug.Log("IO OPERATION ALREADY IN PROGRESS");
+            return false;
+        }
+        handlingReadWrite = true;
         if (fileName == "")
         {
             fileName = level.GetLevelName();
@@ -65,6 +73,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = INVALIDLEVELSTRUCTURE;
             Debug.LogError("INVALID LEVEL STRUCTURE");
+            handlingReadWrite = false;
             return false;
         }
 
@@ -72,6 +81,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = INVALIDFILENAME;
             Debug.LogError("LEVEL NAME IS EMPTY");
+            handlingReadWrite = false;
             return false;
         }
 
@@ -81,6 +91,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = DUPLICATEFILENAME;
             Debug.LogWarning("DUPLICATE FILENAME WITHOUT OVERRIDE");
+            handlingReadWrite = false;
             return false;
         }
 
@@ -89,6 +100,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = INVALIDLEVELNAME;
             Debug.LogError("INVALID LEVEL NAME: " + levelName);
+            handlingReadWrite = false;
             return false;
         }
 
@@ -97,6 +109,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = INVALIDCREATORNAME;
             Debug.LogError("INVALID CREATOR NAME: " + creatorName);
+            handlingReadWrite = false;
             return false;
         }
 
@@ -108,6 +121,7 @@ public class ElevatorIO : MonoBehaviour
             {
                 errorCode = INVALIDTURNCOUNT;
                 Debug.LogError("INVALID TURN COUNT: " + level.GetFloors());
+                handlingReadWrite = false;
                 return false;
             }
             turnCount = floors.ToString();
@@ -116,6 +130,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = INVALIDTURNCOUNT;
             Debug.LogError("INVALID TURN COUNT: " + level.GetFloors());
+            handlingReadWrite = false;
             return false;
         }
 
@@ -135,6 +150,7 @@ public class ElevatorIO : MonoBehaviour
             {
                 errorCode = INVALIDLEVELSTRUCTURE;
                 Debug.LogError("INVALID LEVEL STRUCTURE SIZE");
+                handlingReadWrite = false;
                 return false;
             }
             //check for open doorway
@@ -142,6 +158,7 @@ public class ElevatorIO : MonoBehaviour
             {
                 errorCode = BLOCKEDDOORWAY;
                 Debug.LogError("LEVEL HAS DOORWAY BLOCKED");
+                handlingReadWrite = false;
                 return false;
             }
 
@@ -151,6 +168,7 @@ public class ElevatorIO : MonoBehaviour
                 {
                     errorCode = INVALIDLEVELSTRUCTURE;
                     Debug.LogError("INVALID LEVEL STRUCTURE SIZE");
+                    handlingReadWrite = false;
                     return false;
                 }
                 sb.Append("\n");
@@ -183,6 +201,7 @@ public class ElevatorIO : MonoBehaviour
                         sb.Clear();
                         errorCode = INVALIDPERSON;
                         Debug.LogError("INVALID PERSON AT POSITION " + j + "," + i);
+                        handlingReadWrite = false;
                         return false;
                     }
 
@@ -208,6 +227,7 @@ public class ElevatorIO : MonoBehaviour
                 errorCode = NOTARGETS;
                 Debug.LogError("LEVEL HAS NO TARGETS");
                 sb.Clear();
+                handlingReadWrite = false;
                 return false;
             }
 
@@ -218,6 +238,7 @@ public class ElevatorIO : MonoBehaviour
         {
             errorCode = UNKNOWNERROR;
             Debug.LogError("UNKNOWN ERROR BUILDING STRING");
+            handlingReadWrite = false;
             return false;
         }
 
@@ -234,20 +255,22 @@ public class ElevatorIO : MonoBehaviour
         {
             Debug.LogError("UNKNOWN ERROR WRITING TO FILE " + e.Message);
             errorCode = UNKNOWNERROR;
+            handlingReadWrite = false;
             return false;
         }
 
 
-        
+        handlingReadWrite = false;
 
         return true;
 
 
     }
 
-    public bool ReadFromFile(string filename, LevelStructure level, out int errorCode, bool editMode = false)
+    public bool ReadFilePrecheck(string filename, out int errorCode, out string _levelName, out string _creatorName, bool editMode = false)
     {
-        int numTargets = 0;
+        _levelName = "";
+        _creatorName = "";
         errorCode = 0;
         if (filename == null || string.IsNullOrWhiteSpace(filename))
         {
@@ -265,8 +288,6 @@ public class ElevatorIO : MonoBehaviour
             return false;
         }
 
-        //try reading from file
-        List<TileManager.ListWrapper<Tile>> tileList = level.GetTileList();
         string fileString;
         try
         {
@@ -298,7 +319,7 @@ public class ElevatorIO : MonoBehaviour
             Debug.LogError("INVALID LEVEL NAME: " + levelName);
             return false;
         }
-        level.SetLevelName(levelName);
+        _levelName = levelName;
 
         string creatorName = fileStrings[1].Trim();
         if (creatorName == null || string.IsNullOrWhiteSpace(creatorName))
@@ -307,7 +328,95 @@ public class ElevatorIO : MonoBehaviour
             Debug.LogError("INVALID CREATOR NAME: " + creatorName);
             return false;
         }
-        level.SetCreatorName(creatorName);
+        _creatorName = creatorName;
+
+        string levelCount = fileStrings[2].Trim();
+        if (levelCount == null || string.IsNullOrWhiteSpace(levelCount))
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + levelCount);
+            return false;
+        }
+
+        int floors;
+        try
+        {
+            floors = int.Parse(levelCount);
+            if (floors < 0 || floors > 99)
+            {
+                errorCode = INVALIDTURNCOUNT;
+                Debug.LogError("INVALID TURN COUNT: " + floors);
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + levelCount);
+            return false;
+        }
+        
+        return true;
+    }
+
+    public bool ReadFileFullCheck(string filename, out int errorCode, bool editMode = false)
+    {
+        errorCode = 0;
+        if (filename == null || string.IsNullOrWhiteSpace(filename))
+        {
+            errorCode = INVALIDFILENAME;
+            Debug.Log("can't read invalid filename of " + filename);
+            return false;
+        }
+
+        string filepath = Application.persistentDataPath + folderFilePath + "/" + filename;
+        Debug.Log("trying to read from filepath: " + filepath);
+        if (!System.IO.File.Exists(filepath))
+        {
+            errorCode = NONEXISTENTFILE;
+            Debug.Log("COULD NOT FIND FILE");
+            return false;
+        }
+
+        string fileString;
+        try
+        {
+            StreamReader sr = new StreamReader(filepath);
+            fileString = sr.ReadToEnd();
+            sr.Close();
+        }
+        catch (Exception e)
+        {
+            errorCode = UNKNOWNERROR;
+            Debug.Log("UNKNOWN ERROR TRYING TO READ FROM FILE");
+            return false;
+        }
+        Debug.Log("read: " + fileString);
+        //try parsing data
+        string[] fileStrings = fileString.Split("\n");
+        Debug.Log("split: " + fileStrings.Length);
+        if (fileStrings.Length != 10)
+        {
+            errorCode = INVALIDLEVELSTRUCTURE;
+            Debug.LogError("INVALID LEVEL STRUCTURE SIZE");
+            return false;
+        }
+
+        string levelName = fileStrings[0].Trim();
+        if (levelName == null || string.IsNullOrWhiteSpace(levelName))
+        {
+            errorCode = INVALIDLEVELNAME;
+            Debug.LogError("INVALID LEVEL NAME: " + levelName);
+            return false;
+        }
+
+        string creatorName = fileStrings[1].Trim();
+        if (creatorName == null || string.IsNullOrWhiteSpace(creatorName))
+        {
+            errorCode = INVALIDCREATORNAME;
+            Debug.LogError("INVALID CREATOR NAME: " + creatorName);
+            return false;
+        }
 
         string levelCount = fileStrings[2].Trim();
         if (levelCount == null || string.IsNullOrWhiteSpace(levelCount))
@@ -335,9 +444,8 @@ public class ElevatorIO : MonoBehaviour
             return false;
         }
 
-        level.SetFloors(floors);
+        int numTargets = 0;
 
-        GameObject owner = level.gameObject;
         for (int i = 3; i < fileStrings.Length; i++)
         {
             Debug.Log("row: " + fileStrings[i].Trim());
@@ -362,12 +470,183 @@ public class ElevatorIO : MonoBehaviour
                     return false;
                 }
 
+                //Tile tile = tileList[j][((fileStrings.Length - 1) - i)];
+                string personId = TileManager.Instance.ConvertPersonKeyToID(tileStrings[0].Trim());
+                if (personId == null)
+                {
+                    errorCode = INVALIDPERSON;
+                    Debug.LogError("COULD NOT FIND ID TO MATCH KEY: " + tileStrings[0].Trim());
+                    return false;
+                }
+                //tile.SetPersonId(personId);
+                if (TileManager.Instance.GetPersonFromID(personId).GetComponent<Person>().IsTarget())
+                {
+                    numTargets++;
+                }
+
+                Person.Direction dir;
+                if (!GetDirection(tileStrings[1], out dir))
+                {
+                    errorCode = INVALIDTILE;
+                    Debug.LogError("INVALID TILE DIRECTION FOUND");
+                    return false;
+                }
+            }
+        }
+
+        //if level is to be loaded in to be played, ensure there is at least one target
+        if (!editMode && numTargets <= 0 && !editMode)
+        {
+            errorCode = NOTARGETS;
+            Debug.LogError("LEVEL HAS NO TARGETS");
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool ReadFromFile(string filename, LevelStructure level, out int errorCode, bool editMode = false)
+    {
+        if (handlingReadWrite)
+        {
+            errorCode = BUSY;
+            Debug.Log("IO OPERATION ALREADY IN PROGRESS");
+            return false;
+        }
+        handlingReadWrite = true;
+        int numTargets = 0;
+        errorCode = 0;
+        if (filename == null || string.IsNullOrWhiteSpace(filename))
+        {
+            errorCode = INVALIDFILENAME;
+            Debug.Log("can't read invalid filename of " + filename);
+            handlingReadWrite = false;
+            return false;
+        }
+
+        string filepath = Application.persistentDataPath + folderFilePath + "/" + filename;
+        Debug.Log("trying to read from filepath: " + filepath);
+        if (!System.IO.File.Exists(filepath))
+        {
+            errorCode = NONEXISTENTFILE;
+            Debug.Log("COULD NOT FIND FILE");
+            handlingReadWrite = false;
+            return false;
+        }
+
+        //try reading from file
+        List<TileManager.ListWrapper<Tile>> tileList = level.GetTileList();
+        string fileString;
+        try
+        {
+            StreamReader sr = new StreamReader(filepath);
+            fileString = sr.ReadToEnd();
+            sr.Close();
+        }
+        catch (Exception e)
+        {
+            errorCode = UNKNOWNERROR;
+            Debug.Log("UNKNOWN ERROR TRYING TO READ FROM FILE");
+            handlingReadWrite = false;
+            return false;
+        }
+        Debug.Log("read: " + fileString);
+        //try parsing data
+        string[] fileStrings = fileString.Split("\n");
+        Debug.Log("split: " + fileStrings.Length);
+        if (fileStrings.Length != 10)
+        {
+            errorCode = INVALIDLEVELSTRUCTURE;
+            Debug.LogError("INVALID LEVEL STRUCTURE SIZE");
+            handlingReadWrite = false;
+            return false;
+        }
+
+        string levelName = fileStrings[0].Trim();
+        if (levelName == null || string.IsNullOrWhiteSpace(levelName))
+        {
+            errorCode = INVALIDLEVELNAME;
+            Debug.LogError("INVALID LEVEL NAME: " + levelName);
+            handlingReadWrite = false;
+            return false;
+        }
+        level.SetLevelName(levelName);
+
+        string creatorName = fileStrings[1].Trim();
+        if (creatorName == null || string.IsNullOrWhiteSpace(creatorName))
+        {
+            errorCode = INVALIDCREATORNAME;
+            Debug.LogError("INVALID CREATOR NAME: " + creatorName);
+            handlingReadWrite = false;
+            return false;
+        }
+        level.SetCreatorName(creatorName);
+
+        string levelCount = fileStrings[2].Trim();
+        if (levelCount == null || string.IsNullOrWhiteSpace(levelCount))
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + levelCount);
+            handlingReadWrite = false;
+            return false;
+        }
+
+        int floors;
+        try
+        {
+            floors = int.Parse(levelCount);
+            if (floors < 0 || floors > 99)
+            {
+                errorCode = INVALIDTURNCOUNT;
+                Debug.LogError("INVALID TURN COUNT: " + floors);
+                handlingReadWrite = false;
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            errorCode = INVALIDTURNCOUNT;
+            Debug.LogError("INVALID TURN COUNT: " + levelCount);
+            handlingReadWrite = false;
+            return false;
+        }
+
+        level.SetFloors(floors);
+
+        GameObject owner = level.gameObject;
+        for (int i = 3; i < fileStrings.Length; i++)
+        {
+            Debug.Log("row: " + fileStrings[i].Trim());
+            string[] levelRow = fileStrings[i].Trim().Split(";");
+            if (levelRow.Length != 7)
+            {
+                errorCode = INVALIDLEVELSTRUCTURE;
+                Debug.LogError("INVALID LEVEL STRUCTURE SIZE: " + levelRow.Length);
+                handlingReadWrite = false;
+                return false;
+            }
+            for (int j = 0; j < levelRow.Length; j++)
+            {
+                if (levelRow[j].ToUpper().Trim() == EmptyTileMarker)
+                {
+                    continue;
+                }
+                string[] tileStrings = levelRow[j].Split(",");
+                if (tileStrings.Length != 2)
+                {
+                    errorCode = INVALIDTILE;
+                    Debug.LogError("INVALID TILE STRING FOUND");
+                    handlingReadWrite = false;
+                    return false;
+                }
+
                 Tile tile = tileList[j][((fileStrings.Length - 1) - i)];
                 string personId = TileManager.Instance.ConvertPersonKeyToID(tileStrings[0].Trim());
                 if (personId == null)
                 {
                     errorCode = INVALIDPERSON;
                     Debug.LogError("COULD NOT FIND ID TO MATCH KEY: " + tileStrings[0].Trim());
+                    handlingReadWrite = false;
                     return false;
                 }
                 tile.SetPersonId(personId);
@@ -381,6 +660,7 @@ public class ElevatorIO : MonoBehaviour
                 {
                     errorCode = INVALIDTILE;
                     Debug.LogError("INVALID TILE DIRECTION FOUND");
+                    handlingReadWrite = false;
                     return false;
                 }
                 tile.SetDirection(dir);
@@ -388,13 +668,15 @@ public class ElevatorIO : MonoBehaviour
         }
 
         //if level is to be loaded in to be played, ensure there is at least one target
-        if (!editMode && numTargets <= 0)
+        if (!editMode && numTargets <= 0 && !editMode)
         {
             errorCode = NOTARGETS;
             Debug.LogError("LEVEL HAS NO TARGETS");
+            handlingReadWrite = false;
             return false;
         }
 
+        handlingReadWrite = false;
         return true;
     }
 
@@ -438,5 +720,24 @@ public class ElevatorIO : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    public List<string[]> GetCustomFiles(bool editMode)
+    {
+        string directory = Application.persistentDataPath + folderFilePath;
+        string[] files = Directory.GetFiles(directory);
+        List<string[]> finalFiles = new List<string[]>();
+        foreach (string file in files)
+        {
+            int errorCode;
+            string[] thisFile = new string[3];
+            thisFile[0] = file;
+            if (ReadFilePrecheck(file, out errorCode, out thisFile[1], out thisFile[2], editMode))
+            {
+                finalFiles.Add(thisFile);
+            }
+        }
+
+        return finalFiles;
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelCreationUiHandler : MonoBehaviour
 {
@@ -71,5 +72,10 @@ public class LevelCreationUiHandler : MonoBehaviour
             return;
         }
         errorText.text = "Failed to save level, error code: " + errorCode;
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
