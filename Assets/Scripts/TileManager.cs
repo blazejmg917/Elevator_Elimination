@@ -97,12 +97,12 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public void LoadLevelFromFile(string filename, bool overrideLevel = false)
+    public bool LoadLevelFromFile(string filename, bool overrideLevel = false)
     {
         if (!overrideLevel)
         {
             Debug.LogWarning("tried to overwrite data in inspector with level from file");
-            return;
+            return false;
         }
 
         Debug.Log("TileManager attempting to load level from file " + filename);
@@ -113,13 +113,14 @@ public class TileManager : MonoBehaviour
         {
             Debug.Log("Level Failed to Load: error code " + errorCode);
             ClearLevel();
-            return;
+            return false;
         }
         Debug.Log("succesfully loaded level");
         LoadLevel(baseLevel.GetTileList());
         GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
         LevelManager.Instance.SetNumTargets(TargetCount);
         levelLoaded.Invoke(baseLevel.GetLevelName(), baseLevel.GetCreator(), baseLevel.GetFloors());
+        return true;
     }
 
     public void LoadLevelList(LevelStructure levelStructure, bool setStructureAsTileHolder = false)

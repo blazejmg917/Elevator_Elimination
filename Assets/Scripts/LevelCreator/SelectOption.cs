@@ -32,6 +32,7 @@ public class SelectOption : MonoBehaviour
 
     public void Select()
     {
+        Debug.Log("selecting");
         button.interactable = false;
         holder.SetNewOption(this);
     }
@@ -41,10 +42,15 @@ public class SelectOption : MonoBehaviour
         button.interactable = true;
     }
 
-    public void SetOption(string level, string creator, CustomLevelSelect owner)
+    public void SetOption(string file, string level, string creator, CustomLevelSelect owner)
     {
         textDisplay.text = level.Trim() + "\nBY: " + creator.Trim();
         holder = owner;
-        filepath = level.Trim();
+        filepath = file.Trim();
+    }
+
+    public string GetLevel()
+    {
+        return filepath;
     }
 }

@@ -9,8 +9,15 @@ public class MainMenuCustomUI : MonoBehaviour
     private GameObject mainMenuCanvas;
     [SerializeField, Tooltip("the custom menu canvas")]
     private GameObject customMenuCanvas;
+
+    [SerializeField, Tooltip("the custom menu file reader script")]
+    private CustomLevelSelect customLevels;
+
     [SerializeField, Tooltip("the custom creation menu canvas")]
     private GameObject customCreationMenuCanvas;
+
+    [SerializeField, Tooltip("the custom creation menu file reader script")]
+    private CustomLevelSelect customCreateLevels;
 
     [SerializeField, Tooltip("the name of the level creation scene")]
     private string levelEditorSceneName = "Level Creation Scene";
@@ -21,6 +28,7 @@ public class MainMenuCustomUI : MonoBehaviour
     {
         customMenuCanvas.SetActive(true);
         mainMenuCanvas.SetActive(false);
+        customLevels.LoadLevels();
     }
 
     public void CloseCustomMenu()
@@ -29,18 +37,21 @@ public class MainMenuCustomUI : MonoBehaviour
         GameManager.Instance.SetCreationLevelFilename("");
         customMenuCanvas.SetActive(false);
         mainMenuCanvas.SetActive(true);
+        customLevels.ClearOptions();
     }
 
     public void CloseCreationMenu()
     {
         customCreationMenuCanvas.SetActive(false);
         customMenuCanvas.SetActive(true);
+        customCreateLevels.ClearOptions();
     }
 
     public void OpenCreationMenu()
     {
         customCreationMenuCanvas.SetActive(true);
         customMenuCanvas.SetActive(false);
+        customCreateLevels.LoadLevels();
     }
 
     public void CreateNewCustomLevel()
@@ -66,6 +77,7 @@ public class MainMenuCustomUI : MonoBehaviour
     {
         customCreationMenuCanvas.SetActive(false);
         customMenuCanvas.SetActive(false);
+        mainMenuCanvas.SetActive(true);
     }
 
 }

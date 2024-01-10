@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -138,12 +139,17 @@ public class LevelManager : MonoBehaviour
         reset.Invoke();
         eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
         currentLevelFile = filename;
-        TileManager.Instance.LoadLevelFromFile(filename, true);
+        if (!TileManager.Instance.LoadLevelFromFile(filename, true))
+        {
+            //SceneManager.LoadScene(0);
+        }
         eMove.HideElevator();
         cameraFade.StartFadeIn();
     }
 
-    public void LevelStart(int id = -1){
+    public void LevelStart(int id = -1)
+    {
+        customLevel = false;
         if(id == -1){
             id = currentLevel;
         }

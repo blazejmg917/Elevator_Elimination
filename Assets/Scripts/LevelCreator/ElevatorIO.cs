@@ -284,7 +284,7 @@ public class ElevatorIO : MonoBehaviour
         if (!System.IO.File.Exists(filepath))
         {
             errorCode = NONEXISTENTFILE;
-            Debug.Log("COULD NOT FIND FILE");
+            Debug.Log("COULD NOT FIND FILE " + filepath);
             return false;
         }
 
@@ -731,8 +731,8 @@ public class ElevatorIO : MonoBehaviour
         {
             int errorCode;
             string[] thisFile = new string[3];
-            thisFile[0] = file;
-            if (ReadFilePrecheck(file, out errorCode, out thisFile[1], out thisFile[2], editMode))
+            thisFile[0] = System.IO.Path.GetFileName(file);
+            if (ReadFilePrecheck(thisFile[0], out errorCode, out thisFile[1], out thisFile[2], editMode))
             {
                 finalFiles.Add(thisFile);
             }
