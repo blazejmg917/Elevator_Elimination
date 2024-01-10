@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
         if (Instance != this) return;
         if (scene.name == "MainMenu") {
             state = GameState.MainMenu;
+            SetCreationLevelFilename("");
+            SetCurrentLevel(0);
         } else if (scene.name == "HaleyTest") {
             state = GameState.GameStart;
         } else if (scene.name == "GameOver") {
@@ -193,8 +195,15 @@ public class GameManager : MonoBehaviour
     
 
     public void LevelStart(int id){
-        
-        LevelManager.Instance.LevelStart(id);
+
+        if (id == -1 && !string.IsNullOrWhiteSpace(levelCreationFilename))
+        {
+            LevelManager.Instance.CustomLevelStart(levelCreationFilename);
+        }
+        else
+        {
+            LevelManager.Instance.LevelStart(id);
+        }
         currentLevel = id;
         //turnChangeEvent.Invoke(currentFloor);
         //currentLevel = id;

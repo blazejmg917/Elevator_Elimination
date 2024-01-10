@@ -32,17 +32,25 @@ public class PersonHolder : MonoBehaviour
     }
 
     public GameObject GetPersonById(string id){
+        if (peopleMap == null || peopleMap.Count == 0)
+        {
+            UpdateMap();
+        }
         GameObject result;
         if(peopleMap.TryGetValue(id, out result)){
             return result;
         }
-        Debug.Log("Could not find person with id of " + id);
+        Debug.Log("Could not find person with id of " + id + " with size of " + peopleMap.Count);
         return null;
 
     }
 
     public string GetIdByKey(string key)
     {
+        if (peopleMap == null || peopleMap.Count == 0)
+        {
+            UpdateMap();
+        }
         string result;
         if (peopleKeyMap.TryGetValue(key, out result))
         {
