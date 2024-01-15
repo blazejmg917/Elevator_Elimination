@@ -212,7 +212,10 @@ public class Person : MonoBehaviour
     /*
      * Undoes tap or push depending on if the floor number of the last action matches the current floor
      */
-    public void UndoState() {
+    public bool UndoState() {
+        if (states.Count != 0) {
+            Debug.Log("floor number: " + states.Peek().floorNumber);
+        }
         if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
@@ -225,9 +228,13 @@ public class Person : MonoBehaviour
             if (currentFacing != lastFacing) {
                 currentFacing = lastFacing;
                 TurnSprite();
+                // GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                // TileManager.Instance.UpdateLevel();
             }
             states.Pop();
+            return true;
         }
+        return false;
     }
 
     private void BeforeInteract(){
@@ -337,6 +344,9 @@ public class Person : MonoBehaviour
     {
         if (behavior.canTurn)
         {
+            if ((dir == PlayerMechanics.DirectionFacing.Right && currentFacing == Direction.LEFT) || (dir == PlayerMechanics.DirectionFacing.Left && currentFacing == Direction.RIGHT) || (dir == PlayerMechanics.DirectionFacing.Down && currentFacing == Direction.UP) || (dir == PlayerMechanics.DirectionFacing.Up && currentFacing == Direction.DOWN)) {
+                return false;
+            }
             BeforeInteract();
             states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             switch (dir)
