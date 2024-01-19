@@ -6871,7 +6871,7 @@ MonoBehaviour:
   errorText: {fileID: 195211042}
   nameText: {fileID: 747531810}
   creatorText: {fileID: 12580062}
-  floorCountText: {fileID: 0}
+  floorCountText: {fileID: 1904003337}
   levelChanged: 0
 --- !u!224 &946813256 stripped
 RectTransform:
