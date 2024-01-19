@@ -35,6 +35,9 @@ public class ElevatorIO : MonoBehaviour
     private string EmptyTileMarker = "X";
     //marked true if actively reading from or writing to a file to avoid duplicates
     private bool handlingReadWrite = false;
+
+    [SerializeField, Tooltip("the personHolder to use for prechecking")]
+    private PersonHolder preCheckPHolder;
     // Start is called before the first frame update
     void Start()
     {
@@ -471,7 +474,7 @@ public class ElevatorIO : MonoBehaviour
                 }
 
                 //Tile tile = tileList[j][((fileStrings.Length - 1) - i)];
-                string personId = TileManager.Instance.ConvertPersonKeyToID(tileStrings[0].Trim());
+                string personId = preCheckPHolder.GetIdByKey(tileStrings[0].Trim());//.Instance.ConvertPersonKeyToID(tileStrings[0].Trim());
                 if (personId == null)
                 {
                     errorCode = INVALIDPERSON;
@@ -479,7 +482,7 @@ public class ElevatorIO : MonoBehaviour
                     return false;
                 }
                 //tile.SetPersonId(personId);
-                if (TileManager.Instance.GetPersonFromID(personId).GetComponent<Person>().IsTarget())
+                if(preCheckPHolder.GetPersonById(personId).GetComponent<Person>().IsTarget())//if (TileManager.Instance.GetPersonFromID(personId).GetComponent<Person>().IsTarget())
                 {
                     numTargets++;
                 }
