@@ -12687,7 +12687,7 @@ GameObject:
   - component: {fileID: 1630476731}
   - component: {fileID: 1630476730}
   m_Layer: 0
-  m_Name: New Game Object
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
