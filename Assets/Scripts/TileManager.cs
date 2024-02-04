@@ -524,4 +524,35 @@ public class TileManager : MonoBehaviour
     {
         return personHolder.GetComponent<PersonHolder>().GetPersonList();
     }
+
+    public bool TrySaveToString(out string result, out int errorCode)
+    {
+        bool val = io.WriteToString(baseLevel, out result, out errorCode);
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        return val; 
+    }
+
+    public bool TryLoadFromString(string str, out int errorCode, bool editMode)
+    {
+
+
+        SetupElevatorList(7, 7, true);
+        errorCode = 0;
+        if (!io.ReadFromString(str, baseLevel, out errorCode, editMode))
+        {
+            //Debug.Log("Level Failed to Load: error code " + errorCode);
+            ClearLevel();
+            return false;
+        }
+        Debug.Log("succesfully loaded level");
+        LoadLevel(baseLevel.GetTileList());
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        LevelManager.Instance.SetNumTargets(TargetCount);
+        levelLoaded.Invoke(baseLevel.GetLevelName(), baseLevel.GetCreator(), baseLevel.GetFloors());
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        return true;
+        
+        LoadLevelList(baseLevel, true);
+    }
+
 }

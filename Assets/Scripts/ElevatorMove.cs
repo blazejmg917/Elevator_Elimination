@@ -107,6 +107,15 @@ public class ElevatorMove : MonoBehaviour
         elevator.position = OffScreenPos;
     }
 
+    public void ShowElevatorImmediate()
+    {
+        elevator.position = mainGamePos;
+        enteringScreen = false;
+        exitingScreen = false;
+        transitionTimer = -1;
+        bouncing = false;
+    }
+
 
 
     public void EnterScreen(bool SceneChange = false){

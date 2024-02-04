@@ -77,6 +77,10 @@ public class FloorNumbersSetup : MonoBehaviour
     }
 
     public void SetupNumbers(int floor){
+        if (floor == -1)
+        {
+            floor = GameManager.Instance.GetCurrentFloor();
+        }
         int maxFloors = GameManager.Instance.GetMaxFloors();
         if(floor > 99 || floor < 0){
             Debug.LogError("Invalid floor number " + floor);
