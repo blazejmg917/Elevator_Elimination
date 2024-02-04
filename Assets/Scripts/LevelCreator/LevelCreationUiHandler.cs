@@ -78,4 +78,17 @@ public class LevelCreationUiHandler : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void DisplayError(string error)
+    {
+        errorText.text = error;
+    }
+
+    public void SetUIActive(bool active)
+    {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(active);
+        }
+    }
 }
