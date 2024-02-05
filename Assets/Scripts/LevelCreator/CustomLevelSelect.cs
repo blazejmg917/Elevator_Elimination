@@ -126,7 +126,7 @@ public class CustomLevelSelect : MonoBehaviour
                 }
 
                 finalButton.interactable = false;
-                errorText.text = "Cannot load level " + option.GetLevel() + ": error code " + error;
+                errorText.text = "Cannot load level " + option.GetLevel() + ": error code " + error + ": " + GameManager.Instance.GetErrorCodeMessage(error);
             }
             
         }

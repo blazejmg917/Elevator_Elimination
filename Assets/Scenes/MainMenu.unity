@@ -947,6 +947,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5024845338591460149, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: errorCodes
+      value: 
+      objectReference: {fileID: 1552888464}
+    - target: {fileID: 5024845338591460149, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
       propertyPath: levelSceneName
       value: camera pos testing scene
       objectReference: {fileID: 0}
@@ -961,7 +965,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1552888464}
   m_SourcePrefab: {fileID: 100100000, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
 --- !u!223 &1081922305 stripped
 Canvas:
@@ -1497,6 +1504,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1607216419399355920, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
   m_PrefabInstance: {fileID: 8420897974106649126}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1552888460 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+  m_PrefabInstance: {fileID: 1015389197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1552888464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552888460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4dbf8802f4ee344abb495a3c98ab5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  errorCodes:
+  - code: 1
+    message: Duplicate File Name
+  - code: 2
+    message: Invalid File Name
+  - code: 3
+    message: Invalid Level Structure
+  - code: 4
+    message: Invalid Person Signature
+  - code: 5
+    message: File Not Found
+  - code: 6
+    message: Invalid Level Name
+  - code: 7
+    message: Invalid Creator Name
+  - code: 8
+    message: Invalid Tile Signature
+  - code: 9
+    message: Invalid Person Direction Signature
+  - code: 10
+    message: No Target Found In Level
+  - code: 11
+    message: Doorway Entry Blocked
+  - code: 12
+    message: Invalid Turn Count
+  - code: -2
+    message: Process Busy, try again or restart program
 --- !u!1 &1576955236
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,9 +34,10 @@ public class LevelCreationTester : MonoBehaviour
         int errorCode;
         if (!TileManager.Instance.TrySaveToString(out levelString, out errorCode))
         {
-            uiHandler.DisplayError("Can't test level, error code " + errorCode);
+            uiHandler.DisplayError("Can't test level, error code " + errorCode + ": " + GameManager.Instance.GetErrorCodeMessage(errorCode));
             return;
         }
+        uiHandler.DisplayError("");
         Debug.Log("testing begun on " + levelString);
         savedLevelString = levelString;
         testing = true;
@@ -57,7 +58,7 @@ public class LevelCreationTester : MonoBehaviour
             int errorCode;
             if (!TileManager.Instance.TryLoadFromString(savedLevelString, out errorCode, true))
             {
-                uiHandler.DisplayError("Can't load in level, error code " + errorCode);
+                uiHandler.DisplayError("Can't load in level, error code " + errorCode + ": " + GameManager.Instance.GetErrorCodeMessage(errorCode));
             }
         }
         else
@@ -83,7 +84,7 @@ public class LevelCreationTester : MonoBehaviour
             int errorCode;
             if (!TileManager.Instance.TryLoadFromString(savedLevelString, out errorCode, true))
             {
-                uiHandler.DisplayError("Can't load in level, error code " + errorCode);
+                uiHandler.DisplayError("Can't load in level, error code " + errorCode + ": " + GameManager.Instance.GetErrorCodeMessage(errorCode));
                 StopTesting();
                 return;
             }

@@ -139,7 +139,7 @@ public class LevelManager : MonoBehaviour
         reset.Invoke();
         eMove.SetElevatorTransform(TileManager.Instance.gameObject.transform.parent);
         currentLevelFile = filename;
-        string error;
+        int error;
         if (!TileManager.Instance.LoadLevelFromFile(filename, out error,true))
         {
             Debug.LogWarning("level manager found error in file");
