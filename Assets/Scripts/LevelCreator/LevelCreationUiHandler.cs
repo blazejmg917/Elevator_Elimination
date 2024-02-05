@@ -18,10 +18,20 @@ public class LevelCreationUiHandler : MonoBehaviour
     [SerializeField, Tooltip("If the level has been changed since it was last saved")]
     private bool levelChanged = false;
 
+    [SerializeField, Tooltip("save confirmation dialog")]
+    private LevelConfirmationUI saveConfirm;
+
+    private string prevName;
+    private string prevCreator;
+    private string prevFloors;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!saveConfirm)
+        {
+            saveConfirm = FindObjectOfType<LevelConfirmationUI>(true);
+        }
     }
 
     // Update is called once per frame
@@ -62,20 +72,32 @@ public class LevelCreationUiHandler : MonoBehaviour
         LevelChanged();
     }
 
-    public void TrySaveLevel()
+    public void TrySaveLevel(bool overWrite = false)
     {
-        int errorCode = TileManager.Instance.SaveLevelToFile();
+        int errorCode = TileManager.Instance.SaveLevelToFile(overWrite);
         if (errorCode == 0)
         {
             levelChanged = false;
             errorText.text = "Level Saved succesfully";
             return;
         }
-        errorText.text = "Failed to save level, error code: " + errorCode;
+
+        if (errorCode == ElevatorIO.DUPLICATEFILENAME)
+        {
+            saveConfirm.DisplayConfirmationDialog(nameText.text);
+            return;
+        }
+        string errorMessage = "Failed to save level, error code " + errorCode + ": " +
+                              GameManager.Instance.GetErrorCodeMessage(errorCode);
+        errorText.text = errorMessage;
     }
 
-    public void BackToMenu()
+    public void BackToMenu(bool confirm = false)
     {
+        //if (!confirm && levelChanged)
+        //{
+        //    return;
+        //}
         SceneManager.LoadScene(0);
     }
 

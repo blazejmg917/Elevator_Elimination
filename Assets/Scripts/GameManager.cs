@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     // [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
     // [SerializeField, Tooltip("event played on game loss")]private GameLoseEvent gameOver = new GameLoseEvent();
     //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
-
+    private int errorCode = 0;
     private enum GameState
     {
         MainMenu,
@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     private String[] menuOptions = {"Play", "Level Select", "Quit", "Control Mode"};
     private int menuIndex = 0;
     [SerializeField] private String highlightedMenu = "Play";
+    [SerializeField] private ErrorCodeReference errorCodes;
     public static GameManager Instance
     {
         get
@@ -75,6 +76,14 @@ public class GameManager : MonoBehaviour
             state = GameState.MainMenu;
             SetCreationLevelFilename("");
             SetCurrentLevel(0);
+            if (errorCode != 0)
+            {
+                string errorMessage = "Could not load level. error code " + errorCode + ": ";
+                string error;
+                errorMessage += GetErrorCodeMessage(errorCode);
+                FindObjectOfType<MenuErrorScript>(true).DisplayError(errorMessage);
+                errorCode = 0;
+            }
         } else if (scene.name == "HaleyTest") {
             state = GameState.GameStart;
         } else if (scene.name == "GameOver") {
@@ -101,6 +110,11 @@ public class GameManager : MonoBehaviour
         }
         if(Instance != this){
             Destroy(gameObject);
+        }
+
+        if (!errorCodes)
+        {
+            errorCodes = GetComponent<ErrorCodeReference>();
         }
         
     }
@@ -297,8 +311,33 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            TileManager.Instance.LoadLevelFromFile(levelCreationFilename, true);
+            int error;
+            if (!TileManager.Instance.LoadLevelFromFile(levelCreationFilename,out error, true))
+            {
+                Debug.Log("Game manager found problem with tile structure");
+                errorCode = error;
+                QuitToMenu();
+            }
         }
+    }
+
+    public void SetError(int error)
+    {
+        errorCode = error;
+    }
+
+    public string GetErrorCodeMessage(int code)
+    {
+        if (errorCodes)
+        {
+            string message = errorCodes.GetErrorMessage(code);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                return message;
+            }
+        }
+
+        return "Unknown Error";
     }
 
 

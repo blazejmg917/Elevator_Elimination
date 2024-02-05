@@ -97,8 +97,9 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public bool LoadLevelFromFile(string filename, bool overrideLevel = false)
+    public bool LoadLevelFromFile(string filename, out int errorMessage, bool overrideLevel = false)
     {
+        errorMessage = 0; 
         if (!overrideLevel)
         {
             Debug.LogWarning("tried to overwrite data in inspector with level from file");
@@ -111,6 +112,7 @@ public class TileManager : MonoBehaviour
         io.ReadFromFile(filename, baseLevel, out errorCode);
         if (errorCode != 0)
         {
+            errorMessage = errorCode;
             Debug.Log("Level Failed to Load: error code " + errorCode);
             ClearLevel();
             return false;
@@ -488,10 +490,10 @@ public class TileManager : MonoBehaviour
         return personHolder.GetComponent<PersonHolder>().GetPersonById(id);
     }
 
-    public int SaveLevelToFile()
+    public int SaveLevelToFile(bool overwrite = false)
     {
         int error;
-        io.WriteToFile(baseLevel, out error);
+        io.WriteToFile(baseLevel, out error, "", overwrite);
         return error;
     }
 
