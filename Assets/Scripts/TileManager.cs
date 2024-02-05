@@ -97,8 +97,9 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public bool LoadLevelFromFile(string filename, bool overrideLevel = false)
+    public bool LoadLevelFromFile(string filename, out string errorMessage, bool overrideLevel = false)
     {
+        errorMessage = string.Empty; 
         if (!overrideLevel)
         {
             Debug.LogWarning("tried to overwrite data in inspector with level from file");
@@ -111,7 +112,8 @@ public class TileManager : MonoBehaviour
         io.ReadFromFile(filename, baseLevel, out errorCode);
         if (errorCode != 0)
         {
-            Debug.Log("Level Failed to Load: error code " + errorCode);
+            errorMessage = "Level Failed to Load: error code " + errorCode;
+            Debug.Log(errorMessage);
             ClearLevel();
             return false;
         }
