@@ -327,6 +327,8 @@ public class Person : MonoBehaviour
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
+            //update line of sight for npc
+            updateLineOfSight(currentFacing);
             return true;
         }
         return false;
@@ -360,8 +362,11 @@ public class Person : MonoBehaviour
             TurnSprite();
             MusicScript.Instance.HuhSFX();
             AfterInteract();
+            //update line of sight for npc
+            updateLineOfSight(currentFacing);
             return true;
         }
+        
         return false;
     }
 
@@ -485,5 +490,42 @@ public class Person : MonoBehaviour
     public bool HasDirection()
     {
         return hasDirection;
+    }
+
+    public void updateLineOfSight(Direction facing){
+        //remove old line of sight
+        //TileManager.Instance.removeLinesOfSights();
+        //maybe hold array of line of sight tile references that is reverted to normal here before update
+        switch (currentFacing)
+        {
+            case Direction.LEFT:
+                //player facing left, cast line of sight until obstacle
+                //loop until object hit from left, setting tile to be highlighted to indicate sight
+                if (currentTile.GetLeft().IsWalkable()){ //walkable means that visiblity passes through
+                    //highlight tile(s)
+                    for (int i = currentTile.getX(); i > 0; i--){ //loop to wall from current tile
+                        //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight
+                    }
+                }
+                break;
+
+            case Direction.RIGHT:
+                //player facing right, cast line of sight until obstacle
+                //highlight tile(s)
+                for (int i = currentTile.getX(); i < 8; i++){ //loop to wall from current tile
+                    //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight
+                }
+                break;
+
+            case Direction.DOWN:
+                //player facing down, cast line of sight until obstacle
+
+                break;
+
+            case Direction.UP:
+                //player facing up, cast line of sight until obstacle
+
+                break;
+        }
     }
 }
