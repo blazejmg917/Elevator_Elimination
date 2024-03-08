@@ -417,8 +417,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Left)) {
-                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
@@ -427,8 +427,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Right)) {
-                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
@@ -437,8 +437,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Up)) {
-                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
@@ -447,8 +447,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Down)) {
-                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
@@ -545,7 +545,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
@@ -556,6 +556,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
@@ -566,6 +567,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
@@ -576,6 +578,7 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         MusicScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
@@ -598,7 +601,7 @@ public class PlayerMechanics : MonoBehaviour
      * @param ctx control input
      */
     public void Undo(InputAction.CallbackContext ctx) {
-        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused() || playerStates.Count == 0 || targetDead){
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused() || playerStates.Count == 0){
             return;
         }
         float pressed = ctx.ReadValue<float>();
