@@ -2305,6 +2305,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6547487298047456200, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547487298047456200, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547487298047456200, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547487298047456200, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 6771603662899579367, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2380,6 +2396,22 @@ PrefabInstance:
     - target: {fileID: 7596844339982063972, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8875649591704371280, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8875649591704371280, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8875649591704371280, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 8875649591704371280, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 8907511753936372469, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
