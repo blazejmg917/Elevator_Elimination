@@ -97,8 +97,9 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public bool LoadLevelFromFile(string filename, bool overrideLevel = false)
+    public bool LoadLevelFromFile(string filename, out int errorMessage, bool overrideLevel = false)
     {
+        errorMessage = 0; 
         if (!overrideLevel)
         {
             Debug.LogWarning("tried to overwrite data in inspector with level from file");
@@ -111,6 +112,7 @@ public class TileManager : MonoBehaviour
         io.ReadFromFile(filename, baseLevel, out errorCode);
         if (errorCode != 0)
         {
+            errorMessage = errorCode;
             Debug.Log("Level Failed to Load: error code " + errorCode);
             ClearLevel();
             return false;
@@ -488,10 +490,10 @@ public class TileManager : MonoBehaviour
         return personHolder.GetComponent<PersonHolder>().GetPersonById(id);
     }
 
-    public int SaveLevelToFile()
+    public int SaveLevelToFile(bool overwrite = false)
     {
         int error;
-        io.WriteToFile(baseLevel, out error);
+        io.WriteToFile(baseLevel, out error, "", overwrite);
         return error;
     }
 
@@ -524,4 +526,35 @@ public class TileManager : MonoBehaviour
     {
         return personHolder.GetComponent<PersonHolder>().GetPersonList();
     }
+
+    public bool TrySaveToString(out string result, out int errorCode)
+    {
+        bool val = io.WriteToString(baseLevel, out result, out errorCode);
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        return val; 
+    }
+
+    public bool TryLoadFromString(string str, out int errorCode, bool editMode)
+    {
+
+
+        SetupElevatorList(7, 7, true);
+        errorCode = 0;
+        if (!io.ReadFromString(str, baseLevel, out errorCode, editMode))
+        {
+            //Debug.Log("Level Failed to Load: error code " + errorCode);
+            ClearLevel();
+            return false;
+        }
+        Debug.Log("succesfully loaded level");
+        LoadLevel(baseLevel.GetTileList());
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        LevelManager.Instance.SetNumTargets(TargetCount);
+        levelLoaded.Invoke(baseLevel.GetLevelName(), baseLevel.GetCreator(), baseLevel.GetFloors());
+        GameManager.Instance.SetFloors(baseLevel.GetFloors(), baseLevel.GetFloors());
+        return true;
+        
+        LoadLevelList(baseLevel, true);
+    }
+
 }

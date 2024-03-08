@@ -21,7 +21,7 @@ public class LevelFileLoader : MonoBehaviour
     public void LoadLevel()
     {
         TileManager.Instance.UpdatePersonMap();
-        TileManager.Instance.LoadLevelFromFile(levelFileName, overwriteLevel);
+        TileManager.Instance.LoadLevelFromFile(levelFileName, out _, overwriteLevel);
         overwriteLevel = false;
     }
 }

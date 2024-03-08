@@ -23,6 +23,9 @@ public class CustomLevelSelect : MonoBehaviour
     [SerializeField, Tooltip("the text on the final button")]
     private TMP_Text buttonText;
 
+    [SerializeField, Tooltip("place to display error messages")]
+    private TMP_Text errorText;
+
     [SerializeField, Tooltip("true if this level selector will be used for the level editor, false if it will be used for playing levels")]
     private bool editMode = false;
 
@@ -32,7 +35,7 @@ public class CustomLevelSelect : MonoBehaviour
     [SerializeField, Tooltip("the currently selected option")]
     private SelectOption currentOption;
 
-    private List<SelectOption> selectedOptions;
+    [SerializeField]private List<SelectOption> selectedOptions;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +47,7 @@ public class CustomLevelSelect : MonoBehaviour
                 IO = gameObject.AddComponent<ElevatorIO>();
             }
         }
-        selectedOptions = new List<SelectOption>();
+        //selectedOptions = new List<SelectOption>();
     }
 
     // Update is called once per frame
@@ -55,6 +58,7 @@ public class CustomLevelSelect : MonoBehaviour
 
     public void LoadLevels()
     {
+        ClearOptions();
         if (selectedOptions == null)
         {
             selectedOptions = new List<SelectOption>();
@@ -67,6 +71,7 @@ public class CustomLevelSelect : MonoBehaviour
             thisOption.SetOption(level[0],level[1], level[2], this);
             selectedOptions.Add(thisOption);
         }
+        Debug.Log("loaded Levels: " + selectedOptions.Count);
 
         if (defaultOption != null)
         {
@@ -86,6 +91,7 @@ public class CustomLevelSelect : MonoBehaviour
         currentOption = option;
         if (!currentOption || currentOption == defaultOption)
         {
+            errorText.text = "";
             if (!editMode)
             {
                 finalButton.interactable = false;
@@ -97,24 +103,47 @@ public class CustomLevelSelect : MonoBehaviour
         }
         else
         {
-            if (editMode)
+
+            int error = 0;
+            if (IO.ReadFileFullCheck(option.GetLevel(), out error, editMode))
             {
-                buttonText.text = "Edit";
+                errorText.text = "";
+                if (editMode)
+                {
+                    buttonText.text = "Edit";
+                }
+                else
+                {
+                    finalButton.interactable = true;
+                    
+                }
             }
             else
             {
-                finalButton.interactable = true;
+                if (editMode)
+                {
+                    buttonText.text = "Edit";
+                }
+
+                finalButton.interactable = false;
+                errorText.text = "Cannot load level " + option.GetLevel() + ": error code " + error + ": " + GameManager.Instance.GetErrorCodeMessage(error);
             }
+            
         }
     }
 
     public void ClearOptions()
     {
+        if (selectedOptions == null)
+        {
+            return;
+        }
         while (selectedOptions.Count > 0)
         {
             Destroy(selectedOptions[0].gameObject);
             selectedOptions.RemoveAt(0);
         }
+        Debug.Log("clearing options");
     }
 
     public void StartCustomEdit()
