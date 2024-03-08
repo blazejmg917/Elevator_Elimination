@@ -7518,6 +7518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4286fcbf512bee84f9b7a0a7dcc07597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelName: SpawnTest
+  creatorName: Max
   tileList:
   - list:
     - {fileID: 1701893044821215177}

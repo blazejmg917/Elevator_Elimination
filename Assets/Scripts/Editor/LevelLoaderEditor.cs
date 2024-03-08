@@ -20,12 +20,5 @@ public class LevelLoaderEditor : Editor
             }
         }
 
-        // if (GUILayout.Button("Display Paths"))
-        // {
-        //     if (zpg.IsSceneBound())
-        //     {
-        //         zpg.DebugLines();
-        //     }
-        // }
     }
 }

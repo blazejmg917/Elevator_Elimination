@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class Person : MonoBehaviour
         NONE
     }
     [System.Serializable]public struct personUniqueActions{
-        [Tooltip("If this personw ill try to eat a person directly in front of them")]public bool eatInFront;
+        [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
 
@@ -58,6 +59,9 @@ public class Person : MonoBehaviour
 
     [SerializeField, Tooltip("this person's id")] private string personId;
 
+    [SerializeField, Tooltip("the key used for this person in level creation")]
+    private string personKey;
+
     [SerializeField, Tooltip("the sprite for when the player is dead")]private Sprite deadSprite;
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
     [SerializeField, Tooltip("if this person blocks a space")] private bool takesUpSpace = true;
@@ -66,6 +70,8 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("the Tile this Person is on")] private Tile currentTile;
     [SerializeField, Tooltip("the direction this person is facing")]private Direction currentFacing = Direction.LEFT;
     private Direction lastFacing;
+    [SerializeField, Tooltip("if this object has any direction to it. If not, will be set to no direction by default")]
+    private bool hasDirection;
     [SerializeField, Tooltip("this person's behavior")] private personBehavior behavior = new personBehavior();
 
     private bool isMoving = false;
@@ -73,12 +79,24 @@ public class Person : MonoBehaviour
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
     private SpriteRenderer spriteRen;
+    //Offsets the animation time to sync up with the people around it
     private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
+    private Stack<(Tile tile, Direction direction, int floorNumber)> states;
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        if (!hasDirection)
+        {
+            currentFacing = Direction.NONE;
+        }
+        states = new Stack<(Tile, Direction, int)>();
+        if (currentTile)
+        {
+            transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
+        }
+
         anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
         if (!anim) {
@@ -191,6 +209,27 @@ public class Person : MonoBehaviour
         return false;
     }
 
+    /*
+     * Undoes tap or push depending on if the floor number of the last action matches the current floor
+     */
+    public void UndoState() {
+        if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+            Tile lastTile = states.Peek().tile;
+            if (currentTile.transform.position != lastTile.transform.position) {
+                currentTile.SetPerson(null);
+                currentTile = lastTile;
+                lastTile.SetPerson(this);
+                isMoving = true;
+            }
+            Direction lastFacing = states.Peek().direction;
+            if (currentFacing != lastFacing) {
+                currentFacing = lastFacing;
+                TurnSprite();
+            }
+            states.Pop();
+        }
+    }
+
     private void BeforeInteract(){
         HandleActions(behavior.beforeInteract);
     }
@@ -282,7 +321,9 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             currentTile.SetPerson(null);
+            //positions.Push(currentTile.transform.position);
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
@@ -297,6 +338,7 @@ public class Person : MonoBehaviour
         if (behavior.canTurn)
         {
             BeforeInteract();
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -393,7 +435,6 @@ public class Person : MonoBehaviour
                     }
                     return true;
                 }
-
             }
             else {
                 return true;
@@ -429,7 +470,20 @@ public class Person : MonoBehaviour
             currentFacing = direction;
         }
         TurnSprite();
-
     }
-    
+
+    public string GetKey()
+    {
+        return personKey;
+    }
+
+    public void SetColor(Color color)
+    {
+        spriteRen.color = color;
+    }
+
+    public bool HasDirection()
+    {
+        return hasDirection;
+    }
 }

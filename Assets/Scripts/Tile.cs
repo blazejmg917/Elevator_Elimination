@@ -20,6 +20,9 @@ public class Tile : MonoBehaviour
     [SerializeField, Tooltip("the sprite renderer for this tile")]private SpriteRenderer sRenderer;
     private int x = 0;
     private int y = 0;
+
+    [SerializeField, Tooltip("if this tile is the entry point for the player")]
+    private bool isEntry = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -102,12 +105,27 @@ public class Tile : MonoBehaviour
         return currentPerson;
     }
 
-    public void SetPerson(Person per) {
+    public void SetPerson(Person per, bool updateID = false) {
         currentPerson = per;
+        if (updateID)
+        {
+            if (currentPerson)
+            {
+                SetPersonId(currentPerson.GetId());
+            }
+            else
+            {
+                SetPersonId("");
+            }
+        }
     }
 
     public string GetPersonId(){
         return personId;
+    }
+    public void SetPersonId(string id)
+    {
+        personId = id;
     }
 
     public Person.Direction GetDirection(){
@@ -148,5 +166,20 @@ public class Tile : MonoBehaviour
 
     public Vector3 GetOffset(){
         return offset;
+    }
+
+    public bool IsEntry()
+    {
+        return isEntry;
+    }
+
+    public void SetEntry(bool entry)
+    {
+        isEntry = entry;
+    }
+
+    public bool CanPlaceHere()
+    {
+        return !GetPerson() && !isEntry;
     }
 }

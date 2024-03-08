@@ -164,6 +164,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1900171403}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 39226502}
+  isEntry: 0
 --- !u!212 &39226502
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -329,6 +330,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1780932240}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 43141317}
+  isEntry: 0
 --- !u!212 &43141317
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -494,6 +496,7 @@ MonoBehaviour:
   bottomTile: {fileID: 39226501}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 58460654}
+  isEntry: 0
 --- !u!212 &58460654
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -664,6 +667,7 @@ MonoBehaviour:
   bottomTile: {fileID: 180138161}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 163988183}
+  isEntry: 0
 --- !u!212 &163988183
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -829,6 +833,7 @@ MonoBehaviour:
   bottomTile: {fileID: 623938020}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 180138162}
+  isEntry: 0
 --- !u!212 &180138162
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1073,6 +1078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Bystander
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -1080,6 +1086,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 1479863217}
   currentFacing: 1
+  hasDirection: 0
   behavior:
     canPush: 1
     canTurn: 1
@@ -1160,6 +1167,7 @@ MonoBehaviour:
   bottomTile: {fileID: 830133642}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 296790914}
+  isEntry: 0
 --- !u!114 &296790912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,6 +1318,7 @@ MonoBehaviour:
   bottomTile: {fileID: 768354956}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 311564383}
+  isEntry: 0
 --- !u!212 &311564383
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1475,6 +1484,7 @@ MonoBehaviour:
   bottomTile: {fileID: 2138796739}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 390801011}
+  isEntry: 0
 --- !u!212 &390801011
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1651,6 +1661,7 @@ MonoBehaviour:
   bottomTile: {fileID: 921383626}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 429527760}
+  isEntry: 0
 --- !u!212 &429527760
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1821,6 +1832,7 @@ MonoBehaviour:
   bottomTile: {fileID: 2051004280}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 466137372}
+  isEntry: 0
 --- !u!212 &466137372
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2078,6 +2090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Operator
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -2085,6 +2098,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 953612373}
   currentFacing: 1
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -2150,6 +2164,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1479863217}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 518244970}
+  isEntry: 0
 --- !u!212 &518244970
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2315,6 +2330,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1664653855}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 555030157}
+  isEntry: 0
 --- !u!212 &555030157
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2480,6 +2496,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 556824287}
+  isEntry: 0
 --- !u!212 &556824287
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2724,6 +2741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Target
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 1
   takesUpSpace: 1
@@ -2731,6 +2749,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 311564382}
   currentFacing: 3
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -2796,6 +2815,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 595360105}
+  isEntry: 0
 --- !u!212 &595360105
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2961,6 +2981,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 623938021}
+  isEntry: 0
 --- !u!212 &623938021
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3126,6 +3147,7 @@ MonoBehaviour:
   bottomTile: {fileID: 753344773}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 626131271}
+  isEntry: 0
 --- !u!212 &626131271
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3309,6 +3331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -3316,6 +3339,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 1885278585}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -3451,6 +3475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -3458,6 +3483,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 43141316}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -3575,6 +3601,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1243777783}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 672709030}
+  isEntry: 0
 --- !u!212 &672709030
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3740,6 +3767,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1456861609}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 692655629}
+  isEntry: 0
 --- !u!212 &692655629
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3916,6 +3944,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 753344774}
+  isEntry: 0
 --- !u!212 &753344774
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4081,6 +4110,7 @@ MonoBehaviour:
   bottomTile: {fileID: 429527759}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 768354957}
+  isEntry: 0
 --- !u!212 &768354957
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4321,6 +4351,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1860728042}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 830133643}
+  isEntry: 0
 --- !u!212 &830133643
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4486,6 +4517,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1048291038}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 864759648}
+  isEntry: 0
 --- !u!212 &864759648
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4651,6 +4683,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 921383627}
+  isEntry: 0
 --- !u!212 &921383627
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4816,6 +4849,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1659761153}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 938905302}
+  isEntry: 0
 --- !u!212 &938905302
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4981,6 +5015,7 @@ MonoBehaviour:
   bottomTile: {fileID: 163988182}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 951783262}
+  isEntry: 0
 --- !u!212 &951783262
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5146,6 +5181,7 @@ MonoBehaviour:
   bottomTile: {fileID: 864759647}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 953612374}
+  isEntry: 0
 --- !u!212 &953612374
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5386,6 +5422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -5393,6 +5430,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 466137371}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -5458,6 +5496,7 @@ MonoBehaviour:
   bottomTile: {fileID: 595360104}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1048291039}
+  isEntry: 0
 --- !u!212 &1048291039
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5623,6 +5662,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1182534171}
+  isEntry: 0
 --- !u!212 &1182534171
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5799,6 +5839,7 @@ MonoBehaviour:
   bottomTile: {fileID: 556824286}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1243777784}
+  isEntry: 0
 --- !u!212 &1243777784
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5964,6 +6005,7 @@ MonoBehaviour:
   bottomTile: {fileID: 43141316}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1276421354}
+  isEntry: 0
 --- !u!212 &1276421354
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6140,6 +6182,7 @@ MonoBehaviour:
   bottomTile: {fileID: 58460653}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1285851018}
+  isEntry: 0
 --- !u!212 &1285851018
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6397,6 +6440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: BigGuy
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -6404,6 +6448,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 1900171403}
   currentFacing: 0
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 1
@@ -6469,6 +6514,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1426277495}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1364979987}
+  isEntry: 0
 --- !u!212 &1364979987
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6686,6 +6732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4286fcbf512bee84f9b7a0a7dcc07597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelName: 
+  creatorName: 
   tileList:
   - list:
     - {fileID: 0}
@@ -6785,6 +6833,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1475152930}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1426277496}
+  isEntry: 0
 --- !u!212 &1426277496
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6950,6 +6999,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1705374666}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1456861610}
+  isEntry: 0
 --- !u!212 &1456861610
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7115,6 +7165,7 @@ MonoBehaviour:
   bottomTile: {fileID: 672709029}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1475152931}
+  isEntry: 0
 --- !u!212 &1475152931
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7280,6 +7331,7 @@ MonoBehaviour:
   bottomTile: {fileID: 692655628}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1479863218}
+  isEntry: 0
 --- !u!212 &1479863218
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7445,6 +7497,7 @@ MonoBehaviour:
   bottomTile: {fileID: 953612373}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1649404585}
+  isEntry: 0
 --- !u!212 &1649404585
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7610,6 +7663,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1649404584}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1659761154}
+  isEntry: 0
 --- !u!212 &1659761154
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7775,6 +7829,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1885278585}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1664653856}
+  isEntry: 0
 --- !u!212 &1664653856
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8010,6 +8065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -8017,6 +8073,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 951783261}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -8082,6 +8139,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1182534170}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1705374667}
+  isEntry: 0
 --- !u!212 &1705374667
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8325,6 +8383,7 @@ MonoBehaviour:
   bottomTile: {fileID: 518244969}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1750935109}
+  isEntry: 0
 --- !u!212 &1750935109
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8490,6 +8549,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1760892273}
+  isEntry: 0
 --- !u!212 &1760892273
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8655,6 +8715,7 @@ MonoBehaviour:
   bottomTile: {fileID: 311564382}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1780932241}
+  isEntry: 0
 --- !u!212 &1780932241
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8820,6 +8881,7 @@ MonoBehaviour:
   bottomTile: {fileID: 951783261}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1860728043}
+  isEntry: 0
 --- !u!212 &1860728043
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9003,6 +9065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -9010,6 +9073,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 1426277495}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -9127,6 +9191,7 @@ MonoBehaviour:
   bottomTile: {fileID: 626131270}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1885278586}
+  isEntry: 0
 --- !u!212 &1885278586
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9283,6 +9348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -9290,6 +9356,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 1659761153}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -9434,6 +9501,7 @@ MonoBehaviour:
   bottomTile: {fileID: 466137371}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1900171404}
+  isEntry: 0
 --- !u!212 &1900171404
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9744,6 +9812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -9751,6 +9820,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 39226501}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -9887,6 +9957,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1760892272}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2051004281}
+  isEntry: 0
 --- !u!212 &2051004281
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10052,6 +10123,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1364979986}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2115311398}
+  isEntry: 0
 --- !u!212 &2115311398
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10217,6 +10289,7 @@ MonoBehaviour:
   bottomTile: {fileID: 555030156}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2138796740}
+  isEntry: 0
 --- !u!212 &2138796740
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10400,6 +10473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: LevelObject
+  personKey: 
   deadSprite: {fileID: 0}
   isTarget: 0
   takesUpSpace: 1
@@ -10407,6 +10481,7 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 2138796739}
   currentFacing: 4
+  hasDirection: 0
   behavior:
     canPush: 0
     canTurn: 0
@@ -10902,6 +10977,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5457259913997820876, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: tileStart.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457259913997820876, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: tileOffset.y
+      value: 0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457259913997820876, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: tileOffset.z
       value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5646274720894552026, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
@@ -11082,7 +11165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_ActionId
@@ -11101,7 +11184,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1226408559}
+    - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1226408559}
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
@@ -11113,12 +11204,28 @@ PrefabInstance:
       value: Restart
       objectReference: {fileID: 0}
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Undo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerMechanics, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PlayerMechanics, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963383232135168405, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160800002061401147, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: initialOffset
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6160800002061401147, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: levelEnd.m_PersistentCalls.m_Calls.Array.size

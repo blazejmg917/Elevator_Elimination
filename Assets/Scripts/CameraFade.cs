@@ -97,6 +97,15 @@ public class CameraFade : MonoBehaviour
         Debug.Log("starting camera fade out " + fadeTimer);
     }
 
+    public void Hide()
+    {
+        fadeBlackRenderer.enabled = false;
+        fadingIn = false;
+        fadingOut = false;
+        fadeTimer = -1;
+        fadeBlackRenderer.material.color = new Color(blackColor.r, blackColor.g, blackColor.b, 0);
+    }
+
 
 
     

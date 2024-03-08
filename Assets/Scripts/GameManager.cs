@@ -22,10 +22,13 @@ public class GameManager : MonoBehaviour
     //[SerializeField, Tooltip("the camera fade component")]private CameraFade cameraFade;
     //[SerializeField, Tooltip("the camera for the object")]private Camera gameCam;
     [SerializeField, Tooltip("the name of the main level scene")]private string levelSceneName = "GameLoopSetupScene";
+
+    [SerializeField,Tooltip("the filepath of the level to load when transitioning to the level editor scene. If empty, signifies making a new level")]
+    private string levelCreationFilename = "";
     // [SerializeField, Tooltip("event played every time a turn changes")]private TurnChangeEvent turnChangeEvent = new TurnChangeEvent();
     // [SerializeField, Tooltip("event played on game loss")]private GameLoseEvent gameOver = new GameLoseEvent();
     //[SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
-
+    private int errorCode = 0;
     private enum GameState
     {
         MainMenu,
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour
     private String[] menuOptions = {"Play", "Level Select", "Quit", "Control Mode"};
     private int menuIndex = 0;
     [SerializeField] private String highlightedMenu = "Play";
+    [SerializeField] private ErrorCodeReference errorCodes;
     public static GameManager Instance
     {
         get
@@ -70,6 +74,16 @@ public class GameManager : MonoBehaviour
         if (Instance != this) return;
         if (scene.name == "MainMenu") {
             state = GameState.MainMenu;
+            SetCreationLevelFilename("");
+            SetCurrentLevel(0);
+            if (errorCode != 0)
+            {
+                string errorMessage = "Could not load level. error code " + errorCode + ": ";
+                string error;
+                errorMessage += GetErrorCodeMessage(errorCode);
+                FindObjectOfType<MenuErrorScript>(true).DisplayError(errorMessage);
+                errorCode = 0;
+            }
         } else if (scene.name == "HaleyTest") {
             state = GameState.GameStart;
         } else if (scene.name == "GameOver") {
@@ -77,6 +91,9 @@ public class GameManager : MonoBehaviour
         } else if (scene.name == levelSceneName){
             state = GameState.GameStart;
             LevelStart(currentLevel);
+        } else if (scene.name == "Level Creation Scene")
+        {
+            StartLevelCreator();
         }
     }
     // Update is called once per frame
@@ -93,6 +110,11 @@ public class GameManager : MonoBehaviour
         }
         if(Instance != this){
             Destroy(gameObject);
+        }
+
+        if (!errorCodes)
+        {
+            errorCodes = GetComponent<ErrorCodeReference>();
         }
         
     }
@@ -113,6 +135,21 @@ public class GameManager : MonoBehaviour
         if (currentFloor <= 0) {
             GameOver("TURNS");
         }
+        return currentFloor;
+    }
+
+    /*
+     * Undoes the floor change
+     * @param change The number of floors to add to the current counter
+     */
+    public void UndoFloor(int change) {
+        currentFloor += change;
+    }
+    /*
+     * Gets the current floor number
+     * @return Returns the current floor number
+     */
+    public int GetCurrentFloor() {
         return currentFloor;
     }
 
@@ -172,8 +209,15 @@ public class GameManager : MonoBehaviour
     
 
     public void LevelStart(int id){
-        
-        LevelManager.Instance.LevelStart(id);
+
+        if (id == -1 && !string.IsNullOrWhiteSpace(levelCreationFilename))
+        {
+            LevelManager.Instance.CustomLevelStart(levelCreationFilename);
+        }
+        else
+        {
+            LevelManager.Instance.LevelStart(id);
+        }
         currentLevel = id;
         //turnChangeEvent.Invoke(currentFloor);
         //currentLevel = id;
@@ -252,6 +296,48 @@ public class GameManager : MonoBehaviour
 
     public int GetMaxFloors(){
         return maxFloors;
+    }
+
+    public void SetCreationLevelFilename(string filename)
+    {
+        levelCreationFilename = filename;
+    }
+
+    public void StartLevelCreator()
+    {
+        if (String.IsNullOrWhiteSpace(levelCreationFilename))
+        {
+            TileManager.Instance.SetupElevatorList(7,7,true);
+        }
+        else
+        {
+            int error;
+            if (!TileManager.Instance.LoadLevelFromFile(levelCreationFilename,out error, true))
+            {
+                Debug.Log("Game manager found problem with tile structure");
+                errorCode = error;
+                QuitToMenu();
+            }
+        }
+    }
+
+    public void SetError(int error)
+    {
+        errorCode = error;
+    }
+
+    public string GetErrorCodeMessage(int code)
+    {
+        if (errorCodes)
+        {
+            string message = errorCodes.GetErrorMessage(code);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                return message;
+            }
+        }
+
+        return "Unknown Error";
     }
 
 
