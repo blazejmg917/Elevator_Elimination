@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6680653109800915628}
   - component: {fileID: 3020655888379350662}
   - component: {fileID: 2059989705748851452}
+  - component: {fileID: 1622142106165117191}
   m_Layer: 0
   m_Name: Operator
   m_TagString: Untagged
@@ -100,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   personId: Operator
+  personKey: F
   deadSprite: {fileID: 21300000, guid: cc904d42325ef434fbdb017dab5de062, type: 3}
   isTarget: 0
   takesUpSpace: 1
@@ -107,12 +109,31 @@ MonoBehaviour:
   transparent: 0
   currentTile: {fileID: 0}
   currentFacing: 0
+  hasDirection: 1
   behavior:
     canPush: 0
     canTurn: 0
     canBeKilled: 0
     canSee: 1
+    canEat: 0
+    beforeInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    afterInteract:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onTurnChange:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
+    onSeePlayer:
+      eatInFront: 0
+      alertSurrounding: 0
+      soundAlarm: 0
   pushSpeed: 0
+  initialOffset: 4
 --- !u!114 &3020655888379350662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,3 +167,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1622142106165117191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8351852779341363193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111d1a2c6ec5f5548902b9b270d670fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragAttachPoint: {fileID: 0}
+  wasPlaced: 0
