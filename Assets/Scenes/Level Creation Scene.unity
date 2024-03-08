@@ -2244,7 +2244,7 @@ MonoBehaviour:
   creatorText: {fileID: 12580062}
   floorCountText: {fileID: 1904003337}
   levelChanged: 0
-  saveConfirm: {fileID: 0}
+  saveConfirm: {fileID: 416454038}
 --- !u!114 &905156435
 MonoBehaviour:
   m_ObjectHideFlags: 0

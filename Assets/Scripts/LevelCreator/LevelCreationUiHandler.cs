@@ -110,7 +110,9 @@ public class LevelCreationUiHandler : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            child.gameObject.SetActive(active);
+            if (saveConfirm && saveConfirm.transform != child) { 
+                child.gameObject.SetActive(active);
+            }
         }
     }
 }
