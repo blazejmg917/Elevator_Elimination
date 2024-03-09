@@ -139,11 +139,11 @@ public class GameManager : MonoBehaviour
     }
 
     /*
-     * Undoes the floor change
-     * @param change The number of floors to add to the current counter
+     * Undoes the floor newFloor
+     * @param newFloor The number of floors to set to the current floor
      */
-    public void UndoFloor(int change) {
-        currentFloor += change;
+    public void UndoFloor(int newFloor) {
+        currentFloor = newFloor;
     }
     /*
      * Gets the current floor number
