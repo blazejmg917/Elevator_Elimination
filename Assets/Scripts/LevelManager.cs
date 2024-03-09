@@ -214,7 +214,10 @@ public class LevelManager : MonoBehaviour
             Debug.Log("tutorial complete");
         }
     }
-
+    public void TargetRevived() {
+        numTargets++;
+        GameManager.Instance.SetWinCon(false);
+    }
     public void TargetKilled(){
         numTargets--;
         if(numTargets <= 0){

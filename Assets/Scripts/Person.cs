@@ -82,8 +82,15 @@ public class Person : MonoBehaviour
     //Offsets the animation time to sync up with the people around it
     private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    public enum Action {
+        TAPPED,
+        PUSHED,
+        ALERTED,
+        KILLED,
+        NONE
+    }
     //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
-    private Stack<(Tile tile, Direction direction, int floorNumber)> states;
+    private Stack<(Tile tile, Direction direction, int floorNumber, Action action)> states;
     // Start is called before the first frame update
     void Start()
     {
@@ -91,7 +98,7 @@ public class Person : MonoBehaviour
         {
             currentFacing = Direction.NONE;
         }
-        states = new Stack<(Tile, Direction, int)>();
+        states = new Stack<(Tile, Direction, int, Action)>();
         if (currentTile)
         {
             transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
@@ -212,7 +219,10 @@ public class Person : MonoBehaviour
     /*
      * Undoes tap or push depending on if the floor number of the last action matches the current floor
      */
-    public void UndoState() {
+    public bool UndoState() {
+        if (states.Count != 0) {
+            Debug.Log("floor number: " + states.Peek().floorNumber);
+        }
         if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
@@ -222,12 +232,25 @@ public class Person : MonoBehaviour
                 isMoving = true;
             }
             Direction lastFacing = states.Peek().direction;
+            Action lastAction = states.Peek().action;
             if (currentFacing != lastFacing) {
                 currentFacing = lastFacing;
                 TurnSprite();
+                //Next two lines fix the undo issue with tap by artificially increasing floor count when undoing a tap
+                if (lastAction == Action.TAPPED) {
+                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                    TileManager.Instance.UpdateLevel();
+                }
+            }
+            if (lastAction == Action.KILLED) {
+                OnRevive();
+                GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                TileManager.Instance.UpdateLevel();
             }
             states.Pop();
+            return true;
         }
+        return false;
     }
 
     private void BeforeInteract(){
@@ -250,7 +273,7 @@ public class Person : MonoBehaviour
             Tile thisTile = currentTile.GetTop();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.DOWN);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.DOWN);
                     
                 }
                 thisTile = thisTile.GetTop();
@@ -259,7 +282,7 @@ public class Person : MonoBehaviour
             thisTile = currentTile.GetBottom();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.UP);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.UP);
                     
                 }
                 thisTile = thisTile.GetBottom();
@@ -268,7 +291,7 @@ public class Person : MonoBehaviour
             thisTile = currentTile.GetRight();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.LEFT);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.LEFT);
                     
                 }
                 thisTile = thisTile.GetRight();
@@ -277,7 +300,7 @@ public class Person : MonoBehaviour
             thisTile = currentTile.GetLeft();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.RIGHT);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.RIGHT);
                     
                 }
                 thisTile = thisTile.GetLeft();
@@ -321,7 +344,7 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.PUSHED));
             currentTile.SetPerson(null);
             //positions.Push(currentTile.transform.position);
             currentTile = newTile;
@@ -337,8 +360,11 @@ public class Person : MonoBehaviour
     {
         if (behavior.canTurn)
         {
+            if ((dir == PlayerMechanics.DirectionFacing.Right && currentFacing == Direction.LEFT) || (dir == PlayerMechanics.DirectionFacing.Left && currentFacing == Direction.RIGHT) || (dir == PlayerMechanics.DirectionFacing.Down && currentFacing == Direction.UP) || (dir == PlayerMechanics.DirectionFacing.Up && currentFacing == Direction.DOWN)) {
+                return false;
+            }
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -364,7 +390,13 @@ public class Person : MonoBehaviour
         }
         return false;
     }
-
+    public void OnRevive() {
+        SetAliveAnimation();
+        takesUpSpace = true;
+        triggerAlarmOnSeen = false;
+        LevelManager.Instance.TargetRevived();
+        
+    }
     public bool OnKill(bool overrideKillable = false)
     {
         if (behavior.canBeKilled || overrideKillable)
@@ -375,8 +407,8 @@ public class Person : MonoBehaviour
             if (isTarget)
             {
                 
-                
                 LevelManager.Instance.TargetKilled();
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.KILLED));
                 //GameManager.Instance.SetWinCon(true);
                 //call target killed
                 return true;
@@ -442,7 +474,11 @@ public class Person : MonoBehaviour
         }
         return true;
     }
-
+    public void SetAliveAnimation() {
+        GetComponent<Animator>().enabled = true;
+        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
+        anim.SetFloat("NormalizedTime", animOffset);
+    }
     public void SetDeadSprite()
     {
         GetComponent<SpriteRenderer>().sprite = deadSprite;
@@ -464,7 +500,17 @@ public class Person : MonoBehaviour
     public Direction GetDirection() {
         return currentFacing;
     }
-
+    /**
+     * Sets the direction according to which way the bird triggers the alarm
+     * @param direction the direction to change the person's animation
+     */
+    public void SetAlarmDirection(Direction direction) {
+        if(currentFacing != Direction.NONE || currentFacing != direction){
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.ALERTED));
+            currentFacing = direction;
+        }
+        TurnSprite();
+    }
     public void SetDirection(Direction direction){
         if(currentFacing != Direction.NONE){
             currentFacing = direction;
