@@ -509,7 +509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 632883517}
   - component: {fileID: 632883516}
-  - component: {fileID: 632883515}
+  - component: {fileID: 632883518}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -517,14 +517,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &632883515
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 632883514}
-  m_Enabled: 1
 --- !u!20 &632883516
 Camera:
   m_ObjectHideFlags: 0
@@ -591,6 +583,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &632883518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632883514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!114 &709710210 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3013104974735615553, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
@@ -954,6 +959,30 @@ PrefabInstance:
       propertyPath: levelSceneName
       value: camera pos testing scene
       objectReference: {fileID: 0}
+    - target: {fileID: 7212492575932852041, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: normalSource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212492575932852041, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: testMusic.Path
+      value: event:/Temp Music
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212492575932852041, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: testMusic.Guid.Data1
+      value: -1191823863
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212492575932852041, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: testMusic.Guid.Data2
+      value: 1158288104
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212492575932852041, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: testMusic.Guid.Data3
+      value: -939057261
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212492575932852041, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: testMusic.Guid.Data4
+      value: 1124666923
+      objectReference: {fileID: 0}
     - target: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -962,7 +991,9 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
+    - {fileID: 6884649650396629645, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1839,7 +1870,7 @@ PrefabInstance:
     - target: {fileID: 1265785765011224252, guid: 91a308c6a68dec842881a96c9cbd3fc9, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 632883516}
+      objectReference: {fileID: 0}
     - target: {fileID: 1323684890929627448, guid: 91a308c6a68dec842881a96c9cbd3fc9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2089,7 +2120,7 @@ PrefabInstance:
     - target: {fileID: 1618265058217342804, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 632883516}
+      objectReference: {fileID: 0}
     - target: {fileID: 3265887223469278357, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
@@ -2160,7 +2191,7 @@ PrefabInstance:
     - target: {fileID: 7065819000957751, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 632883516}
+      objectReference: {fileID: 0}
     - target: {fileID: 559391570875283400, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2224,7 +2255,7 @@ PrefabInstance:
     - target: {fileID: 2532640138869676411, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 632883516}
+      objectReference: {fileID: 0}
     - target: {fileID: 2893455882923797576, guid: 98937db4e5a2b254eab66958e1ba41d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1

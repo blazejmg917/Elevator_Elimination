@@ -92,14 +92,14 @@ public class PlayerMechanics : MonoBehaviour
         waitingForLevel = false;
         //gameObject.SetActive(true);
         spriteRen.enabled = true;
-        MusicScript.Instance.BellSFX();
+        AudioScript.Instance.BellSFX();
     }
 
     public void WalkOut() {
         targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
         escaping = true;
         isInteractible = false;
-        MusicScript.Instance.ExitDoorSFX();
+        AudioScript.Instance.ExitDoorSFX();
         spriteRen.enabled = false;
         facing = DirectionFacing.Down;
     }
@@ -170,7 +170,7 @@ public class PlayerMechanics : MonoBehaviour
                 //gameObject.SetActive(false);
                 spriteRen.enabled = false;
                 levelEnd.Invoke();
-                MusicScript.Instance.MischiefManaged();
+                AudioScript.Instance.MischiefManaged();
                 LevelManager.Instance.EnablePause(false);
             }
             return;
@@ -199,7 +199,7 @@ public class PlayerMechanics : MonoBehaviour
                 isInteractible = true;
                 movePressed = false;
                 undoPressed = false;
-                MusicScript.Instance.StepSFX();
+                AudioScript.Instance.StepSFX();
                 if (playerStates.Count == 0 && facing != DirectionFacing.Down) {
                     facing = DirectionFacing.Down;
                     UpdateDirection();
@@ -305,7 +305,7 @@ public class PlayerMechanics : MonoBehaviour
      * Updates the animation of the player based on which direction the player is facing
      */
     public void UpdateDirection() {
-        MusicScript.Instance.RotateSFX();
+        AudioScript.Instance.RotateSFX();
         animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
         anim.SetFloat("NormalizedTime", animOffset);
         switch(facing) {
@@ -419,7 +419,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Left)) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.TapSFX();
+                        AudioScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -429,7 +429,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Right)) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.TapSFX();
+                        AudioScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -439,7 +439,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Up)) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.TapSFX();
+                        AudioScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -449,7 +449,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Down)) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.TapSFX();
+                        AudioScript.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -483,7 +483,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Left)) {
-                        MusicScript.Instance.PushSFX();
+                        AudioScript.Instance.PushSFX();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
@@ -492,7 +492,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Right)) {
-                        MusicScript.Instance.PushSFX();
+                        AudioScript.Instance.PushSFX();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
@@ -501,7 +501,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Up)) {
-                        MusicScript.Instance.PushSFX();
+                        AudioScript.Instance.PushSFX();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
@@ -510,7 +510,7 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Down)) {
-                        MusicScript.Instance.PushSFX();
+                        AudioScript.Instance.PushSFX();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
@@ -546,7 +546,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.StabbyStabby();
+                        AudioScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
                         //Trigger error sound
@@ -557,7 +557,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.StabbyStabby();
+                        AudioScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
                         //Trigger error sound
@@ -568,7 +568,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.StabbyStabby();
+                        AudioScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
                         //Trigger error sound
@@ -579,7 +579,7 @@ public class PlayerMechanics : MonoBehaviour
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
-                        MusicScript.Instance.StabbyStabby();
+                        AudioScript.Instance.StabbyStabby();
                         targetDead = true;
                     } else {
                         //Trigger error sound
