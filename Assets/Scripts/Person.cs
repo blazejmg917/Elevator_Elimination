@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class Person : MonoBehaviour
 {
+    private Tile[] highLightedTileList; //list of highlighted tiles
+
     public enum Direction
     {
         LEFT,
@@ -320,6 +322,8 @@ public class Person : MonoBehaviour
         }
         if (newTile.IsWalkable())
         {
+            //remove old line of sight
+            removeOldLineOfSight(currentFacing);
             BeforeInteract();
             states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             currentTile.SetPerson(null);
@@ -339,6 +343,8 @@ public class Person : MonoBehaviour
     {
         if (behavior.canTurn)
         {
+            //remove old line of sight
+            removeOldLineOfSight(currentFacing);
             BeforeInteract();
             states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
             switch (dir)
@@ -374,6 +380,7 @@ public class Person : MonoBehaviour
     {
         if (behavior.canBeKilled || overrideKillable)
         {
+            removeOldLineOfSight(currentFacing); //remove line of sight
             SetDeadSprite();
             takesUpSpace = false;
             triggerAlarmOnSeen = true;
@@ -492,10 +499,18 @@ public class Person : MonoBehaviour
         return hasDirection;
     }
 
-    public void updateLineOfSight(Direction facing){
+    public void removeOldLineOfSight(Direction facing){
         //remove old line of sight
-        //TileManager.Instance.removeLinesOfSights();
-        //maybe hold array of line of sight tile references that is reverted to normal here before update
+        //loop through highlighted tiles list and remove all (they'll be repopulated in update LOS)
+        for (int i = 0; i < highLightedTileList.Length; i++){
+            //remove highlight from current tile
+            //highLightedTileList[i]
+        }
+
+    }
+
+    public void updateLineOfSight(Direction facing){
+        int index = 0;
         switch (currentFacing)
         {
             case Direction.LEFT:
@@ -503,8 +518,18 @@ public class Person : MonoBehaviour
                 //loop until object hit from left, setting tile to be highlighted to indicate sight
                 if (currentTile.GetLeft().IsWalkable()){ //walkable means that visiblity passes through
                     //highlight tile(s)
-                    for (int i = currentTile.getX(); i > 0; i--){ //loop to wall from current tile
-                        //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight
+                    
+                    for (int i = currentTile.getX(); i >= 0; i--){ //loop to wall from current tile
+                        if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
+                            //highlight left to 0
+                            //TileManager.Instance.tiles[i, currentTile.getY()] = 
+                            //add current tile being lit up to highlighted tiles list
+                            highLightedTileList[index++] = currentTile;
+                        }
+                        else{
+                            break;
+                        }
+                        
                     }
                 }
                 break;
@@ -513,18 +538,44 @@ public class Person : MonoBehaviour
                 //player facing right, cast line of sight until obstacle
                 //highlight tile(s)
                 for (int i = currentTile.getX(); i < 8; i++){ //loop to wall from current tile
-                    //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight
+                    
+                    if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
+                        //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight right to 7
+                    }
+                    else{
+                        break;
+                    }
                 }
                 break;
 
             case Direction.DOWN:
                 //player facing down, cast line of sight until obstacle
+                for (int i = currentTile.getY(); i < 8; i++){ //loop to wall from current tile
+                    
 
+                    if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
+                        //TileManager.Instance.tiles[currentTile.getX(), i] = //highlight down to 7
+                    }
+                    else{
+                        break;
+                    }
+
+                }
                 break;
 
             case Direction.UP:
                 //player facing up, cast line of sight until obstacle
+                for (int i = currentTile.getY(); i >= 0; i--){ //loop to wall from current tile
+                    
 
+                    if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
+                        //TileManager.Instance.tiles[currentTile.getX(), i] = //highlight up to 0
+                    }
+                    else{
+                        break;
+                    }
+
+                }
                 break;
         }
     }
