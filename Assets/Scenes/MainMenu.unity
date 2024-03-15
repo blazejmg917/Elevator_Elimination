@@ -980,6 +980,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7698046566571572232, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1552888464}
+    - targetCorrespondingSourceObject: {fileID: 1634006636505217818, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1658297887}
   m_SourcePrefab: {fileID: 100100000, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
 --- !u!223 &1081922305 stripped
 Canvas:
@@ -1695,6 +1698,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576955236}
   m_CullTransparentMesh: 1
+--- !u!1 &1658297884 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1634006636505217818, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+  m_PrefabInstance: {fileID: 1015389197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1658297887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658297884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58805f50c5aff04c8f482b3977d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EventName:
+    Guid:
+      Data1: -1191823863
+      Data2: 1158288104
+      Data3: -939057261
+      Data4: 1124666923
+    Path: event:/Temp Music
 --- !u!1 &1668785845
 GameObject:
   m_ObjectHideFlags: 0
