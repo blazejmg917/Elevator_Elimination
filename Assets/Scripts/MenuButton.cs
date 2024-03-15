@@ -25,7 +25,8 @@ public class MenuButton : MonoBehaviour
 
     public void Click() {
         GetComponent<Button>().image.sprite = pressed;
-        switch(typeOfButton) {
+        AudioScript.Instance.ButtonClick();
+        switch (typeOfButton) {
             case "Play":
                 GameManager.Instance.SetCurrentLevel(1);
                 GameManager.Instance.StartGame();
@@ -38,5 +39,10 @@ public class MenuButton : MonoBehaviour
                 Application.Quit();
                 break;
         }
+    }
+
+    public void Hover()
+    {
+        AudioScript.Instance.ButtonHover();
     }
 }

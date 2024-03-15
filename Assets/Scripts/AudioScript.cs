@@ -23,6 +23,10 @@ public class AudioScript : MonoBehaviour
     public FMODUnity.EventReference exitDoor;
     public FMODUnity.EventReference step;
 
+    // Button SFX
+    public FMODUnity.EventReference buttonHover;
+    public FMODUnity.EventReference buttonClick;
+
 
 
 
@@ -183,8 +187,26 @@ public class AudioScript : MonoBehaviour
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
         temp.start();
         temp.release();
+
+        Debug.Log("took step");
     }
-    
+
+    public void ButtonHover()
+    {
+        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(buttonHover);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
+        temp.start();
+        temp.release();
+    }
+
+    public void ButtonClick()
+    {
+        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(buttonClick);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
+        temp.start();
+        temp.release();
+    }
+
 
 
 }

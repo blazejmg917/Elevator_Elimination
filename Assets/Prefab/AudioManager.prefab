@@ -128,3 +128,17 @@ MonoBehaviour:
       Data3: 544329394
       Data4: 1496931854
     Path: event:/SFX Common/Rotate
+  buttonHover:
+    Guid:
+      Data1: -1570913065
+      Data2: 1194705970
+      Data3: 430763963
+      Data4: 1636824107
+    Path: event:/Button Hover
+  buttonClick:
+    Guid:
+      Data1: 936898803
+      Data2: 1094285319
+      Data3: 1681736614
+      Data4: 471624093
+    Path: event:/Button Click
