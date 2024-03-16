@@ -109,7 +109,6 @@ public class Person : MonoBehaviour
         if (!anim) {
             return;
         }
-        //anim.SetFloat("NormalizedTime", initialOffset / 56);
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
@@ -170,8 +169,6 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -186,6 +183,11 @@ public class Person : MonoBehaviour
                 anim.SetInteger("FacingDirection", 2);
                 break;
         }
+    }
+
+    public void OnBob(bool goingDown)
+    {
+        anim.SetBool("BobbedDown", goingDown);
     }
 
     public bool OnPush(PlayerMechanics.DirectionFacing dir)
@@ -476,8 +478,6 @@ public class Person : MonoBehaviour
     }
     public void SetAliveAnimation() {
         GetComponent<Animator>().enabled = true;
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
     }
     public void SetDeadSprite()
     {

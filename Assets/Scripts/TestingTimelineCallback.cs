@@ -23,6 +23,7 @@
 //--------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -105,6 +106,23 @@ class ScriptUsageTimeline : MonoBehaviour
                         var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         timelineInfo.CurrentMusicBeat = parameter.beat;
+
+                        // would put the code for bobbing here
+                        GameObject personHolder = GameObject.FindWithTag("PersonHolder");
+
+                        if (personHolder != null)
+                        {
+                            int number = personHolder.transform.childCount;
+                            for (int i = 0; i < number; i++)
+                            {
+                                Person p = personHolder.transform.GetChild(i).GetComponent<Person>();
+                                if (p.GetKey() == "S") // only do sheep
+                                {
+                                    Debug.Log("sheep found");
+                                    p.OnBob(parameter.beat % 2 == 1);
+                                }
+                            }
+                        }
                         break;
                     }
                 case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:

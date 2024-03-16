@@ -127,7 +127,6 @@ public class PlayerMechanics : MonoBehaviour
         isInteractible=false;
         facing = DirectionFacing.Down;
         adjacentPerson = null;
-        anim.SetFloat("NormalizedTime", initialOffset / 56);
         initialOffset = 0;
         anim.SetInteger("Facing Direction", 2);
         anim.Rebind();
@@ -306,8 +305,6 @@ public class PlayerMechanics : MonoBehaviour
      */
     public void UpdateDirection() {
         AudioScript.Instance.RotateSFX();
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
         switch(facing) {
             case DirectionFacing.Left:
                 anim.SetInteger("Facing Direction", 3);
