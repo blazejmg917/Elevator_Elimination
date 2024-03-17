@@ -64,9 +64,9 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField, Tooltip("event for when player enters level")]private PlayerStartEvent levelStart = new PlayerStartEvent();
     [SerializeField, Tooltip("event for when player escapes level")]private PlayerEscapeEvent levelEnd = new PlayerEscapeEvent();
     [SerializeField, Tooltip("event for when player loses the level")]private GameOverEvent playerFail = new GameOverEvent();
-    //Offsets the animation time to sync up with the people around it
-    private float animOffset;
-    [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    // //Offsets the animation time to sync up with the people around it
+    // private float animOffset;
+    // [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     //Stack to store the previous actions, previous directions the player was facing, and previous people the player was next to if they exist
     private Stack<(Tile tile, DirectionFacing direction, int floorNumber)> playerStates;
     private bool targetDead = false;
@@ -75,7 +75,7 @@ public class PlayerMechanics : MonoBehaviour
     void Start()
     {
         //Setup();
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
     }
 
@@ -127,7 +127,7 @@ public class PlayerMechanics : MonoBehaviour
         isInteractible=false;
         facing = DirectionFacing.Down;
         adjacentPerson = null;
-        initialOffset = 0;
+        // initialOffset = 0;
         anim.SetInteger("Facing Direction", 2);
         anim.Rebind();
         anim.Update(0f);
@@ -300,6 +300,10 @@ public class PlayerMechanics : MonoBehaviour
         }
     }
 
+    public void OnBob(bool goingDown)
+    {
+        anim.SetBool("BobbedDown", goingDown);
+    }
     /*
      * Updates the animation of the player based on which direction the player is facing
      */

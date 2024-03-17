@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 748495633021881112}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,6 @@ MonoBehaviour:
   playerFail:
     m_PersistentCalls:
       m_Calls: []
-  initialOffset: 4
 --- !u!212 &6779383192895689382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -262,6 +261,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7fb55dd5-c217-4d86-aee4-3ae830e3128b
     m_ActionName: Controls/Undo[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 82066fab-f453-490c-aef6-28282f276dc6
+    m_ActionName: Controls/Click[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Controls
