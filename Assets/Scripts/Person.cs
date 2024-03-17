@@ -87,6 +87,7 @@ public class Person : MonoBehaviour
         PUSHED,
         ALERTED,
         KILLED,
+        AWOKEN,
         NONE
     }
     //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
@@ -227,6 +228,9 @@ public class Person : MonoBehaviour
         if (states.Count != 0) {
             Debug.Log("floor number: " + states.Peek().floorNumber);
         }
+        if (tag == "SleepyGuy") {
+            Debug.Log(states.Peek().direction);
+        }
         if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
@@ -246,6 +250,12 @@ public class Person : MonoBehaviour
                 //     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                 //     TileManager.Instance.UpdateLevel();
                 // }
+                if (lastAction == Action.AWOKEN && anim) {
+                    anim.SetBool("Alarm", false);
+                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                    TileManager.Instance.UpdateLevel();
+                    Debug.Log("Alarm 2");
+                }
                 if (lastAction == Action.TAPPED || lastAction == Action.ALERTED) {
                     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                     TileManager.Instance.UpdateLevel();
@@ -280,6 +290,7 @@ public class Person : MonoBehaviour
         if(actions.alertSurrounding){
             //check top
             if (gameObject.tag == "SleepyGuy" && anim) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor() + 1, Action.AWOKEN));
                 anim.SetBool("Alarm", true);
             }
             Tile thisTile = currentTile.GetTop();
@@ -376,11 +387,7 @@ public class Person : MonoBehaviour
                 return false;
             }
             BeforeInteract();
-            //if (gameObject.tag == "SleepyGuy") {
-                //states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.ALERTED));
-            //} else {
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
-            //}
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
