@@ -24,7 +24,7 @@ public class MenuButton : MonoBehaviour
     }
 
     public void Click() {
-        GetComponent<Button>().image.sprite = pressed;
+        //GetComponent<Button>().image.sprite = pressed;
         switch(typeOfButton) {
             case "Play":
                 GameManager.Instance.SetCurrentLevel(1);

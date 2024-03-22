@@ -947,6 +947,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5024845338591460149, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
+      propertyPath: cautious
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024845338591460149, guid: bfe63bfbf41a8f740946793a05b70b56, type: 3}
       propertyPath: errorCodes
       value: 
       objectReference: {fileID: 1552888464}
@@ -2094,6 +2098,38 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
       objectReference: {fileID: 1345620668}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1799134160097832107}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4075135331516336201, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4654534880782698235, guid: 1b513f40e9bec444ca0c737fc0af133c, type: 3}
       propertyPath: m_Name
       value: LevelSelectUI

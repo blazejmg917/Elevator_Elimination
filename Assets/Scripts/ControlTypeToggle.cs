@@ -13,6 +13,8 @@ public class ControlTypeToggle : MonoBehaviour
         if(!image){
             image = GetComponent<Image>();
         }
+        cautious = GameManager.Instance.GetControlStyle();
+        UpdateVisual();
     }
 
     // Update is called once per frame
@@ -23,11 +25,19 @@ public class ControlTypeToggle : MonoBehaviour
     public void OnClick(){
         cautious = !cautious;
         GameManager.Instance.FlipControlStyle();
-        if(!cautious){
-            transform.rotation = Quaternion.Euler(0,0,180);
+        UpdateVisual();
+    }
+    
+
+    public void UpdateVisual()
+    {
+        if (!cautious)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 180);
         }
-        else{
-             transform.rotation = Quaternion.Euler(0,0,0);
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 }
