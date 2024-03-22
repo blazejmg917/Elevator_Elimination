@@ -96,7 +96,7 @@ public class CustomLevelSelect : MonoBehaviour
             {
                 finalButton.interactable = false;
             }
-            else
+            else if(buttonText)
             {
                 buttonText.text = "New";
             }
