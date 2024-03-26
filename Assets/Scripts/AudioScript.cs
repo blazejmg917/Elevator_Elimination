@@ -10,6 +10,7 @@ public class AudioScript : MonoBehaviour
 
 
     public FMODUnity.EventReference stab;
+    public FMODUnity.EventReference recordScratch;
 
     // NEW SFX
     public FMODUnity.EventReference push;
@@ -53,9 +54,11 @@ public class AudioScript : MonoBehaviour
     void Start()
     {
         // testing FMOD stuff
-        testingEventInstance = FMODUnity.RuntimeManager.CreateInstance(testMusic);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(testingEventInstance, transform);
-        testingEventInstance.start();
+        //testingEventInstance = FMODUnity.RuntimeManager.CreateInstance(testMusic); // old way, can't do it like this bc the callback class makes the 
+        testingEventInstance = TestingTimelineCallback.Instance.GetMusicInstance();
+
+        //FMODUnity.RuntimeManager.AttachInstanceToGameObject(testingEventInstance, transform); // ig we don't need to do this bc 2D game?
+        //testingEventInstance.start(); // not starting it here anymore
 
 
         //normalSource.volume = normalVolume;
@@ -87,7 +90,9 @@ public class AudioScript : MonoBehaviour
 
     public void StabbyStabby()
     {
-        testingEventInstance.setParameterByName("fade", 0f);
+        testingEventInstance.setParameterByName("fade", 20f);
+
+        OneShotSFX(stab);
         //normalSource.volume = 0;
         //sfx.PlayOneShot(stab);
         //StartCoroutine(FadeAudioSource.StartFade(alteredSource, .25f, alteredVolume)); // middle value is how long to fade in
@@ -97,7 +102,12 @@ public class AudioScript : MonoBehaviour
 
     public void MischiefManaged(bool playRecordScratch = true)
     {
-        testingEventInstance.setParameterByName("fade", 1f);
+        testingEventInstance.setParameterByName("fade", 0f);
+
+        if (playRecordScratch)
+        {
+            OneShotSFX(recordScratch);
+        }
 
         //alteredSource.volume = 0;
         //if(playRecordScratch){
@@ -111,102 +121,75 @@ public class AudioScript : MonoBehaviour
 
     public void PushSFX()
     {
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(push);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(push);
     }
     public void TapSFX()
     {
         //sfx.PlayOneShot(tap, 0.8f);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(tap);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(tap);
     }
     public void RotateSFX()
     {
         //sfx.PlayOneShot(rotate, 0.25f);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(rotate);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(rotate);
     }
     public void ScreamSFX()
     {
-        //sfx.PlayOneShot(scream);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(scream);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        //sfx.PlayOneShot(scream)
+        OneShotSFX(scream);
     }
     public void BellSFX()
     {
         //sfx.PlayOneShot(bell);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(bell);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(bell);
     }
     public void HuhSFX()
     {
         //sfx.PlayOneShot(huh, .6f);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(huh);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(huh);
     }
     public void GuhSFX()
     {
         //sfx.PlayOneShot(guh, .6f);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(guh);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(guh);
     }
     public void PandaStaticSFX()
     {
         //sfx.PlayOneShot(pandaStatic);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(pandaStatic);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(pandaStatic);
     }
     public void ExitDoorSFX()
     {
         //sfx.PlayOneShot(exitDoor);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(exitDoor);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(exitDoor);
     }
     public void StepSFX()
     {
         //sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.6f);
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(step);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
-
+        OneShotSFX(step);
         Debug.Log("took step");
     }
 
     public void ButtonHover()
     {
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(buttonHover);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
-        temp.start();
-        temp.release();
+        OneShotSFX(buttonHover);
     }
 
     public void ButtonClick()
     {
-        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(buttonClick);
+        OneShotSFX(buttonClick);
+    }
+
+    /**
+     * Local function to make a sound event, play it, and then release it
+     */
+    private void OneShotSFX(FMODUnity.EventReference er) // maybe add a volume parameter later, maybe just do the mixing in FMOD 
+    {
+        FMOD.Studio.EventInstance temp = FMODUnity.RuntimeManager.CreateInstance(er);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(temp, transform);
         temp.start();
         temp.release();
     }
-
 
 
 }

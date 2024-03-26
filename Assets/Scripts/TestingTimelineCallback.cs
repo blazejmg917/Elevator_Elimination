@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-class ScriptUsageTimeline : MonoBehaviour
+public class TestingTimelineCallback : MonoBehaviour
 {
     class TimelineInfo
     {
@@ -43,6 +43,28 @@ class ScriptUsageTimeline : MonoBehaviour
 
     FMOD.Studio.EVENT_CALLBACK beatCallback;
     FMOD.Studio.EventInstance musicInstance;
+
+    private static TestingTimelineCallback _instance;
+    public static TestingTimelineCallback Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<TestingTimelineCallback>();
+                if (_instance == null)
+                {
+                }
+            }
+            return _instance;
+        }
+    }
+
+    public FMOD.Studio.EventInstance GetMusicInstance()
+    {
+        return musicInstance;
+    }
+
 
 #if UNITY_EDITOR
     void Reset()
@@ -60,6 +82,7 @@ class ScriptUsageTimeline : MonoBehaviour
         beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
 
         musicInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(musicInstance, transform);
 
         // Pin the class that will store the data modified during the callback
         timelineHandle = GCHandle.Alloc(timelineInfo);

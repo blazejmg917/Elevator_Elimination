@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1004917339247519058}
   - component: {fileID: 200927761962652316}
+  - component: {fileID: 986725937495649308}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -58,6 +59,13 @@ MonoBehaviour:
       Data3: 1184943784
       Data4: 379880270
     Path: event:/SFX Common/Stab
+  recordScratch:
+    Guid:
+      Data1: 299047828
+      Data2: 1267347546
+      Data3: -383875696
+      Data4: 1101994613
+    Path: event:/SFX Common/Record Scratch
   push:
     Guid:
       Data1: -1516074580
@@ -142,3 +150,22 @@ MonoBehaviour:
       Data3: 1681736614
       Data4: 471624093
     Path: event:/Button Click
+--- !u!114 &986725937495649308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8102843330235518671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58805f50c5aff04c8f482b3977d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EventName:
+    Guid:
+      Data1: -1191823863
+      Data2: 1158288104
+      Data3: -939057261
+      Data4: 1124666923
+    Path: event:/Temp Music
