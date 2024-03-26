@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SleepingGuy
       objectReference: {fileID: 0}
+    - target: {fileID: 9175127389048938379, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: m_TagString
+      value: SleepyGuy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

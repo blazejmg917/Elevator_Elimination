@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SleepyGuyIdleForward
+  m_Name: OperatorBobBackwards
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -486038777, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
-    - time: 0.46666667
-      value: {fileID: 1238211948, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
-    - time: 0.85
-      value: {fileID: -76668587, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
-    - time: 1.4
-      value: {fileID: -76668587, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
+      value: {fileID: 699862857, guid: 9da61abf844fcf242837be327cb0305d, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,16 +44,13 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -486038777, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
-    - {fileID: 1238211948, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
-    - {fileID: -76668587, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
-    - {fileID: -76668587, guid: fc1d2c06d77518f44ab2f7454b370f7c, type: 3}
+    - {fileID: 699862857, guid: 9da61abf844fcf242837be327cb0305d, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.4166666
+    m_StopTime: 0.016666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

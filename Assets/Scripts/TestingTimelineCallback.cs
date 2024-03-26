@@ -101,7 +101,7 @@ public class TestingTimelineCallback : MonoBehaviour
 
     void OnGUI()
     {
-        GUILayout.Box(String.Format("Current Bar = {0}.{1}, Last Marker = {2}", timelineInfo.CurrentMusicBar, timelineInfo.CurrentMusicBeat, (string)timelineInfo.LastMarker));
+        //GUILayout.Box(String.Format("Current Bar = {0}.{1}, Last Marker = {2}", timelineInfo.CurrentMusicBar, timelineInfo.CurrentMusicBeat, (string)timelineInfo.LastMarker));
     }
 
     [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
@@ -131,19 +131,22 @@ public class TestingTimelineCallback : MonoBehaviour
                         timelineInfo.CurrentMusicBeat = parameter.beat;
 
                         // would put the code for bobbing here
-                        GameObject personHolder = GameObject.FindWithTag("PersonHolder");
-
+                        PersonHolder personHolder = PersonManager.Instance.GetPHolder();
+                        GameObject player = GameObject.FindWithTag("Player");
+                        if (player != null) {
+                            player.GetComponent<PlayerMechanics>().OnBob(parameter.beat % 2 == 1);
+                        }
                         if (personHolder != null)
                         {
                             int number = personHolder.transform.childCount;
                             for (int i = 0; i < number; i++)
                             {
                                 Person p = personHolder.transform.GetChild(i).GetComponent<Person>();
-                                if (p.GetKey() == "S") // only do sheep
+                                if (p.GetKey() == "S")// only do sheep
                                 {
                                     Debug.Log("sheep found");
-                                    p.OnBob(parameter.beat % 2 == 1);
                                 }
+                                p.OnBob(parameter.beat % 2 == 1);
                             }
                         }
                         break;
