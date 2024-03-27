@@ -27,8 +27,11 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class TestingTimelineCallback : MonoBehaviour
+public class MusicManager : MonoBehaviour
 {
+    /*
+     * Keeps track off where we are in the timeline
+     */
     class TimelineInfo
     {
         public int CurrentMusicBar = 0;
@@ -36,40 +39,40 @@ public class TestingTimelineCallback : MonoBehaviour
         public FMOD.StringWrapper LastMarker = new FMOD.StringWrapper();
     }
 
-    TimelineInfo timelineInfo;
+    static TimelineInfo timelineInfo;
     GCHandle timelineHandle;
 
-    public FMODUnity.EventReference EventName;
+    public FMODUnity.EventReference MusicEventName;
 
     FMOD.Studio.EVENT_CALLBACK beatCallback;
     FMOD.Studio.EventInstance musicInstance;
 
-    private static TestingTimelineCallback _instance;
-    public static TestingTimelineCallback Instance
+    /*
+     * Singleton code
+     */
+    private static MusicManager _instance;
+    public static MusicManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<TestingTimelineCallback>();
+                _instance = FindObjectOfType<MusicManager>();
                 if (_instance == null)
                 {
+                    GameObject go = new GameObject();
+                    _instance = go.AddComponent<MusicManager>();
+                    Debug.Log("Generating new music manager");
                 }
             }
             return _instance;
         }
     }
 
-    public FMOD.Studio.EventInstance GetMusicInstance()
-    {
-        return musicInstance;
-    }
-
-
 #if UNITY_EDITOR
-    void Reset()
+    void Reset() // maybe we can get rid of this later
     {
-        EventName = FMODUnity.EventReference.Find("event:/Temp Music");
+        MusicEventName = FMODUnity.EventReference.Find("event:/Temp Music");
     }
 #endif
 
@@ -81,7 +84,7 @@ public class TestingTimelineCallback : MonoBehaviour
         // by the garbage collected while it's being used
         beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
 
-        musicInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
+        musicInstance = FMODUnity.RuntimeManager.CreateInstance(MusicEventName);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(musicInstance, transform);
 
         // Pin the class that will store the data modified during the callback
@@ -130,25 +133,9 @@ public class TestingTimelineCallback : MonoBehaviour
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         timelineInfo.CurrentMusicBeat = parameter.beat;
 
-                        // would put the code for bobbing here
-                        PersonHolder personHolder = PersonManager.Instance.GetPHolder();
-                        GameObject player = GameObject.FindWithTag("Player");
-                        if (player != null) {
-                            player.GetComponent<PlayerMechanics>().OnBob(parameter.beat % 2 == 1);
-                        }
-                        if (personHolder != null)
-                        {
-                            int number = personHolder.transform.childCount;
-                            for (int i = 0; i < number; i++)
-                            {
-                                Person p = personHolder.transform.GetChild(i).GetComponent<Person>();
-                                if (p.GetKey() == "S")// only do sheep
-                                {
-                                    Debug.Log("sheep found");
-                                }
-                                p.OnBob(parameter.beat % 2 == 1);
-                            }
-                        }
+                        // Code for bobbing here
+                        AnimateBobbing();
+                       
                         break;
                     }
                 case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
@@ -166,5 +153,29 @@ public class TestingTimelineCallback : MonoBehaviour
             }
         }
         return FMOD.RESULT.OK;
+    }
+
+    private static void AnimateBobbing()
+    {
+        PersonHolder personHolder = PersonManager.Instance.GetPHolder();
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            player.GetComponent<PlayerMechanics>().OnBob(timelineInfo.CurrentMusicBeat % 2 == 1);
+        }
+        if (personHolder != null)
+        {
+            int number = personHolder.transform.childCount;
+            for (int i = 0; i < number; i++)
+            {
+                Person p = personHolder.transform.GetChild(i).GetComponent<Person>();
+                p.OnBob(timelineInfo.CurrentMusicBeat % 2 == 1);
+            }
+        }
+    }
+
+    public FMOD.Studio.EventInstance GetEventInstance()
+    {
+        return musicInstance;
     }
 }

@@ -215,7 +215,7 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            AudioScript.Instance.GuhSFX();
+            SFXManager.Instance.GuhSFX();
             return true;
         }
         return false;
@@ -407,7 +407,7 @@ public class Person : MonoBehaviour
                     break;
             }
             TurnSprite();
-            AudioScript.Instance.HuhSFX();
+            SFXManager.Instance.HuhSFX();
             AfterInteract();
             return true;
         }
@@ -483,7 +483,7 @@ public class Person : MonoBehaviour
                     if (seenPerson.CallAlarmWhenSeen())
                     {
                         GameManager.Instance.GameOver("SEEN");
-                        AudioScript.Instance.ScreamSFX();
+                        SFXManager.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
                         //call game over
                         return false;

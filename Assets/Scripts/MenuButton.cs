@@ -25,7 +25,7 @@ public class MenuButton : MonoBehaviour
 
     public void Click() {
         GetComponent<Button>().image.sprite = pressed;
-        AudioScript.Instance.ButtonClick();
+        SFXManager.Instance.ButtonClick();
         switch (typeOfButton) {
             case "Play":
                 GameManager.Instance.SetCurrentLevel(1);
@@ -43,6 +43,6 @@ public class MenuButton : MonoBehaviour
 
     public void Hover()
     {
-        AudioScript.Instance.ButtonHover();
+        SFXManager.Instance.ButtonHover();
     }
 }

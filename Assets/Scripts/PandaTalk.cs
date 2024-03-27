@@ -47,6 +47,6 @@ public class PandaTalk : MonoBehaviour
             return;
         }
         DialogManager.Instance.StartDialog(node);
-        AudioScript.Instance.PandaStaticSFX();
+        SFXManager.Instance.PandaStaticSFX();
     }
 }

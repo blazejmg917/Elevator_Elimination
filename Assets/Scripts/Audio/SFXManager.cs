@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioScript : MonoBehaviour
+public class SFXManager : MonoBehaviour
 {
-
-    public FMOD.Studio.EventInstance testingEventInstance;
-    public FMODUnity.EventReference testMusic;
-
 
     public FMODUnity.EventReference stab;
     public FMODUnity.EventReference recordScratch;
 
-    // NEW SFX
+    // Basic In-Game SFX
     public FMODUnity.EventReference push;
+
+    // this is not exactly useful but we could do something like it to make the process of adding new sounds easier
+    //public FMODUnity.EventReference Push
+    //{
+    //    get { return push; }
+    //    set { OneShotSFX(push); }
+    //}
     public FMODUnity.EventReference tap;
     public FMODUnity.EventReference rotate;
     public FMODUnity.EventReference scream;
@@ -28,22 +31,22 @@ public class AudioScript : MonoBehaviour
     public FMODUnity.EventReference buttonHover;
     public FMODUnity.EventReference buttonClick;
 
-
-
-
-    private static AudioScript _instance;
-    public static AudioScript Instance
+    /*
+     * Singleton code
+     */
+    private static SFXManager _instance;
+    public static SFXManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<AudioScript>();
+                _instance = FindObjectOfType<SFXManager>();
                 if (_instance == null)
                 {
                     GameObject go = new GameObject();
-                    _instance = go.AddComponent<AudioScript>();
-                    Debug.Log("Generating new music script");
+                    _instance = go.AddComponent<SFXManager>();
+                    Debug.Log("Generating new sfx manager");
                 }
             }
             return _instance;
@@ -53,26 +56,6 @@ public class AudioScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // testing FMOD stuff
-        //testingEventInstance = FMODUnity.RuntimeManager.CreateInstance(testMusic); // old way, can't do it like this bc the callback class makes the 
-        testingEventInstance = TestingTimelineCallback.Instance.GetMusicInstance();
-
-        //FMODUnity.RuntimeManager.AttachInstanceToGameObject(testingEventInstance, transform); // ig we don't need to do this bc 2D game?
-        //testingEventInstance.start(); // not starting it here anymore
-
-
-        //normalSource.volume = normalVolume;
-        //normalSource.clip = normalMusic;
-        //normalSource.loop = true;
-        //normalSource.Play();
-
-        //alteredSource.volume = 0;
-        //alteredSource.clip = alteredMusic;
-        //alteredSource.loop = true;
-        //alteredSource.Play();
-
-        //currentSource = normalSource;
-        //currentVolume = normalVolume;
 
     }
 
@@ -81,6 +64,9 @@ public class AudioScript : MonoBehaviour
     {
         //StartCoroutine(FadeAudioSource.StartFade(currentSource, .1f, currentVolume / 2));
 
+        // program "paused" as a boolean? or just use 0 and 1 and use seek speed to give it a slight fade
+
+        // these could also totally be moved to the other class?
     }
 
     public void UnpauseAdjust()
@@ -90,32 +76,19 @@ public class AudioScript : MonoBehaviour
 
     public void StabbyStabby()
     {
-        testingEventInstance.setParameterByName("fade", 20f);
+        MusicManager.Instance.GetEventInstance().setParameterByName("fade", 20f);
 
         OneShotSFX(stab);
-        //normalSource.volume = 0;
-        //sfx.PlayOneShot(stab);
-        //StartCoroutine(FadeAudioSource.StartFade(alteredSource, .25f, alteredVolume)); // middle value is how long to fade in
-        //currentSource = alteredSource;
-        //currentVolume = alteredVolume;
     }
 
     public void MischiefManaged(bool playRecordScratch = true)
     {
-        testingEventInstance.setParameterByName("fade", 0f);
+        MusicManager.Instance.GetEventInstance().setParameterByName("fade", 0f);
 
         if (playRecordScratch)
         {
             OneShotSFX(recordScratch);
         }
-
-        //alteredSource.volume = 0;
-        //if(playRecordScratch){
-        //    sfx.PlayOneShot(recordScratch, 0.25f);
-        //}
-        //StartCoroutine(FadeAudioSource.StartFade(normalSource, .65f, normalVolume)); // middle value is how long to fade in
-        //currentSource = normalSource;
-        //currentVolume = normalVolume;
     }
 
 
@@ -182,4 +155,3 @@ public class AudioScript : MonoBehaviour
 
 
 }
-
