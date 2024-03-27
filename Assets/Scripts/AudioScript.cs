@@ -125,56 +125,45 @@ public class AudioScript : MonoBehaviour
     }
     public void TapSFX()
     {
-        //sfx.PlayOneShot(tap, 0.8f);
-        OneShotSFX(tap);
+        OneShotSFX(tap);  //sfx.PlayOneShot(tap, 0.8f);
     }
     public void RotateSFX()
     {
-        //sfx.PlayOneShot(rotate, 0.25f);
-        OneShotSFX(rotate);
+        OneShotSFX(rotate); //sfx.PlayOneShot(rotate, 0.25f);
     }
     public void ScreamSFX()
     {
-        //sfx.PlayOneShot(scream)
-        OneShotSFX(scream);
+        OneShotSFX(scream); //sfx.PlayOneShot(scream)
     }
     public void BellSFX()
     {
-        //sfx.PlayOneShot(bell);
-        OneShotSFX(bell);
+        OneShotSFX(bell);  //sfx.PlayOneShot(bell);
     }
     public void HuhSFX()
     {
-        //sfx.PlayOneShot(huh, .6f);
-        OneShotSFX(huh);
+        OneShotSFX(huh); //sfx.PlayOneShot(huh, .6f);
     }
     public void GuhSFX()
     {
-        //sfx.PlayOneShot(guh, .6f);
-        OneShotSFX(guh);
+        OneShotSFX(guh); //sfx.PlayOneShot(guh, .6f);
     }
     public void PandaStaticSFX()
     {
-        //sfx.PlayOneShot(pandaStatic);
         OneShotSFX(pandaStatic);
     }
     public void ExitDoorSFX()
     {
-        //sfx.PlayOneShot(exitDoor);
         OneShotSFX(exitDoor);
     }
     public void StepSFX()
     {
-        //sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.6f);
-        OneShotSFX(step);
+        OneShotSFX(step); //sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.6f);
         Debug.Log("took step");
     }
-
     public void ButtonHover()
     {
         OneShotSFX(buttonHover);
     }
-
     public void ButtonClick()
     {
         OneShotSFX(buttonClick);
@@ -194,24 +183,3 @@ public class AudioScript : MonoBehaviour
 
 }
 
-
-
-// code borrowed from online, fades audio out
-// use:
-// StartCoroutine(FadeAudioSource.StartFade(AudioSource audioSource, float duration, float targetVolume));
-public static class FadeAudioSource
-{
-    public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
-    {
-        float currentTime = 0;
-        float start = audioSource.volume;
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
-            yield return null;
-        }
-        yield break;
-    }
-
-}
