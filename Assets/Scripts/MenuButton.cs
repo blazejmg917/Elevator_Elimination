@@ -24,7 +24,7 @@ public class MenuButton : MonoBehaviour
     }
 
     public void Click() {
-        GetComponent<Button>().image.sprite = pressed;
+        //GetComponent<Button>().image.sprite = pressed;
         SFXManager.Instance.ButtonClick();
         switch (typeOfButton) {
             case "Play":
