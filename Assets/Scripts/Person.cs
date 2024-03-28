@@ -505,6 +505,8 @@ public class Person : MonoBehaviour
                     Debug.Log("Seen");
                     if (seenPerson.CallAlarmWhenSeen())
                     {
+                        //Temp reaction to kill to show who caused the failed level
+                        StartBubbleReaction(true);
                         GameManager.Instance.GameOver("SEEN");
                         SFXManager.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
@@ -554,7 +556,7 @@ public class Person : MonoBehaviour
             currentFacing = direction;
         }
         TurnSprite();
-        StartBubbleReaction(true);
+        StartBubbleReaction(false);
     }
     public void SetDirection(Direction direction){
         if(currentFacing != Direction.NONE){

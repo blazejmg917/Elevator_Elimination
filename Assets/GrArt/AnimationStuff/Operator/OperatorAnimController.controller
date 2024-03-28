@@ -651,7 +651,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 7
+  - m_ConditionMode: 6
     m_ConditionEvent: FacingDirection
     m_EventTreshold: 3
   - m_ConditionMode: 1
