@@ -79,13 +79,14 @@ public class Person : MonoBehaviour
     private Animator anim;
     private SpriteRenderer spriteRen;
     //Offsets the animation time to sync up with the people around it
-    private float animOffset;
+    //private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     public enum Action {
         TAPPED,
         PUSHED,
         ALERTED,
         KILLED,
+        AWOKEN,
         NONE
     }
     //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
@@ -108,7 +109,6 @@ public class Person : MonoBehaviour
         if (!anim) {
             return;
         }
-        //anim.SetFloat("NormalizedTime", initialOffset / 56);
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
@@ -169,8 +169,6 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -184,6 +182,13 @@ public class Person : MonoBehaviour
             case Direction.DOWN:
                 anim.SetInteger("FacingDirection", 2);
                 break;
+        }
+    }
+
+    public void OnBob(bool goingDown)
+    {
+        if (anim) {
+            anim.SetBool("BobbedDown", goingDown);
         }
     }
 
@@ -209,7 +214,7 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            MusicScript.Instance.GuhSFX();
+            SFXManager.Instance.GuhSFX();
             return true;
         }
         return false;
@@ -221,6 +226,9 @@ public class Person : MonoBehaviour
     public bool UndoState() {
         if (states.Count != 0) {
             Debug.Log("floor number: " + states.Peek().floorNumber);
+        }
+        if (tag == "SleepyGuy") {
+            Debug.Log(states.Peek().direction);
         }
         if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
@@ -236,7 +244,18 @@ public class Person : MonoBehaviour
                 currentFacing = lastFacing;
                 TurnSprite();
                 //Next two lines fix the undo issue with tap by artificially increasing floor count when undoing a tap
-                if (lastAction == Action.TAPPED) {
+                // if (lastAction == Action.ALERTED && gameObject.tag == "SleepyGuy" && anim) {
+                //     anim.SetBool("Alarm", false);
+                //     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                //     TileManager.Instance.UpdateLevel();
+                // }
+                if (lastAction == Action.AWOKEN && anim) {
+                    anim.SetBool("Alarm", false);
+                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                    TileManager.Instance.UpdateLevel();
+                    Debug.Log("Alarm 2");
+                }
+                if (lastAction == Action.TAPPED || lastAction == Action.ALERTED) {
                     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                     TileManager.Instance.UpdateLevel();
                 }
@@ -245,7 +264,7 @@ public class Person : MonoBehaviour
                 OnRevive();
                 GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                 TileManager.Instance.UpdateLevel();
-            }
+            } 
             states.Pop();
             return true;
         }
@@ -269,6 +288,10 @@ public class Person : MonoBehaviour
     private void HandleActions(personUniqueActions actions){
         if(actions.alertSurrounding){
             //check top
+            if (gameObject.tag == "SleepyGuy" && anim) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor() + 1, Action.AWOKEN));
+                anim.SetBool("Alarm", true);
+            }
             Tile thisTile = currentTile.GetTop();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
@@ -383,7 +406,7 @@ public class Person : MonoBehaviour
                     break;
             }
             TurnSprite();
-            MusicScript.Instance.HuhSFX();
+            SFXManager.Instance.HuhSFX();
             AfterInteract();
             return true;
         }
@@ -459,7 +482,7 @@ public class Person : MonoBehaviour
                     if (seenPerson.CallAlarmWhenSeen())
                     {
                         GameManager.Instance.GameOver("SEEN");
-                        MusicScript.Instance.ScreamSFX();
+                        SFXManager.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
                         //call game over
                         return false;
@@ -475,8 +498,6 @@ public class Person : MonoBehaviour
     }
     public void SetAliveAnimation() {
         GetComponent<Animator>().enabled = true;
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
     }
     public void SetDeadSprite()
     {

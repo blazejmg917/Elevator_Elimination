@@ -116,12 +116,12 @@ public class LevelManager : MonoBehaviour
     public void Pause(){
         paused = true;
         pauseMenu.SetActive(true);
-        MusicScript.Instance.PauseAdjust();
+        SFXManager.Instance.PauseAdjust();
     }
     public void UnPause(){
         paused = false;
         pauseMenu.SetActive(false);
-        MusicScript.Instance.UnpauseAdjust();
+        SFXManager.Instance.UnpauseAdjust();
     }
     public void GameOver(string reason = ""){
         Debug.Log("LMGO " + reason);
