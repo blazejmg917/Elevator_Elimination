@@ -78,6 +78,8 @@ public class Person : MonoBehaviour
     private Vector3 goalPos = Vector3.zero;
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
+    private Animator bubbleAnim;
+    private Animator chatAnim;
     private SpriteRenderer spriteRen;
     //Offsets the animation time to sync up with the people around it
     //private float animOffset;
@@ -106,6 +108,12 @@ public class Person : MonoBehaviour
         }
 
         anim = GetComponent<Animator>();
+        if (transform.childCount > 0) {
+            bubbleAnim = transform.GetChild(0).GetComponent<Animator>();
+            bubbleAnim.enabled = false;
+            chatAnim = transform.GetChild(1).GetComponent<Animator>();
+            chatAnim.enabled = false;
+        }
         spriteRen = GetComponent<SpriteRenderer>();
         if (!anim) {
             return;
@@ -159,7 +167,21 @@ public class Person : MonoBehaviour
             TurnSprite();
         }
     }
-
+    /**
+     * Restarts the bubble reaction animation
+     * @param bool that sets the animation to either play the exclamation mark animation if true or the question mark animation if false
+     */
+    public void StartBubbleReaction(bool exclamation) {
+        if (bubbleAnim) {
+            bubbleAnim.enabled = true;
+            bubbleAnim.Rebind();
+            bubbleAnim.Update(0.9f);
+            bubbleAnim.SetBool("ExclamationReaction", exclamation);
+            chatAnim.enabled = true;
+            chatAnim.Rebind();
+            chatAnim.Update(0.9f);
+        }
+    }
     private void TurnSprite()
     {
         if(!anim){
@@ -215,6 +237,7 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
+            StartBubbleReaction(true);
             SFXManager.Instance.GuhSFX();
             return true;
         }
@@ -407,6 +430,7 @@ public class Person : MonoBehaviour
                     break;
             }
             TurnSprite();
+            StartBubbleReaction(false);
             SFXManager.Instance.HuhSFX();
             AfterInteract();
             return true;
@@ -531,6 +555,7 @@ public class Person : MonoBehaviour
             currentFacing = direction;
         }
         TurnSprite();
+        StartBubbleReaction(true);
     }
     public void SetDirection(Direction direction){
         if(currentFacing != Direction.NONE){
