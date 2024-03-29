@@ -262,9 +262,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2243203478242867243}
   - component: {fileID: 8869957758114548890}
+  - component: {fileID: 3729037616167182508}
   m_Layer: 0
   m_Name: BiggerDoor
-  m_TagString: Untagged
+  m_TagString: Elevator Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -336,6 +337,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3729037616167182508
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3817931890813127062}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 548781ed06d915b43ad4e3917338102a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3854021155210112724
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,6 +767,7 @@ MonoBehaviour:
   folderFilePath: /Custom/Levels
   tilePrefab: {fileID: 2577321018060466692, guid: edaf83ab3bbcb804499f1cdb8e74d0ee, type: 3}
   EmptyTileMarker: X
+  preCheckPHolder: {fileID: 0}
 --- !u!1001 &29639743506096790
 PrefabInstance:
   m_ObjectHideFlags: 0

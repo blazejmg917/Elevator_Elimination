@@ -31,7 +31,7 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField] private DirectionFacing facing = DirectionFacing.Down;
     [SerializeField, Tooltip("the player's current tile")]private Tile currentTile;
     [SerializeField] private float movementSpeed = 5f;
-    [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 3f;
+    [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 1f;
     private bool isInteractible = false;
     private Person adjacentPerson = null;
     [SerializeField]private Vector3 targetPosition;
@@ -71,6 +71,7 @@ public class PlayerMechanics : MonoBehaviour
     private Stack<(Tile tile, DirectionFacing direction, int floorNumber)> playerStates;
     private bool targetDead = false;
     private PersonHolder personHolder;
+    private Animator doorAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +81,19 @@ public class PlayerMechanics : MonoBehaviour
     }
 
     public void WalkIn() {
+        SFXManager.Instance.BellSFX();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", true);
+            doorAnim.SetBool("Close Door", false);
+            Invoke("StartPlayer", 0.5f);
+        }
+    }
+    /**
+    * Delay start animation of player walking in by .5 seconds (find a cleaner way of doing this)
+    */
+    public void StartPlayer() {
         Debug.Log("player entering");
         currentTile = tileMan.GetStartTile();
         currentTilePos = currentTile.transform.position;
@@ -92,10 +106,19 @@ public class PlayerMechanics : MonoBehaviour
         waitingForLevel = false;
         //gameObject.SetActive(true);
         spriteRen.enabled = true;
-        SFXManager.Instance.BellSFX();
+        if (doorAnim) {
+            doorAnim.SetBool("Open Door", false);
+        }
     }
 
     public void WalkOut() {
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", false);
+            doorAnim.SetBool("Close Door", true);
+        }
+        Debug.Log("player exiting");
         targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
         escaping = true;
         isInteractible = false;
@@ -136,6 +159,11 @@ public class PlayerMechanics : MonoBehaviour
         hasTapped = false;
         hasPushed = false;
         undoPressed = false;
+        doorAnim = GameObject.FindGameObjectWithTag("Elevator Door").GetComponent<Animator>();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+        }
     }
 
     // Update is called once per frame
@@ -549,6 +577,11 @@ public class PlayerMechanics : MonoBehaviour
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -560,6 +593,11 @@ public class PlayerMechanics : MonoBehaviour
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -571,6 +609,11 @@ public class PlayerMechanics : MonoBehaviour
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -582,6 +625,11 @@ public class PlayerMechanics : MonoBehaviour
                         playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                         SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }

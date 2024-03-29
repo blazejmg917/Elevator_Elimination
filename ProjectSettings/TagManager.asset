@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PersonHolder
   - SleepyGuy
+  - Elevator Door
   layers:
   - Default
   - TransparentFX

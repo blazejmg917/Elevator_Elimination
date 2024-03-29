@@ -11715,6 +11715,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 5.69
       objectReference: {fileID: 0}
+    - target: {fileID: 8518597294467170337, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 548781ed06d915b43ad4e3917338102a, type: 2}
     - target: {fileID: 8847079709445398148, guid: 7a346282e09a06e4a8bf5a85ce0eddd9, type: 3}
       propertyPath: dialogContinueActions.Array.size
       value: 1

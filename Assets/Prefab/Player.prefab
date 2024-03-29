@@ -50,7 +50,7 @@ MonoBehaviour:
   facing: 3
   currentTile: {fileID: 0}
   movementSpeed: 5
-  enterExitSpeed: 3
+  enterExitSpeed: 1
   targetPosition: {x: 0, y: 0, z: 0}
   exitTile: {fileID: 0}
   exitPosition: {x: 0, y: 0, z: 0}

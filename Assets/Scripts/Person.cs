@@ -236,7 +236,6 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            StartBubbleReaction(true);
             SFXManager.Instance.GuhSFX();
             return true;
         }
@@ -395,6 +394,7 @@ public class Person : MonoBehaviour
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
+            StartBubbleReaction(true);
             return true;
         }
         return false;
@@ -437,6 +437,13 @@ public class Person : MonoBehaviour
         return false;
     }
     public void OnRevive() {
+        Animator doorAnim = GameObject.FindGameObjectWithTag("Elevator Door").GetComponent<Animator>();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", false);
+            doorAnim.SetBool("Close Door", true);
+        }
         SetAliveAnimation();
         takesUpSpace = true;
         triggerAlarmOnSeen = false;
