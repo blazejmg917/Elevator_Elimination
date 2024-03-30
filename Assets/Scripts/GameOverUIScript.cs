@@ -55,13 +55,13 @@ public class GameOverUIScript : MonoBehaviour
     }
 
     public void QuitToMenu(){
-        MusicScript.Instance.MischiefManaged(false);
+        AudioScript.Instance.MischiefManaged(false);
         GameManager.Instance.QuitToMenu();
     }
 
     public void Retry(){
         if(GameManager.Instance.GetWinCon()){
-            MusicScript.Instance.MischiefManaged();
+            AudioScript.Instance.MischiefManaged();
         }
         CloseGameOver();
         GameManager.Instance.RetryLevel();
