@@ -241,18 +241,19 @@ public class Person : MonoBehaviour
         }
         return false;
     }
-
+    
     /*
      * Undoes tap or push depending on if the floor number of the last action matches the current floor
      */
     public bool UndoState() {
-        if (states.Count != 0) {
-            Debug.Log("floor number: " + states.Peek().floorNumber);
+        if (states.Count == 0) {
+            return false;
         }
-        if (tag == "SleepyGuy") {
+        Debug.Log("floor number: " + states.Peek().floorNumber);
+        if (CompareTag("SleepyGuy")) {
             Debug.Log(states.Peek().direction);
         }
-        if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+        if (states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
                 currentTile.SetPerson(null);
@@ -271,15 +272,13 @@ public class Person : MonoBehaviour
                 //     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                 //     TileManager.Instance.UpdateLevel();
                 // }
-                if (lastAction == Action.AWOKEN && anim) {
-                    anim.SetBool("Alarm", false);
+                if (lastAction == Action.TAPPED) {
                     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                     TileManager.Instance.UpdateLevel();
-                    Debug.Log("Alarm 2");
                 }
-                if (lastAction == Action.TAPPED || lastAction == Action.ALERTED) {
-                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
-                    TileManager.Instance.UpdateLevel();
+                if (lastAction == Action.AWOKEN && anim) {
+                    anim.SetTrigger("WakeUp");
+                    GameManager.Instance.UndoAwake = true;
                 }
             }
             if (lastAction == Action.KILLED) {
@@ -310,10 +309,6 @@ public class Person : MonoBehaviour
     private void HandleActions(personUniqueActions actions){
         if(actions.alertSurrounding){
             //check top
-            if (gameObject.tag == "SleepyGuy" && anim) {
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor() + 1, Action.AWOKEN));
-                anim.SetBool("Alarm", true);
-            }
             Tile thisTile = currentTile.GetTop();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
@@ -409,7 +404,12 @@ public class Person : MonoBehaviour
                 return false;
             }
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
+            if (CompareTag("SleepyGuy") && anim) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.AWOKEN));
+                anim.SetTrigger("WakeUp");
+            } else {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
+            }
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -452,7 +452,7 @@ public class Person : MonoBehaviour
     }
     public bool OnKill(bool overrideKillable = false)
     {
-        if (behavior.canBeKilled || overrideKillable)
+        if ((behavior.canBeKilled || overrideKillable) && GetComponent<Animator>().enabled )
         {
             SetDeadSprite();
             takesUpSpace = false;

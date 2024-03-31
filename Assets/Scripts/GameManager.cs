@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
     private int menuIndex = 0;
     [SerializeField] private String highlightedMenu = "Play";
     [SerializeField] private ErrorCodeReference errorCodes;
+    private bool undoAwakeVar = false;
+    public bool UndoAwake {
+        get {return undoAwakeVar;}
+        set {undoAwakeVar = value;}
+    }
     public static GameManager Instance
     {
         get
@@ -66,7 +71,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += (scene, mode) => OnSceneLoaded(scene, mode);
     }
-
+    
     public int GetLevelId(){
         return currentLevel;
     }
