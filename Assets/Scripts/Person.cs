@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Person : MonoBehaviour
@@ -78,15 +77,18 @@ public class Person : MonoBehaviour
     private Vector3 goalPos = Vector3.zero;
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
+    private Animator bubbleAnim;
+    private Animator chatAnim;
     private SpriteRenderer spriteRen;
     //Offsets the animation time to sync up with the people around it
-    private float animOffset;
+    //private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     public enum Action {
         TAPPED,
         PUSHED,
         ALERTED,
         KILLED,
+        AWOKEN,
         NONE
     }
     //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
@@ -105,11 +107,16 @@ public class Person : MonoBehaviour
         }
 
         anim = GetComponent<Animator>();
+        if (transform.childCount > 0) {
+            bubbleAnim = transform.GetChild(0).GetComponent<Animator>();
+            bubbleAnim.enabled = false;
+            chatAnim = transform.GetChild(1).GetComponent<Animator>();
+            chatAnim.enabled = false;
+        }
         spriteRen = GetComponent<SpriteRenderer>();
         if (!anim) {
             return;
         }
-        //anim.SetFloat("NormalizedTime", initialOffset / 56);
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
@@ -159,7 +166,21 @@ public class Person : MonoBehaviour
             TurnSprite();
         }
     }
-
+    /**
+     * Restarts the bubble reaction animation
+     * @param bool that sets the animation to either play the exclamation mark animation if true or the question mark animation if false
+     */
+    public void StartBubbleReaction(bool exclamation) {
+        if (bubbleAnim) {
+            bubbleAnim.enabled = true;
+            bubbleAnim.Rebind();
+            bubbleAnim.Update(0.9f);
+            bubbleAnim.SetBool("ExclamationReaction", exclamation);
+            chatAnim.enabled = true;
+            chatAnim.Rebind();
+            chatAnim.Update(0.9f);
+        }
+    }
     private void TurnSprite()
     {
         if(!anim){
@@ -170,8 +191,6 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -185,6 +204,13 @@ public class Person : MonoBehaviour
             case Direction.DOWN:
                 anim.SetInteger("FacingDirection", 2);
                 break;
+        }
+    }
+
+    public void OnBob(bool goingDown)
+    {
+        if (anim) {
+            anim.SetBool("BobbedDown", goingDown);
         }
     }
 
@@ -210,7 +236,7 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            AudioScript.Instance.GuhSFX();
+            SFXManager.Instance.GuhSFX();
             return true;
         }
         return false;
@@ -222,6 +248,9 @@ public class Person : MonoBehaviour
     public bool UndoState() {
         if (states.Count != 0) {
             Debug.Log("floor number: " + states.Peek().floorNumber);
+        }
+        if (tag == "SleepyGuy") {
+            Debug.Log(states.Peek().direction);
         }
         if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
@@ -237,7 +266,18 @@ public class Person : MonoBehaviour
                 currentFacing = lastFacing;
                 TurnSprite();
                 //Next two lines fix the undo issue with tap by artificially increasing floor count when undoing a tap
-                if (lastAction == Action.TAPPED) {
+                // if (lastAction == Action.ALERTED && gameObject.tag == "SleepyGuy" && anim) {
+                //     anim.SetBool("Alarm", false);
+                //     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                //     TileManager.Instance.UpdateLevel();
+                // }
+                if (lastAction == Action.AWOKEN && anim) {
+                    anim.SetBool("Alarm", false);
+                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                    TileManager.Instance.UpdateLevel();
+                    Debug.Log("Alarm 2");
+                }
+                if (lastAction == Action.TAPPED || lastAction == Action.ALERTED) {
                     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                     TileManager.Instance.UpdateLevel();
                 }
@@ -246,7 +286,7 @@ public class Person : MonoBehaviour
                 OnRevive();
                 GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                 TileManager.Instance.UpdateLevel();
-            }
+            } 
             states.Pop();
             return true;
         }
@@ -270,6 +310,10 @@ public class Person : MonoBehaviour
     private void HandleActions(personUniqueActions actions){
         if(actions.alertSurrounding){
             //check top
+            if (gameObject.tag == "SleepyGuy" && anim) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor() + 1, Action.AWOKEN));
+                anim.SetBool("Alarm", true);
+            }
             Tile thisTile = currentTile.GetTop();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
@@ -350,6 +394,7 @@ public class Person : MonoBehaviour
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
+            StartBubbleReaction(true);
             return true;
         }
         return false;
@@ -384,13 +429,21 @@ public class Person : MonoBehaviour
                     break;
             }
             TurnSprite();
-            AudioScript.Instance.HuhSFX();
+            StartBubbleReaction(false);
+            SFXManager.Instance.HuhSFX();
             AfterInteract();
             return true;
         }
         return false;
     }
     public void OnRevive() {
+        Animator doorAnim = GameObject.FindGameObjectWithTag("Elevator Door").GetComponent<Animator>();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", false);
+            doorAnim.SetBool("Close Door", true);
+        }
         SetAliveAnimation();
         takesUpSpace = true;
         triggerAlarmOnSeen = false;
@@ -459,8 +512,10 @@ public class Person : MonoBehaviour
                     Debug.Log("Seen");
                     if (seenPerson.CallAlarmWhenSeen())
                     {
+                        //Temp reaction to kill to show who caused the failed level
+                        StartBubbleReaction(true);
                         GameManager.Instance.GameOver("SEEN");
-                        AudioScript.Instance.ScreamSFX();
+                        SFXManager.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
                         //call game over
                         return false;
@@ -476,8 +531,6 @@ public class Person : MonoBehaviour
     }
     public void SetAliveAnimation() {
         GetComponent<Animator>().enabled = true;
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
     }
     public void SetDeadSprite()
     {
@@ -510,6 +563,7 @@ public class Person : MonoBehaviour
             currentFacing = direction;
         }
         TurnSprite();
+        StartBubbleReaction(false);
     }
     public void SetDirection(Direction direction){
         if(currentFacing != Direction.NONE){
