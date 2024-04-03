@@ -108,6 +108,7 @@ public class Person : MonoBehaviour
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
+        updateLineOfSight(currentFacing);
     }
 
     // Update is called once per frame
@@ -502,29 +503,33 @@ public class Person : MonoBehaviour
     public void removeOldLineOfSight(Direction facing){
         //remove old line of sight
         //loop through highlighted tiles list and remove all (they'll be repopulated in update LOS)
-        for (int i = 0; i < highLightedTileList.Length; i++){
-            //remove highlight from current tile
-            //highLightedTileList[i]
-        }
+        // for (int i = 0; i < highLightedTileList.Length; i++){
+        //     //remove highlight from current tile
+        //     //highLightedTileList[i]
+        // }
 
     }
 
     public void updateLineOfSight(Direction facing){
         int index = 0;
+        Debug.Log("hitUpdateLOS");
         switch (currentFacing)
         {
             case Direction.LEFT:
+                Debug.Log("leftFaceUpdate");
                 //player facing left, cast line of sight until obstacle
                 //loop until object hit from left, setting tile to be highlighted to indicate sight
                 if (currentTile.GetLeft().IsWalkable()){ //walkable means that visiblity passes through
                     //highlight tile(s)
                     
                     for (int i = currentTile.getX(); i >= 0; i--){ //loop to wall from current tile
+                        Debug.Log("leftFaceUpdateLoop");
                         if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
                             //highlight left to 0
                             //TileManager.Instance.tiles[i, currentTile.getY()] = 
                             //add current tile being lit up to highlighted tiles list
                             highLightedTileList[index++] = currentTile;
+                            //Debug.Log("leftFaceUpdate");
                         }
                         else{
                             break;
@@ -541,6 +546,8 @@ public class Person : MonoBehaviour
                     
                     if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
                         //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight right to 7
+
+                        Debug.Log("rFaceUpdate");
                     }
                     else{
                         break;
@@ -555,6 +562,8 @@ public class Person : MonoBehaviour
 
                     if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
                         //TileManager.Instance.tiles[currentTile.getX(), i] = //highlight down to 7
+
+                        Debug.Log("dFaceUpdate");
                     }
                     else{
                         break;
@@ -570,6 +579,7 @@ public class Person : MonoBehaviour
 
                     if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
                         //TileManager.Instance.tiles[currentTile.getX(), i] = //highlight up to 0
+                        Debug.Log("uFaceUpdate");
                     }
                     else{
                         break;
