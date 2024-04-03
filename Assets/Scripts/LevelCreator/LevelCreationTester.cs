@@ -14,6 +14,7 @@ public class LevelCreationTester : MonoBehaviour
     [SerializeField] private string savedLevelString;
     [SerializeField, Tooltip("the level creation ui handler")]private LevelCreationUiHandler uiHandler;
     [SerializeField] bool testing;
+    [SerializeField, Tooltip("the testing text area script")] private LevelCreationTestingText testingText;
 
     // Start is called before the first frame update
     void Start()

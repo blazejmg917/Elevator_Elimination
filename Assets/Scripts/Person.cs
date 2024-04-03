@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Person : MonoBehaviour
 {
-    private Tile[] highLightedTileList; //list of highlighted tiles
-
     public enum Direction
     {
         LEFT,
@@ -80,12 +77,22 @@ public class Person : MonoBehaviour
     private Vector3 goalPos = Vector3.zero;
     [SerializeField, Tooltip("the speed at which this person gets shoved")] private float pushSpeed;
     private Animator anim;
+    private Animator bubbleAnim;
+    private Animator chatAnim;
     private SpriteRenderer spriteRen;
     //Offsets the animation time to sync up with the people around it
-    private float animOffset;
+    //private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    public enum Action {
+        TAPPED,
+        PUSHED,
+        ALERTED,
+        KILLED,
+        AWOKEN,
+        NONE
+    }
     //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
-    private Stack<(Tile tile, Direction direction, int floorNumber)> states;
+    private Stack<(Tile tile, Direction direction, int floorNumber, Action action)> states;
     // Start is called before the first frame update
     void Start()
     {
@@ -93,22 +100,26 @@ public class Person : MonoBehaviour
         {
             currentFacing = Direction.NONE;
         }
-        states = new Stack<(Tile, Direction, int)>();
+        states = new Stack<(Tile, Direction, int, Action)>();
         if (currentTile)
         {
             transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
         }
 
         anim = GetComponent<Animator>();
+        if (transform.childCount > 0) {
+            bubbleAnim = transform.GetChild(0).GetComponent<Animator>();
+            bubbleAnim.enabled = false;
+            chatAnim = transform.GetChild(1).GetComponent<Animator>();
+            chatAnim.enabled = false;
+        }
         spriteRen = GetComponent<SpriteRenderer>();
         if (!anim) {
             return;
         }
-        //anim.SetFloat("NormalizedTime", initialOffset / 56);
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
-        updateLineOfSight(currentFacing);
     }
 
     // Update is called once per frame
@@ -155,7 +166,21 @@ public class Person : MonoBehaviour
             TurnSprite();
         }
     }
-
+    /**
+     * Restarts the bubble reaction animation
+     * @param bool that sets the animation to either play the exclamation mark animation if true or the question mark animation if false
+     */
+    public void StartBubbleReaction(bool exclamation) {
+        if (bubbleAnim) {
+            bubbleAnim.enabled = true;
+            bubbleAnim.Rebind();
+            bubbleAnim.Update(0.9f);
+            bubbleAnim.SetBool("ExclamationReaction", exclamation);
+            chatAnim.enabled = true;
+            chatAnim.Rebind();
+            chatAnim.Update(0.9f);
+        }
+    }
     private void TurnSprite()
     {
         if(!anim){
@@ -166,8 +191,6 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -181,6 +204,13 @@ public class Person : MonoBehaviour
             case Direction.DOWN:
                 anim.SetInteger("FacingDirection", 2);
                 break;
+        }
+    }
+
+    public void OnBob(bool goingDown)
+    {
+        if (anim) {
+            anim.SetBool("BobbedDown", goingDown);
         }
     }
 
@@ -206,17 +236,24 @@ public class Person : MonoBehaviour
                     TryMove(currentTile.GetTop());
                     break;
             }
-            MusicScript.Instance.GuhSFX();
+            SFXManager.Instance.GuhSFX();
             return true;
         }
         return false;
     }
-
+    
     /*
      * Undoes tap or push depending on if the floor number of the last action matches the current floor
      */
-    public void UndoState() {
-        if (states.Count != 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+    public bool UndoState() {
+        if (states.Count == 0) {
+            return false;
+        }
+        Debug.Log("floor number: " + states.Peek().floorNumber);
+        if (CompareTag("SleepyGuy")) {
+            Debug.Log(states.Peek().direction);
+        }
+        if (states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
                 currentTile.SetPerson(null);
@@ -225,12 +262,34 @@ public class Person : MonoBehaviour
                 isMoving = true;
             }
             Direction lastFacing = states.Peek().direction;
+            Action lastAction = states.Peek().action;
             if (currentFacing != lastFacing) {
                 currentFacing = lastFacing;
                 TurnSprite();
+                //Next two lines fix the undo issue with tap by artificially increasing floor count when undoing a tap
+                // if (lastAction == Action.ALERTED && gameObject.tag == "SleepyGuy" && anim) {
+                //     anim.SetBool("Alarm", false);
+                //     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                //     TileManager.Instance.UpdateLevel();
+                // }
+                if (lastAction == Action.TAPPED) {
+                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                    TileManager.Instance.UpdateLevel();
+                }
+                if (lastAction == Action.AWOKEN && anim) {
+                    anim.SetTrigger("WakeUp");
+                    GameManager.Instance.UndoAwake = true;
+                }
             }
+            if (lastAction == Action.KILLED) {
+                OnRevive();
+                GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
+                TileManager.Instance.UpdateLevel();
+            } 
             states.Pop();
+            return true;
         }
+        return false;
     }
 
     private void BeforeInteract(){
@@ -253,7 +312,7 @@ public class Person : MonoBehaviour
             Tile thisTile = currentTile.GetTop();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.DOWN);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.DOWN);
                     
                 }
                 thisTile = thisTile.GetTop();
@@ -262,7 +321,7 @@ public class Person : MonoBehaviour
             thisTile = currentTile.GetBottom();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.UP);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.UP);
                     
                 }
                 thisTile = thisTile.GetBottom();
@@ -271,7 +330,7 @@ public class Person : MonoBehaviour
             thisTile = currentTile.GetRight();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.LEFT);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.LEFT);
                     
                 }
                 thisTile = thisTile.GetRight();
@@ -280,7 +339,7 @@ public class Person : MonoBehaviour
             thisTile = currentTile.GetLeft();
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
-                    thisTile.GetPerson().SetDirection(Direction.RIGHT);
+                    thisTile.GetPerson().SetAlarmDirection(Direction.RIGHT);
                     
                 }
                 thisTile = thisTile.GetLeft();
@@ -323,17 +382,14 @@ public class Person : MonoBehaviour
         }
         if (newTile.IsWalkable())
         {
-            //remove old line of sight
-            removeOldLineOfSight(currentFacing);
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.PUSHED));
             currentTile.SetPerson(null);
             //positions.Push(currentTile.transform.position);
             currentTile = newTile;
             newTile.SetPerson(this);
             isMoving = true;
-            //update line of sight for npc
-            updateLineOfSight(currentFacing);
+            StartBubbleReaction(true);
             return true;
         }
         return false;
@@ -344,10 +400,16 @@ public class Person : MonoBehaviour
     {
         if (behavior.canTurn)
         {
-            //remove old line of sight
-            removeOldLineOfSight(currentFacing);
+            if ((dir == PlayerMechanics.DirectionFacing.Right && currentFacing == Direction.LEFT) || (dir == PlayerMechanics.DirectionFacing.Left && currentFacing == Direction.RIGHT) || (dir == PlayerMechanics.DirectionFacing.Down && currentFacing == Direction.UP) || (dir == PlayerMechanics.DirectionFacing.Up && currentFacing == Direction.DOWN)) {
+                return false;
+            }
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor()));
+            if (CompareTag("SleepyGuy") && anim) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.AWOKEN));
+                anim.SetTrigger("WakeUp");
+            } else {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
+            }
             switch (dir)
             {
                 case PlayerMechanics.DirectionFacing.Left:
@@ -367,29 +429,39 @@ public class Person : MonoBehaviour
                     break;
             }
             TurnSprite();
-            MusicScript.Instance.HuhSFX();
+            StartBubbleReaction(false);
+            SFXManager.Instance.HuhSFX();
             AfterInteract();
-            //update line of sight for npc
-            updateLineOfSight(currentFacing);
             return true;
         }
-        
         return false;
     }
-
+    public void OnRevive() {
+        Animator doorAnim = GameObject.FindGameObjectWithTag("Elevator Door").GetComponent<Animator>();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", false);
+            doorAnim.SetBool("Close Door", true);
+        }
+        SetAliveAnimation();
+        takesUpSpace = true;
+        triggerAlarmOnSeen = false;
+        LevelManager.Instance.TargetRevived();
+        
+    }
     public bool OnKill(bool overrideKillable = false)
     {
-        if (behavior.canBeKilled || overrideKillable)
+        if ((behavior.canBeKilled || overrideKillable) && GetComponent<Animator>().enabled )
         {
-            removeOldLineOfSight(currentFacing); //remove line of sight
             SetDeadSprite();
             takesUpSpace = false;
             triggerAlarmOnSeen = true;
             if (isTarget)
             {
                 
-                
                 LevelManager.Instance.TargetKilled();
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.KILLED));
                 //GameManager.Instance.SetWinCon(true);
                 //call target killed
                 return true;
@@ -440,8 +512,10 @@ public class Person : MonoBehaviour
                     Debug.Log("Seen");
                     if (seenPerson.CallAlarmWhenSeen())
                     {
+                        //Temp reaction to kill to show who caused the failed level
+                        StartBubbleReaction(true);
                         GameManager.Instance.GameOver("SEEN");
-                        MusicScript.Instance.ScreamSFX();
+                        SFXManager.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
                         //call game over
                         return false;
@@ -455,7 +529,9 @@ public class Person : MonoBehaviour
         }
         return true;
     }
-
+    public void SetAliveAnimation() {
+        GetComponent<Animator>().enabled = true;
+    }
     public void SetDeadSprite()
     {
         GetComponent<SpriteRenderer>().sprite = deadSprite;
@@ -477,7 +553,18 @@ public class Person : MonoBehaviour
     public Direction GetDirection() {
         return currentFacing;
     }
-
+    /**
+     * Sets the direction according to which way the bird triggers the alarm
+     * @param direction the direction to change the person's animation
+     */
+    public void SetAlarmDirection(Direction direction) {
+        if(currentFacing != Direction.NONE || currentFacing != direction){
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.ALERTED));
+            currentFacing = direction;
+        }
+        TurnSprite();
+        StartBubbleReaction(false);
+    }
     public void SetDirection(Direction direction){
         if(currentFacing != Direction.NONE){
             currentFacing = direction;
@@ -498,95 +585,5 @@ public class Person : MonoBehaviour
     public bool HasDirection()
     {
         return hasDirection;
-    }
-
-    public void removeOldLineOfSight(Direction facing){
-        //remove old line of sight
-        //loop through highlighted tiles list and remove all (they'll be repopulated in update LOS)
-        // for (int i = 0; i < highLightedTileList.Length; i++){
-        //     //remove highlight from current tile
-        //     //highLightedTileList[i]
-        // }
-
-    }
-
-    public void updateLineOfSight(Direction facing){
-        int index = 0;
-        Debug.Log("hitUpdateLOS");
-        switch (currentFacing)
-        {
-            case Direction.LEFT:
-                Debug.Log("leftFaceUpdate");
-                //player facing left, cast line of sight until obstacle
-                //loop until object hit from left, setting tile to be highlighted to indicate sight
-                if (currentTile.GetLeft().IsWalkable()){ //walkable means that visiblity passes through
-                    //highlight tile(s)
-                    
-                    for (int i = currentTile.getX(); i >= 0; i--){ //loop to wall from current tile
-                        Debug.Log("leftFaceUpdateLoop");
-                        if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
-                            //highlight left to 0
-                            //TileManager.Instance.tiles[i, currentTile.getY()] = 
-                            //add current tile being lit up to highlighted tiles list
-                            highLightedTileList[index++] = currentTile;
-                            //Debug.Log("leftFaceUpdate");
-                        }
-                        else{
-                            break;
-                        }
-                        
-                    }
-                }
-                break;
-
-            case Direction.RIGHT:
-                //player facing right, cast line of sight until obstacle
-                //highlight tile(s)
-                for (int i = currentTile.getX(); i < 8; i++){ //loop to wall from current tile
-                    
-                    if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
-                        //TileManager.Instance.tiles[i, currentTile.getY()] = //highlight right to 7
-
-                        Debug.Log("rFaceUpdate");
-                    }
-                    else{
-                        break;
-                    }
-                }
-                break;
-
-            case Direction.DOWN:
-                //player facing down, cast line of sight until obstacle
-                for (int i = currentTile.getY(); i < 8; i++){ //loop to wall from current tile
-                    
-
-                    if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
-                        //TileManager.Instance.tiles[currentTile.getX(), i] = //highlight down to 7
-
-                        Debug.Log("dFaceUpdate");
-                    }
-                    else{
-                        break;
-                    }
-
-                }
-                break;
-
-            case Direction.UP:
-                //player facing up, cast line of sight until obstacle
-                for (int i = currentTile.getY(); i >= 0; i--){ //loop to wall from current tile
-                    
-
-                    if (currentTile.IsWalkable()){ //continue line of sight cast if tile is walkable
-                        //TileManager.Instance.tiles[currentTile.getX(), i] = //highlight up to 0
-                        Debug.Log("uFaceUpdate");
-                    }
-                    else{
-                        break;
-                    }
-
-                }
-                break;
-        }
     }
 }

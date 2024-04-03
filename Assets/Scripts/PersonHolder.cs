@@ -10,7 +10,7 @@ public class PersonHolder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        UpdateMap();
     }
 
     // Update is called once per frame
@@ -52,7 +52,7 @@ public class PersonHolder : MonoBehaviour
             UpdateMap();
         }
         string result;
-        if (peopleKeyMap.TryGetValue(key, out result))
+        if (peopleKeyMap.TryGetValue(key.ToUpper(), out result))
         {
             return result;
         }
