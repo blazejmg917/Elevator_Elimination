@@ -125,6 +125,10 @@ public class Person : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (behavior.canSee){
+            updateLineOfSight(currentFacing);
+        }
+        
         if (isMoving)
         {
             goalPos = currentTile.GetPersonLocation();//new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
@@ -585,5 +589,57 @@ public class Person : MonoBehaviour
     public bool HasDirection()
     {
         return hasDirection;
+    }
+
+    public void castVisionOnTile(Tile tileSeen){
+        //highlight tile passed in
+
+    }
+
+    public void updateLineOfSight(Direction facing){
+        //HandleActions(behavior.onTurnChange);
+        Debug.Log("hitUpdateLOS");
+        bool sightlineCleared = false;
+        Tile tileSeen = currentTile;
+        while (!sightlineCleared)
+        {
+            //if tile is invalid, break los
+            if (!tileSeen) { // || !tileSeen.IsWalkable()
+                Debug.Log("BreakLOS");
+                break;
+            }
+            //highlight tileseen
+            castVisionOnTile(tileSeen);
+            switch (currentFacing) {
+                case Direction.LEFT:
+                    tileSeen = tileSeen.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    tileSeen = tileSeen.GetRight();
+                    break;
+                case Direction.UP:
+                    tileSeen = tileSeen.GetTop();
+                    break;
+                case Direction.DOWN:
+                    tileSeen = tileSeen.GetBottom();
+                    break;
+                default: 
+                    break;
+                
+            }
+            //if tile seen exists
+            if (tileSeen)
+            {
+                //get person on tile
+                Person seenPerson = tileSeen.GetPerson();
+                //if person exists, stop line of sight at/on them
+                if (seenPerson)
+                {
+                    Debug.Log(seenPerson.name);
+                    
+                }
+            }
+        }
+
     }
 }
