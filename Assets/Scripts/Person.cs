@@ -197,9 +197,9 @@ public class Person : MonoBehaviour
         //     spriteRen.flipX = false;
         // }
         //remove old line of sight
-        if (currentFacing != null){
-            RemoveLOSLighting(currentFacing);
-        }
+        // if (currentFacing != null){
+        //     RemoveLOSLighting(currentFacing);
+        // }
         
         switch(currentFacing) {
             case Direction.LEFT:
