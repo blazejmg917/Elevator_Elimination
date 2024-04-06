@@ -678,6 +678,11 @@ public class PlayerMechanics : MonoBehaviour
                     personHolder.UpdateMap();
                 }
             }
+            if (gameMan.UndoAwake) {
+                gameMan.UndoFloor(gameMan.GetCurrentFloor() + 1);
+                TileManager.Instance.UpdateLevel();
+                gameMan.UndoAwake = false;
+            }
             gameMan.UndoFloor(oldFloor);
             // //Undoes a movement option, tap action, or push action depending on which was last performed
             // switch(lastAction) {
