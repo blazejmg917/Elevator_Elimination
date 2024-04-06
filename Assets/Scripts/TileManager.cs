@@ -557,4 +557,8 @@ public class TileManager : MonoBehaviour
         LoadLevelList(baseLevel, true);
     }
 
+    public List<ListWrapper<Tile>> getTileListFromManager(){
+        return tilesList;
+    }
+
 }

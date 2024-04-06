@@ -126,6 +126,7 @@ public class Person : MonoBehaviour
     void FixedUpdate()
     {
         if (behavior.canSee){
+            RemoveLOSLighting(currentFacing);
             updateLineOfSight(currentFacing);
         }
         
@@ -195,6 +196,11 @@ public class Person : MonoBehaviour
         // } else {
         //     spriteRen.flipX = false;
         // }
+        //remove old line of sight
+        if (currentFacing != null){
+            RemoveLOSLighting(currentFacing);
+        }
+        
         switch(currentFacing) {
             case Direction.LEFT:
                 anim.SetInteger("FacingDirection", 3);
@@ -253,6 +259,8 @@ public class Person : MonoBehaviour
         if (states.Count == 0) {
             return false;
         }
+        //remove old line of sight
+        RemoveLOSLighting(currentFacing);
         Debug.Log("floor number: " + states.Peek().floorNumber);
         if (CompareTag("SleepyGuy")) {
             Debug.Log(states.Peek().direction);
@@ -297,11 +305,19 @@ public class Person : MonoBehaviour
     }
 
     private void BeforeInteract(){
+        if (currentFacing != null){
+            RemoveLOSLighting(currentFacing);
+        }
         HandleActions(behavior.beforeInteract);
+        
     }
 
     private void AfterInteract(){
+        if (currentFacing != null){
+            updateLineOfSight(currentFacing);
+        }
         HandleActions(behavior.afterInteract);
+        
     }
 
 
@@ -394,8 +410,10 @@ public class Person : MonoBehaviour
             newTile.SetPerson(this);
             isMoving = true;
             StartBubbleReaction(true);
+            updateLineOfSight(currentFacing);
             return true;
         }
+        updateLineOfSight(currentFacing);
         return false;
 
     }
@@ -458,6 +476,7 @@ public class Person : MonoBehaviour
     {
         if ((behavior.canBeKilled || overrideKillable) && GetComponent<Animator>().enabled )
         {
+            RemoveLOSLighting(currentFacing);
             SetDeadSprite();
             takesUpSpace = false;
             triggerAlarmOnSeen = true;
@@ -593,23 +612,26 @@ public class Person : MonoBehaviour
 
     public void castVisionOnTile(Tile tileSeen){
         //highlight tile passed in
+        Color castVisionColor = Color.cyan;
+        //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetTileColor(castVisionColor);
+        tileSeen.GetComponent<TileHighlight>().SetHoverColor(true);
+        //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetHoverColor(true);
 
     }
 
-    public void updateLineOfSight(Direction facing){
-        //HandleActions(behavior.onTurnChange);
-        Debug.Log("hitUpdateLOS");
+    public void RemoveLOSLighting(Direction facing){
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         while (!sightlineCleared)
         {
             //if tile is invalid, break los
-            if (!tileSeen) { // || !tileSeen.IsWalkable()
-                Debug.Log("BreakLOS");
+            if (!tileSeen) {
+                Debug.Log("BreakLOSRemoveing");
                 break;
             }
-            //highlight tileseen
-            castVisionOnTile(tileSeen);
+
+            
+            
             switch (currentFacing) {
                 case Direction.LEFT:
                     tileSeen = tileSeen.GetLeft();
@@ -627,9 +649,64 @@ public class Person : MonoBehaviour
                     break;
                 
             }
+
             //if tile seen exists
             if (tileSeen)
             {
+
+                //unhighlight tile
+                if (tileSeen.IsWalkable() && tileSeen.GetComponent<TileHighlight>() != null){
+                    Color defaultColor = Color.white;
+                    //tileSeen.GetComponent<TileHighlight>().SetDefaultColor();
+                    tileSeen.GetComponent<TileHighlight>().SetTileColor(defaultColor);
+                }
+                
+            }
+            
+        }
+    }
+    
+
+    public void updateLineOfSight(Direction facing){
+        //HandleActions(behavior.onTurnChange);
+        
+        bool sightlineCleared = false;
+        Tile tileSeen = currentTile;
+        while (!sightlineCleared)
+        {
+            //if tile is invalid, break los
+            if (!tileSeen) { // || !tileSeen.IsWalkable()
+                Debug.Log("BreakLOS");
+                break;
+            }
+            //highlight tileseen
+            
+            //Debug.Log(tileSeen.getX() + " " + tileSeen.getY());
+            switch (currentFacing) {
+                case Direction.LEFT:
+                    //Debug.Log("hitUpdateLOSLeft");
+                    tileSeen = tileSeen.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    ///Debug.Log("hitUpdateLOSRight");
+                    tileSeen = tileSeen.GetRight();
+                    break;
+                case Direction.UP:
+                    //Debug.Log("hitUpdateLOSUp");
+                    tileSeen = tileSeen.GetTop();
+                    break;
+                case Direction.DOWN:
+                    //Debug.Log("hitUpdateLOSDown");
+                    tileSeen = tileSeen.GetBottom();
+                    break;
+                default: 
+                    break;
+                
+            }
+            //if tile seen exists
+            if (tileSeen)
+            {
+                
                 //get person on tile
                 Person seenPerson = tileSeen.GetPerson();
                 //if person exists, stop line of sight at/on them
@@ -638,6 +715,15 @@ public class Person : MonoBehaviour
                     Debug.Log(seenPerson.name);
                     
                 }
+                //highlight tile
+                if (tileSeen.IsWalkable()){
+                    castVisionOnTile(tileSeen);
+                }
+                else{
+                    
+                    break;
+                }
+                
             }
         }
 
