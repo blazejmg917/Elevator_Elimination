@@ -29,6 +29,18 @@ PrefabInstance:
       value: BC
       objectReference: {fileID: 0}
     - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: pushSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: hasDirection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
+      propertyPath: currentFacing
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872812408457918593, guid: 9b6c0d997343d834f99a96ce6e0d9a06, type: 3}
       propertyPath: behavior.canPush
       value: 1
       objectReference: {fileID: 0}

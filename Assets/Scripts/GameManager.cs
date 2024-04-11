@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
     private int menuIndex = 0;
     [SerializeField] private String highlightedMenu = "Play";
     [SerializeField] private ErrorCodeReference errorCodes;
+    private bool undoAwakeVar = false;
+    public bool UndoAwake {
+        get {return undoAwakeVar;}
+        set {undoAwakeVar = value;}
+    }
     public static GameManager Instance
     {
         get
@@ -66,7 +71,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += (scene, mode) => OnSceneLoaded(scene, mode);
     }
-
+    
     public int GetLevelId(){
         return currentLevel;
     }
@@ -139,11 +144,11 @@ public class GameManager : MonoBehaviour
     }
 
     /*
-     * Undoes the floor change
-     * @param change The number of floors to add to the current counter
+     * Undoes the floor newFloor
+     * @param newFloor The number of floors to set to the current floor
      */
-    public void UndoFloor(int change) {
-        currentFloor += change;
+    public void UndoFloor(int newFloor) {
+        currentFloor = newFloor;
     }
     /*
      * Gets the current floor number

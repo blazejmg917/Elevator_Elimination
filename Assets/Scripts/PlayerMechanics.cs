@@ -15,23 +15,23 @@ public class PlayerMechanics : MonoBehaviour
         Up,
         Down
     }
-    public enum Action
-    {
-        MoveLeft,
-        MoveRight,
-        MoveUp,
-        MoveDown,
-        Tap,
-        Push,
-        Kill,
-    }
+    // public enum Action
+    // {
+    //     MoveLeft,
+    //     MoveRight,
+    //     MoveUp,
+    //     MoveDown,
+    //     Tap,
+    //     Push,
+    //     Kill,
+    // }
     [System.Serializable]public class PlayerStartEvent : UnityEvent{};
     [System.Serializable]public class PlayerEscapeEvent : UnityEvent{};
     [System.Serializable]public class GameOverEvent : UnityEvent{};
     [SerializeField] private DirectionFacing facing = DirectionFacing.Down;
     [SerializeField, Tooltip("the player's current tile")]private Tile currentTile;
     [SerializeField] private float movementSpeed = 5f;
-    [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 3f;
+    [SerializeField, Tooltip("move speed for enter/exit")]private float enterExitSpeed = 1f;
     private bool isInteractible = false;
     private Person adjacentPerson = null;
     [SerializeField]private Vector3 targetPosition;
@@ -64,21 +64,36 @@ public class PlayerMechanics : MonoBehaviour
     [SerializeField, Tooltip("event for when player enters level")]private PlayerStartEvent levelStart = new PlayerStartEvent();
     [SerializeField, Tooltip("event for when player escapes level")]private PlayerEscapeEvent levelEnd = new PlayerEscapeEvent();
     [SerializeField, Tooltip("event for when player loses the level")]private GameOverEvent playerFail = new GameOverEvent();
-    //Offsets the animation time to sync up with the people around it
-    private float animOffset;
-    [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
+    // //Offsets the animation time to sync up with the people around it
+    // private float animOffset;
+    // [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
     //Stack to store the previous actions, previous directions the player was facing, and previous people the player was next to if they exist
-    private Stack<(Action action, DirectionFacing direction, Person adjPerson)> moves;
+    private Stack<(Tile tile, DirectionFacing direction, int floorNumber)> playerStates;
     private bool targetDead = false;
+    private PersonHolder personHolder;
+    private Animator doorAnim;
     // Start is called before the first frame update
     void Start()
     {
         //Setup();
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
         spriteRen = GetComponent<SpriteRenderer>();
     }
 
     public void WalkIn() {
+        SFXManager.Instance.BellSFX();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", true);
+            doorAnim.SetBool("Close Door", false);
+            Invoke("StartPlayer", 0.5f);
+        }
+    }
+    /**
+    * Delay start animation of player walking in by .5 seconds (find a cleaner way of doing this)
+    */
+    public void StartPlayer() {
         Debug.Log("player entering");
         currentTile = tileMan.GetStartTile();
         currentTilePos = currentTile.transform.position;
@@ -91,14 +106,23 @@ public class PlayerMechanics : MonoBehaviour
         waitingForLevel = false;
         //gameObject.SetActive(true);
         spriteRen.enabled = true;
-        MusicScript.Instance.BellSFX();
+        if (doorAnim) {
+            doorAnim.SetBool("Open Door", false);
+        }
     }
 
     public void WalkOut() {
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+            doorAnim.SetBool("Open Door", false);
+            doorAnim.SetBool("Close Door", true);
+        }
+        Debug.Log("player exiting");
         targetPosition = new Vector3(startEndPos.position.x, startEndPos.position.y, transform.position.z);
         escaping = true;
         isInteractible = false;
-        MusicScript.Instance.ExitDoorSFX();
+        SFXManager.Instance.ExitDoorSFX();
         spriteRen.enabled = false;
         facing = DirectionFacing.Down;
     }
@@ -107,8 +131,8 @@ public class PlayerMechanics : MonoBehaviour
         Debug.Log("player setup");
         tileMan = TileManager.Instance;
         gameMan = GameManager.Instance;
-        moves = new Stack<(Action, DirectionFacing, Person)>();
-        
+        playerStates = new Stack<(Tile, DirectionFacing, int)>();
+        personHolder = PersonManager.Instance.GetPHolder();
         if(startEndPos){
             transform.position = startEndPos.position;
         }
@@ -126,8 +150,7 @@ public class PlayerMechanics : MonoBehaviour
         isInteractible=false;
         facing = DirectionFacing.Down;
         adjacentPerson = null;
-        anim.SetFloat("NormalizedTime", initialOffset / 56);
-        initialOffset = 0;
+        // initialOffset = 0;
         anim.SetInteger("Facing Direction", 2);
         anim.Rebind();
         anim.Update(0f);
@@ -135,6 +158,12 @@ public class PlayerMechanics : MonoBehaviour
         movePressed = false;
         hasTapped = false;
         hasPushed = false;
+        undoPressed = false;
+        doorAnim = GameObject.FindGameObjectWithTag("Elevator Door").GetComponent<Animator>();
+        if (doorAnim) {
+            doorAnim.Rebind();
+            doorAnim.Update(0f);
+        }
     }
 
     // Update is called once per frame
@@ -168,7 +197,7 @@ public class PlayerMechanics : MonoBehaviour
                 //gameObject.SetActive(false);
                 spriteRen.enabled = false;
                 levelEnd.Invoke();
-                MusicScript.Instance.MischiefManaged();
+                SFXManager.Instance.MischiefManaged();
                 LevelManager.Instance.EnablePause(false);
             }
             return;
@@ -196,8 +225,9 @@ public class PlayerMechanics : MonoBehaviour
             if (transform.position == targetPosition) {
                 isInteractible = true;
                 movePressed = false;
-                MusicScript.Instance.StepSFX();
-                if (moves.Count == 0 && facing != DirectionFacing.Down) {
+                undoPressed = false;
+                SFXManager.Instance.StepSFX();
+                if (playerStates.Count == 0 && facing != DirectionFacing.Down) {
                     facing = DirectionFacing.Down;
                     UpdateDirection();
                 }
@@ -233,11 +263,11 @@ public class PlayerMechanics : MonoBehaviour
                 }
                 //If in quick mode, checks to see if the player can move left and then moves left
                 if (!cautious && currentTile.GetLeft() && currentTile.GetLeft().IsWalkable() && !movedLeft && neutral && isInteractible) {
+                    playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     currentTile = currentTile.GetLeft();
                     isInteractible = false;
                     movedLeft = true;
                     neutral = false;
-                    moves.Push((Action.MoveLeft, facing, null));
                 }
             } else if (x > 0.1f) {
                 //Changes direction to right if not already facing right
@@ -248,11 +278,11 @@ public class PlayerMechanics : MonoBehaviour
                 }
                 //If in quick mode, checks to see if the player can move right and then moves right
                 if (!cautious && currentTile.GetRight() && currentTile.GetRight().IsWalkable() && !movedRight && neutral && isInteractible) {
+                    playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     currentTile = currentTile.GetRight();
                     isInteractible = false;
                     movedRight = true;
                     neutral = false;
-                    moves.Push((Action.MoveRight, facing, null));
                 }
             }
         }
@@ -266,11 +296,11 @@ public class PlayerMechanics : MonoBehaviour
                     UpdateDirection();
                 }
                 if (!cautious && currentTile.GetBottom() && currentTile.GetBottom().IsWalkable() && !movedDown && neutral && isInteractible) {
+                    playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     currentTile = currentTile.GetBottom();
                     isInteractible = false;
                     movedDown = true;
                     neutral = false;
-                    moves.Push((Action.MoveDown, facing, null));
                 }
             } else if (y > 0.1f) {
                 //Changes direction to right if not already facing up
@@ -281,11 +311,11 @@ public class PlayerMechanics : MonoBehaviour
                 }
                 //If in quick mode, checks to see if the player can move down and then moves up
                 if (!cautious && currentTile.GetTop() && currentTile.GetTop().IsWalkable() && !movedUp && neutral && isInteractible) {
+                    playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     currentTile = currentTile.GetTop();
                     isInteractible = false;
                     movedUp = true;
                     neutral = false;
-                    moves.Push((Action.MoveUp, facing, null));
                 }
                 //Checks to see if the player is in front of the elevator door and then starts the exit animation if the player has killed the target without being caught
                 if (currentTile == exitTile && facing == DirectionFacing.Up && gameMan.GetWinCon() && !gameMan.GetLoseCon() && !cautious && isInteractible) {
@@ -298,13 +328,15 @@ public class PlayerMechanics : MonoBehaviour
         }
     }
 
+    public void OnBob(bool goingDown)
+    {
+        anim.SetBool("BobbedDown", goingDown);
+    }
     /*
      * Updates the animation of the player based on which direction the player is facing
      */
     public void UpdateDirection() {
-        MusicScript.Instance.RotateSFX();
-        animOffset = anim.GetCurrentAnimatorStateInfo(1).normalizedTime % 1f;
-        anim.SetFloat("NormalizedTime", animOffset);
+        SFXManager.Instance.RotateSFX();
         switch(facing) {
             case DirectionFacing.Left:
                 anim.SetInteger("Facing Direction", 3);
@@ -347,10 +379,10 @@ public class PlayerMechanics : MonoBehaviour
                 switch(facing) {
                     case DirectionFacing.Left:
                         if (currentTile.GetLeft() && currentTile.GetLeft().IsWalkable()) {
+                            playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                             currentTile = currentTile.GetLeft();
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
-                            moves.Push((Action.MoveLeft, facing, null));
                             
                         } else {
                             //Trigger bump sound
@@ -358,10 +390,10 @@ public class PlayerMechanics : MonoBehaviour
                         break;
                     case DirectionFacing.Right:
                         if (currentTile.GetRight() && currentTile.GetRight().IsWalkable()) {
+                            playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                             currentTile = currentTile.GetRight();
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
-                            moves.Push((Action.MoveRight, facing, null));
                             
                         } else {
                             //Trigger bump sound
@@ -369,10 +401,10 @@ public class PlayerMechanics : MonoBehaviour
                         break;
                     case DirectionFacing.Up:
                         if (currentTile.GetTop() && currentTile.GetTop().IsWalkable()) {
+                            playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                             currentTile = currentTile.GetTop();
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
-                            moves.Push((Action.MoveUp, facing, null));
                             
                         } else {
                             //Trigger bump sound
@@ -380,10 +412,10 @@ public class PlayerMechanics : MonoBehaviour
                         break;
                     case DirectionFacing.Down:
                         if (currentTile.GetBottom() && currentTile.GetBottom().IsWalkable()) {
+                            playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                             currentTile = currentTile.GetBottom();
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
-                            moves.Push((Action.MoveDown, facing, null));
                             
                         } else {
                             //Trigger bump sound
@@ -415,8 +447,8 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Left)) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.TapSFX();
-                        moves.Push((Action.Tap, facing, adjacentPerson));
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -425,8 +457,8 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Right)) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.TapSFX();
-                        moves.Push((Action.Tap, facing, adjacentPerson));
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -435,8 +467,8 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Up)) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.TapSFX();
-                        moves.Push((Action.Tap, facing, adjacentPerson));
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -445,8 +477,8 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnTap(DirectionFacing.Down)) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.TapSFX();
-                        moves.Push((Action.Tap, facing, adjacentPerson));
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.TapSFX();
                     } else {
                         //Trigger error sound
                     }
@@ -480,8 +512,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Left:
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Left)) {
-                        MusicScript.Instance.PushSFX();
-                        moves.Push((Action.Push, facing, adjacentPerson));
+                        SFXManager.Instance.PushSFX();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
                     }
@@ -489,8 +521,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Right:
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Right)) {
-                        MusicScript.Instance.PushSFX();
-                        moves.Push((Action.Push, facing, adjacentPerson));
+                        SFXManager.Instance.PushSFX();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
                     }
@@ -498,8 +530,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Up:
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Up)) {
-                        MusicScript.Instance.PushSFX();
-                        moves.Push((Action.Push, facing, adjacentPerson));
+                        SFXManager.Instance.PushSFX();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
                     }
@@ -507,8 +539,8 @@ public class PlayerMechanics : MonoBehaviour
                 case DirectionFacing.Down:
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnPush(DirectionFacing.Down)) {
-                        MusicScript.Instance.PushSFX();
-                        moves.Push((Action.Push, facing, adjacentPerson));
+                        SFXManager.Instance.PushSFX();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
                     } else {
                         //Trigger error sound
                     }
@@ -542,9 +574,14 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetLeft().GetPerson();
                     if (currentTile.GetLeft() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        
-                        MusicScript.Instance.StabbyStabby();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -553,8 +590,14 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetRight().GetPerson();
                     if (currentTile.GetRight() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.StabbyStabby();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -563,8 +606,14 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetTop().GetPerson();
                     if (currentTile.GetTop() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.StabbyStabby();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -573,8 +622,14 @@ public class PlayerMechanics : MonoBehaviour
                     adjacentPerson = currentTile.GetBottom().GetPerson();
                     if (currentTile.GetBottom() && adjacentPerson && adjacentPerson.OnKill()) {
                         tileMan.UpdateLevel();
-                        MusicScript.Instance.StabbyStabby();
+                        playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                        SFXManager.Instance.StabbyStabby();
                         targetDead = true;
+                        if (doorAnim && !gameMan.GetLoseCon()) {
+                            doorAnim.Rebind();
+                            doorAnim.Update(0f);
+                            doorAnim.SetBool("Open Door", true);
+                        }
                     } else {
                         //Trigger error sound
                     }
@@ -588,84 +643,101 @@ public class PlayerMechanics : MonoBehaviour
             adjacentPerson = null;
         }
     }
-
+    
     /*
      * Undoes the last action whether the player moved, tapped, or pushed
      * Cannot undo a kill
      * @param ctx control input
      */
     public void Undo(InputAction.CallbackContext ctx) {
-        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused() || moves.Count == 0 || targetDead){
+        if(gameMan.GetLoseCon()|| waitingForLevel || LevelManager.Instance.IsPaused() || playerStates.Count == 0){
             return;
         }
         float pressed = ctx.ReadValue<float>();
-        Debug.Log("Undo pressed, number of moves in undo list: " + moves.Count);
         //Checks to see if the undo button is pressed and can be pressed then finds the last action, direction, and adjacent person and reverts the state of the player and that adjacent person
         if (pressed > 0.5f && isInteractible && !undoPressed) {
             undoPressed = true;
-            Action lastAction = moves.Peek().action;
-            DirectionFacing lastDirection = moves.Peek().direction;
-            Person lastAdjacentPerson = moves.Peek().adjPerson;
-            moves.Pop();
-            Debug.Log("Last Action: " + lastAction.ToString() + ", Last Direction: " + lastDirection.ToString());
+            Tile lastTile = playerStates.Peek().tile;
+            DirectionFacing lastDirection = playerStates.Peek().direction;
+            int oldFloor = playerStates.Peek().floorNumber + 1;
+            playerStates.Pop();
+            Debug.Log("Last Tile: " + lastTile.getCoords() + ", Last Direction: " + lastDirection.ToString());
             if (facing != lastDirection) {
                 facing = lastDirection;
                 UpdateDirection();
             }
-            //Undoes a movement option, tap action, or push action depending on which was last performed
-            switch(lastAction) {
-                //Moves the player back to the right and adds two floors
-                case Action.MoveLeft:
-                    currentTile = currentTile.GetRight();
-                    targetPosition = currentTile.transform.position;
-                    isInteractible = false;
-                    undoPressed = false;
-                    gameMan.UndoFloor(2);
-                    break;
-                //Moves the player back to the left and adds two floors
-                case Action.MoveRight:
-                    currentTile = currentTile.GetLeft();
-                    targetPosition = currentTile.transform.position;
-                    isInteractible = false;
-                    undoPressed = false;
-                    gameMan.UndoFloor(2);
-                    break;
-                //Moves the player back to the up and adds two floors
-                case Action.MoveUp:
-                    currentTile = currentTile.GetBottom();
-                    targetPosition = currentTile.transform.position;
-                    isInteractible = false;
-                    undoPressed = false;
-                    gameMan.UndoFloor(2);
-                    break;
-                //Moves the player back to the down and adds two floors
-                case Action.MoveDown:
-                    currentTile = currentTile.GetTop();
-                    targetPosition = currentTile.transform.position;
-                    isInteractible = false;
-                    undoPressed = false;
-                    gameMan.UndoFloor(2);
-                    break;
-                //Reverts the adjacent person that was last tapped to its previous direction and adds two floors
-                case Action.Tap:
-                    lastAdjacentPerson.UndoState();
-                    isInteractible = false;
-                    hasTapped = false;
-                    undoPressed = false;
-                    gameMan.UndoFloor(2);
-                    break;
-                //Reverts the adjacent person that was last pushed to its previous location and adds three floors
-                case Action.Push:
-                    lastAdjacentPerson.UndoState();
-                    isInteractible = false;
-                    hasPushed = false;
-                    undoPressed = false;
-                    gameMan.UndoFloor(3);
-                    break;
-                default:
-                    //No more actions
-                    break;
+            if (currentTile.transform.position != lastTile.transform.position) {
+                currentTile = lastTile;
+                targetPosition = currentTile.transform.position;
+                isInteractible = false;
+                adjacentPerson = null;
             }
+            for (int i = 0; i < personHolder.transform.childCount; i++)
+            {
+                if (personHolder.transform.GetChild(i).GetComponent<Person>().UndoState()) {
+                    personHolder.UpdateMap();
+                }
+            }
+            if (gameMan.UndoAwake) {
+                gameMan.UndoFloor(gameMan.GetCurrentFloor() + 1);
+                TileManager.Instance.UpdateLevel();
+                gameMan.UndoAwake = false;
+            }
+            gameMan.UndoFloor(oldFloor);
+            // //Undoes a movement option, tap action, or push action depending on which was last performed
+            // switch(lastAction) {
+            //     //Moves the player back to the right and adds two floors
+            //     case Action.MoveLeft:
+            //         currentTile = currentTile.GetRight();
+            //         targetPosition = currentTile.transform.position;
+            //         isInteractible = false;
+            //         undoPressed = false;
+            //         gameMan.UndoFloor(2);
+            //         break;
+            //     //Moves the player back to the left and adds two floors
+            //     case Action.MoveRight:
+            //         currentTile = currentTile.GetLeft();
+            //         targetPosition = currentTile.transform.position;
+            //         isInteractible = false;
+            //         undoPressed = false;
+            //         gameMan.UndoFloor(2);
+            //         break;
+            //     //Moves the player back to the up and adds two floors
+            //     case Action.MoveUp:
+            //         currentTile = currentTile.GetBottom();
+            //         targetPosition = currentTile.transform.position;
+            //         isInteractible = false;
+            //         undoPressed = false;
+            //         gameMan.UndoFloor(2);
+            //         break;
+            //     //Moves the player back to the down and adds two floors
+            //     case Action.MoveDown:
+            //         currentTile = currentTile.GetTop();
+            //         targetPosition = currentTile.transform.position;
+            //         isInteractible = false;
+            //         undoPressed = false;
+            //         gameMan.UndoFloor(2);
+            //         break;
+            //     //Reverts the adjacent person that was last tapped to its previous direction and adds two floors
+            //     case Action.Tap:
+            //         lastAdjacentPerson.UndoState();
+            //         isInteractible = false;
+            //         hasTapped = false;
+            //         undoPressed = false;
+            //         gameMan.UndoFloor(2);
+            //         break;
+            //     //Reverts the adjacent person that was last pushed to its previous location and adds three floors
+            //     case Action.Push:
+            //         lastAdjacentPerson.UndoState();
+            //         isInteractible = false;
+            //         hasPushed = false;
+            //         undoPressed = false;
+            //         gameMan.UndoFloor(3);
+            //         break;
+            //     default:
+            //         //No more actions
+            //         break;
+            // }
             //tileMan.UndoLevelState();
         } else if (ctx.ReadValue<float>() <= 0.5f && undoPressed) {
             undoPressed = false;
