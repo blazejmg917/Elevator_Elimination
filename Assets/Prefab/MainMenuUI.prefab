@@ -463,6 +463,7 @@ GameObject:
   - component: {fileID: 709722457931606913}
   - component: {fileID: 5234833457281447801}
   - component: {fileID: 363261785090727656}
+  - component: {fileID: 7806390808220200473}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -598,6 +599,35 @@ MonoBehaviour:
   pressed: {fileID: 0}
   typeOfButton: Quit
   levelSel: {fileID: 0}
+--- !u!114 &7806390808220200473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4313685224502495979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4383938284375316586}
+          m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
+          m_MethodName: Hover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4950591708499436064
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,6 +641,7 @@ GameObject:
   - component: {fileID: 4905440104303898665}
   - component: {fileID: 2029827424200968044}
   - component: {fileID: 8533583113477651004}
+  - component: {fileID: 562057696197822084}
   m_Layer: 5
   m_Name: LevelSelectButton
   m_TagString: Untagged
@@ -746,6 +777,35 @@ MonoBehaviour:
   pressed: {fileID: 21300000, guid: 0be9d3ec668658f408a06c758235ab69, type: 3}
   typeOfButton: Level Select
   levelSel: {fileID: 0}
+--- !u!114 &562057696197822084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4950591708499436064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4383938284375316586}
+          m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
+          m_MethodName: Hover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5022530964618479908
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,6 +1044,7 @@ GameObject:
   - component: {fileID: 6128627641119710657}
   - component: {fileID: 5430874773053132070}
   - component: {fileID: 4383938284375316586}
+  - component: {fileID: 5115655122653661951}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -1119,6 +1180,35 @@ MonoBehaviour:
   pressed: {fileID: 21300000, guid: 41830c8f62586ce49a8bc1b96664c8a9, type: 3}
   typeOfButton: Play
   levelSel: {fileID: 0}
+--- !u!114 &5115655122653661951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6418488404672120029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4383938284375316586}
+          m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
+          m_MethodName: Hover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7753961286508479544
 GameObject:
   m_ObjectHideFlags: 0
