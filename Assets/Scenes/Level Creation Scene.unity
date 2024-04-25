@@ -591,7 +591,7 @@ GameObject:
   - component: {fileID: 265907312}
   - component: {fileID: 265907311}
   m_Layer: 5
-  m_Name: SpacingPanel
+  m_Name: TestSavePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -925,6 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2c58e82945a9dc469884727d842e151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  confirmType: 0
   saveConfirmPanel: {fileID: 416454034}
   deactivateButtons:
   - {fileID: 1796390480}
@@ -936,6 +937,36 @@ MonoBehaviour:
   - {fileID: 1904003337}
   deactivateMouseFollow: {fileID: 854260446}
   confirmText: {fileID: 1739125676}
+  confirmSave:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 905156434}
+        m_TargetAssemblyTypeName: LevelCreationUiHandler, Assembly-CSharp
+        m_MethodName: TrySaveLevel
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  confirmLeave:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 905156434}
+        m_TargetAssemblyTypeName: LevelCreationUiHandler, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &427269576 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
@@ -1420,7 +1451,7 @@ GameObject:
   - component: {fileID: 710662965}
   - component: {fileID: 710662964}
   m_Layer: 5
-  m_Name: NamesPanel
+  m_Name: LevelInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1824,7 +1855,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "20\u200B"
+  m_text: "0\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2067,6 +2098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentObject: {fileID: 0}
   prevHoverTile: {fileID: 0}
+  uiHandler: {fileID: 905156434}
 --- !u!4 &854260448
 Transform:
   m_ObjectHideFlags: 0
@@ -2605,7 +2637,8 @@ MonoBehaviour:
   creatorText: {fileID: 12580062}
   floorCountText: {fileID: 1904003337}
   levelChanged: 0
-  saveConfirm: {fileID: 416454038}
+  levelBeaten: 0
+  confirmUI: {fileID: 0}
 --- !u!114 &905156435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2667,7 +2700,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 427269576}
         m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
@@ -2795,6 +2828,33 @@ MonoBehaviour:
       - m_Target: {fileID: 304733483235312072}
         m_TargetAssemblyTypeName: OnScreenUiDisplay, Assembly-CSharp
         m_MethodName: HideObjects
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  winLevelTest:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 905156434}
+        m_TargetAssemblyTypeName: LevelCreationUiHandler, Assembly-CSharp
+        m_MethodName: UpdateFloorUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 905156434}
+        m_TargetAssemblyTypeName: LevelCreationUiHandler, Assembly-CSharp
+        m_MethodName: ConfirmLevelBeatable
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3368,6 +3428,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: LevelCreationTester, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4852,7 +4924,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 20
+  m_Text: 0
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -5329,10 +5401,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 905156434}
-        m_TargetAssemblyTypeName: LevelCreationUiHandler, Assembly-CSharp
-        m_MethodName: TrySaveLevel
-        m_Mode: 6
+      - m_Target: {fileID: 416454038}
+        m_TargetAssemblyTypeName: LevelConfirmationUI, Assembly-CSharp
+        m_MethodName: ConfirmChoice
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6129,6 +6201,66 @@ PrefabInstance:
     - target: {fileID: 4953280855533448433, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 905156435}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: SetTestSuccess
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 905156435}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetTestSuccess
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: LevelCreationTester, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: LevelCreationTester, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: levelComplete.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5822622862360121732, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
       propertyPath: levelLoaded.m_PersistentCalls.m_Calls.Array.data[0].m_Target

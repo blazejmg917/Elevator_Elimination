@@ -13,7 +13,14 @@ public class MouseFollowCreationScene : MonoBehaviour
     [SerializeField, Tooltip("the Tile that was most recently hovered over")]
     private Collider2D prevHoverTile;
 
+    private Tile prevObjectTile;
+
+    private Person.Direction prevDirection;
+
     private bool justClicked = false;
+
+    [SerializeField, Tooltip("the creation ui handler")]
+    private LevelCreationUiHandler uiHandler;
 
     private static MouseFollowCreationScene _instance;
 
@@ -101,6 +108,8 @@ public class MouseFollowCreationScene : MonoBehaviour
             currentObject.transform.parent = TileManager.Instance.GetPersonHolderTransform();
             currentlyDragging = true;
             currentObject.SetDragging(true);
+            prevObjectTile = currentObject.GetComponent<Person>().GetCurrentTile();
+            prevDirection = currentObject.GetComponent<Person>().GetDirection();
         }
         else
         {
@@ -213,6 +222,10 @@ public class MouseFollowCreationScene : MonoBehaviour
             }
 
             prevHoverTile.GetComponent<TileHighlight>().SetHoverColor(false);
+            if(thisTile != prevObjectTile || thisPerson.GetDirection() != prevDirection)
+            {
+                uiHandler.LevelChanged(true);
+            }
         }
         else
         {
