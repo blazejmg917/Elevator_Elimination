@@ -172,6 +172,10 @@ public class GameManager : MonoBehaviour
         {
             return IncreaseFloor();
         }
+        else
+        {
+            return DecreaseFloor();
+        }
         return currentFloor;
     }
 
