@@ -522,6 +522,11 @@ public class TileManager : MonoBehaviour
         baseLevel.SetFloors(floorCount);
     }
 
+    public int GetFloorCount()
+    {
+        return baseLevel.GetFloors();
+    }
+
     public List<GameObject> GetPeople()
     {
         return personHolder.GetComponent<PersonHolder>().GetPersonList();
@@ -555,6 +560,15 @@ public class TileManager : MonoBehaviour
         return true;
         
         LoadLevelList(baseLevel, true);
+    }
+
+    public void CheckForFloorAssignment()
+    {
+        int newFloorCount;
+        if(GameManager.Instance.CheckForFloorAssignment(out newFloorCount))
+        {
+            SetFloorCount(newFloorCount);
+        }
     }
 
 }

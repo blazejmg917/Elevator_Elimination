@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     private int menuIndex = 0;
     [SerializeField] private String highlightedMenu = "Play";
     [SerializeField] private ErrorCodeReference errorCodes;
+    private bool countUp = false;
     private bool undoAwakeVar = false;
     public bool UndoAwake {
         get {return undoAwakeVar;}
@@ -130,15 +132,45 @@ public class GameManager : MonoBehaviour
 
     public void SetFloors(int max, int current) {
         maxFloors = max;
-        currentFloor = current;
+        if (max == 0)
+        {
+            countUp = true;
+            currentFloor = 1;
+        }
+        else
+        {
+            countUp = false;
+            currentFloor = current;
+        }
+
+        
         //turnChangeEvent.Invoke(currentFloor);
     }
 
-    public int ChangeFloor() {
-        currentFloor-= 1;
-        //turnChangeEvent.Invoke(currentFloor);
-        if (currentFloor <= 0) {
+    public int IncreaseFloor()
+    {
+        currentFloor += 1;
+        if (currentFloor > 99)
+        {
             GameOver("TURNS");
+        }
+        return currentFloor;
+    }
+
+    public int DecreaseFloor()
+    {
+        currentFloor -= 1;
+        if (currentFloor < 0)
+        {
+            GameOver("TURNS");
+        }
+        return currentFloor;
+    }
+
+    public int ChangeFloor() {
+        if (countUp)
+        {
+            return IncreaseFloor();
         }
         return currentFloor;
     }
@@ -306,6 +338,12 @@ public class GameManager : MonoBehaviour
     public void SetCreationLevelFilename(string filename)
     {
         levelCreationFilename = filename;
+    }
+
+    public bool CheckForFloorAssignment(out int newFloorMax)
+    {
+        newFloorMax = currentFloor;
+        return countUp;
     }
 
     public void StartLevelCreator()

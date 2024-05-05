@@ -11,16 +11,24 @@ public class LevelCreationTester : MonoBehaviour
 
     public LevelTestEvent endLevelTest = new LevelTestEvent();
 
+    public LevelTestEvent winLevelTest = new LevelTestEvent();
+
     [SerializeField] private string savedLevelString;
     [SerializeField, Tooltip("the level creation ui handler")]private LevelCreationUiHandler uiHandler;
     [SerializeField] bool testing;
     [SerializeField, Tooltip("the testing text area script")] private LevelCreationTestingText testingText;
-
+    private bool succesfulTest = false;
+    private int storedFloorCount = 0;
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("starting");
         
+    }
+
+    public void SetTestSuccess(bool success)
+    {
+        succesfulTest= success;
     }
 
     public void StartTesting()
@@ -56,10 +64,21 @@ public class LevelCreationTester : MonoBehaviour
 
         if (!string.IsNullOrEmpty(savedLevelString))
         {
+            if (succesfulTest)
+            {
+                GameManager.Instance.CheckForFloorAssignment(out storedFloorCount);
+            }
             int errorCode;
+            
             if (!TileManager.Instance.TryLoadFromString(savedLevelString, out errorCode, true))
             {
                 uiHandler.DisplayError("Can't load in level, error code " + errorCode + ": " + GameManager.Instance.GetErrorCodeMessage(errorCode));
+            }
+
+            if (succesfulTest)
+            {
+                TileManager.Instance.SetFloorCount(storedFloorCount);
+                winLevelTest.Invoke();
             }
         }
         else
@@ -70,6 +89,7 @@ public class LevelCreationTester : MonoBehaviour
         savedLevelString = "";
         testing = false;
         endLevelTest.Invoke();
+        
     }
 
     public void ResetTest()
