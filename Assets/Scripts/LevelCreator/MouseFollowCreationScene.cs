@@ -19,6 +19,10 @@ public class MouseFollowCreationScene : MonoBehaviour
 
     private bool justClicked = false;
 
+    private Person tooltipPerson;
+    private DraggableSpawner tooltipHover;
+    [SerializeField, Tooltip("the tooltip object to display")] private PersonTooltip tooltip;
+
     [SerializeField, Tooltip("the creation ui handler")]
     private LevelCreationUiHandler uiHandler;
 
@@ -82,6 +86,27 @@ public class MouseFollowCreationScene : MonoBehaviour
                 prevHoverTile = null;
 
             }
+        }
+
+        RaycastHit2D hit2 = Physics2D.Raycast(Input.mousePosition, Vector2.zero, 0, ~LayerMask.NameToLayer("Draggable"));
+        if (hit2 && hit2.collider)
+        {
+            Debug.Log("clicked spawner");
+            DraggableSpawner thisObj = hit2.collider.gameObject.GetComponent<DraggableSpawner>();
+            if (thisObj && thisObj != tooltipHover)
+            {
+                StartHover(thisObj.GetPerson().GetComponent<Person>());
+                tooltipHover = thisObj;
+
+            }
+            
+
+            return;
+        }
+        else if (tooltipHover)
+        {
+            EndHover(tooltipHover.GetPerson().GetComponent<Person>());
+            tooltipHover = null;
         }
         //if (!currentlyDragging)
         //{
@@ -273,6 +298,23 @@ public class MouseFollowCreationScene : MonoBehaviour
             {
                 person.SetDirection(Person.Direction.UP);
             }
+        }
+    }
+
+    public void StartHover(Person p)
+    {
+        if(p)
+        {
+            tooltipPerson = p;
+            tooltip.DisplayPerson(p);
+        }
+    }
+
+    public void EndHover(Person p)
+    {
+        if(tooltipPerson == p)
+        {
+            tooltip.HideTooltip();
         }
     }
 }
