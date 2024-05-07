@@ -20,6 +20,10 @@ public class PeoplePanelRebuilder : MonoBehaviour
 
     public void RequestRebuild()
     {
+        if (!rect)
+        {
+            rect = GetComponent<RectTransform>();
+        }
         numRequests++;
         if(numRequests >= 3)
         {
