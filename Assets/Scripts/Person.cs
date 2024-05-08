@@ -81,6 +81,7 @@ public class Person : MonoBehaviour
     private Animator bubbleAnim;
     private Animator chatAnim;
     private SpriteRenderer spriteRen;
+    [SerializeField, Tooltip("number of turns it takes for a shark to eat")] private int numberOfTurnsBeforeSharkCanEat = 3;
     //Offsets the animation time to sync up with the people around it
     //private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
@@ -90,10 +91,12 @@ public class Person : MonoBehaviour
         ALERTED,
         KILLED,
         AWOKEN,
+        EAT,
         NONE
     }
-    //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
-    private Stack<(Tile tile, Direction direction, int floorNumber, Action action)> states;
+    //Stack to store the person's last tile it was on, the last direction it was facing, what floor number the action was made on, and (if the shark) what person was last next to it
+    private Stack<(Tile tile, Direction direction, int floorNumber, Person lastPersonInRange, Action action)> states;
+    private int numberOfTurnsInSharkRange = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -101,7 +104,7 @@ public class Person : MonoBehaviour
         {
             currentFacing = Direction.NONE;
         }
-        states = new Stack<(Tile, Direction, int, Action)>();
+        states = new Stack<(Tile, Direction, int, Person, Action)>();
         if (currentTile)
         {
             transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
@@ -121,6 +124,9 @@ public class Person : MonoBehaviour
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
+        if (behavior.canEat) {
+            CheckIfGameStartsWithPersonInSharkRange();
+        }
     }
 
     // Update is called once per frame
@@ -144,7 +150,7 @@ public class Person : MonoBehaviour
     }
 
     public bool IsEdible(){
-        return behavior.canEat;
+        return !behavior.canEat;
     }
 
     public bool TakesUpSpace()
@@ -254,7 +260,7 @@ public class Person : MonoBehaviour
         if (CompareTag("SleepyGuy")) {
             Debug.Log(states.Peek().direction);
         }
-        if (states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+        if (states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
                 currentTile.SetPerson(null);
@@ -286,6 +292,11 @@ public class Person : MonoBehaviour
                 OnRevive();
                 GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                 TileManager.Instance.UpdateLevel();
+            }
+            if (lastAction == Action.EAT && states.Peek().lastPersonInRange && states.Peek().lastPersonInRange.getSharkTurns() > 0) {
+                Person lastSharkPerson = states.Peek().lastPersonInRange;
+                lastSharkPerson.setSharkTurns(lastSharkPerson.getSharkTurns() - 2);
+                Debug.Log("Unddid Shark: " + lastSharkPerson.getSharkTurns());
             } 
             states.Pop();
             return true;
@@ -362,15 +373,58 @@ public class Person : MonoBehaviour
                     frontTile = currentTile.GetBottom();
                     break;
             }
+            if(!frontTile.GetPerson() && states.Count > 0 && states.Peek().lastPersonInRange) {
+                states.Peek().lastPersonInRange.setSharkTurns(0);
+            }
             if(frontTile && frontTile.GetPerson() && frontTile.GetPerson().IsEdible()){
-                frontTile.GetPerson().OnKill(true);
+                if (states.Count > 0) {
+                    Person lastPersonInSharkRange = states.Peek().lastPersonInRange;
+
+                    //If the last person in the shark range is not the same person as the current person in the range, reset the last person's counter to 0
+                    if (lastPersonInSharkRange.GetInstanceID() != frontTile.GetPerson().GetInstanceID()) {
+                        lastPersonInSharkRange.setSharkTurns(0);
+                    }
+                }
+                Person newSharkPerson = frontTile.GetPerson();
+                newSharkPerson.setSharkTurns(newSharkPerson.getSharkTurns() + 1);
+                if(newSharkPerson.getSharkTurns() == numberOfTurnsBeforeSharkCanEat) {
+                    anim.SetTrigger("Eat");
+                    newSharkPerson.OnKill(true);
+                    newSharkPerson.setSharkTurns(0);
+                }
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), newSharkPerson, Action.EAT));
             }
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
         }
     }
-
+    private void CheckIfGameStartsWithPersonInSharkRange() {
+        Tile frontTile = null;
+        switch(currentFacing){
+            case Direction.LEFT:
+                frontTile = currentTile.GetLeft();
+                break;
+            case Direction.RIGHT:
+                frontTile = currentTile.GetRight();
+                break;
+            case Direction.UP:
+                frontTile = currentTile.GetTop();
+                break;
+            case Direction.DOWN:
+                frontTile = currentTile.GetBottom();
+                break;
+        }
+        if(frontTile.GetPerson() && frontTile.GetPerson().IsEdible()) {
+            frontTile.GetPerson().setSharkTurns(1);
+        }
+    }
+    private void setSharkTurns(int turns) {
+        numberOfTurnsInSharkRange = turns;
+    }
+    private int getSharkTurns() {
+        return numberOfTurnsInSharkRange;
+    }
     public string GetId(){
         return personId;
     }
@@ -384,7 +438,7 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.PUSHED));
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.PUSHED));
             currentTile.SetPerson(null);
             //positions.Push(currentTile.transform.position);
             currentTile = newTile;
@@ -406,10 +460,10 @@ public class Person : MonoBehaviour
             }
             BeforeInteract();
             if (CompareTag("SleepyGuy") && anim) {
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.AWOKEN));
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.AWOKEN));
                 anim.SetTrigger("WakeUp");
             } else {
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.TAPPED));
             }
             switch (dir)
             {
@@ -462,7 +516,7 @@ public class Person : MonoBehaviour
             {
                 
                 LevelManager.Instance.TargetKilled();
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.KILLED));
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.KILLED));
                 //GameManager.Instance.SetWinCon(true);
                 //call target killed
                 return true;
@@ -560,7 +614,7 @@ public class Person : MonoBehaviour
      */
     public void SetAlarmDirection(Direction direction) {
         if(currentFacing != Direction.NONE || currentFacing != direction){
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.ALERTED));
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.ALERTED));
             currentFacing = direction;
         }
         TurnSprite();
