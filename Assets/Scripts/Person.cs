@@ -20,11 +20,16 @@ public class Person : MonoBehaviour
         [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
+        [Tooltip("if this person can cast a line of sight")]public bool sightCast;
+        [Tooltip("if this person can remove a line of sight")]public bool sightRemove;
 
         public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true){
             eatInFront = hungry;
             alertSurrounding = loud;
             soundAlarm = skeptical;
+            //can cast if not target or player
+            sightCast = true;
+            sightRemove = true;
         }
     }
     [System.Serializable]
@@ -121,15 +126,26 @@ public class Person : MonoBehaviour
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
+        //wait for player to walk in then cast sights
+        StartCoroutine(waitForLevelToStartAndUpdateLOS());
+    }
+
+    IEnumerator waitForLevelToStartAndUpdateLOS(){
+        yield return new WaitForSeconds(.5f);
+        if (behavior.canSee){
+            updateLineOfSight(currentFacing);
+        }
+        yield return null;
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (behavior.canSee){
-            RemoveLOSLighting(currentFacing);
-            updateLineOfSight(currentFacing);
-        }
+        // if (behavior.canSee){
+        //     //RemoveLOSLighting(currentFacing);
+        //     updateLineOfSight(currentFacing);
+        // }
         
         if (isMoving)
         {
@@ -314,9 +330,7 @@ public class Person : MonoBehaviour
     }
 
     private void AfterInteract(){
-        if (currentFacing != null){
-            updateLineOfSight(currentFacing);
-        }
+
         HandleActions(behavior.afterInteract);
         
     }
@@ -388,6 +402,15 @@ public class Person : MonoBehaviour
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
+        }
+        if(actions.sightRemove){
+            RemoveLOSLighting(currentFacing);
+        }
+        if(actions.sightCast){
+            if (behavior.canSee && currentFacing != null){
+                //RemoveLOSLighting(currentFacing);
+                updateLineOfSight(currentFacing);
+            }
         }
     }
 
@@ -673,11 +696,12 @@ public class Person : MonoBehaviour
         
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
+        Tile ogTile = currentTile;
         while (!sightlineCleared)
         {
             //if tile is invalid, break los
             if (!tileSeen) { // || !tileSeen.IsWalkable()
-                Debug.Log("BreakLOS");
+                Debug.Log("BreakLOS for " + personId);
                 break;
             }
             //highlight tileseen
@@ -705,7 +729,7 @@ public class Person : MonoBehaviour
                 
             }
             //if tile seen exists
-            if (tileSeen)
+            if (tileSeen && ogTile != tileSeen)
             {
                 
                 //get person on tile
@@ -717,7 +741,7 @@ public class Person : MonoBehaviour
                     
                 }
                 //highlight tile
-                if (tileSeen.IsWalkable()){
+                if (tileSeen.IsWalkable()){ // || seenPerson == tileSeen.GetPerson()
                     castVisionOnTile(tileSeen);
                 }
                 else{
@@ -727,6 +751,7 @@ public class Person : MonoBehaviour
                 
             }
         }
+    }
 
     public string GetDescription()
     {

@@ -564,6 +564,8 @@ public class TileManager : MonoBehaviour
 
     public List<ListWrapper<Tile>> getTileListFromManager(){
         return tilesList;
+    }
+    
     public void CheckForFloorAssignment()
     {
         int newFloorCount;
