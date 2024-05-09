@@ -20,11 +20,13 @@ public class Person : MonoBehaviour
         [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
+        [Tooltip("if this person will push things directly in front of them")]public bool pushInFront;
 
-        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true){
+        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true, bool pushy = true){
             eatInFront = hungry;
             alertSurrounding = loud;
             soundAlarm = skeptical;
+            pushInFront = pushy;
         }
     }
     [System.Serializable]
@@ -34,7 +36,7 @@ public class Person : MonoBehaviour
         [Tooltip("if this character can be turned")] public bool canTurn;
         [Tooltip("if this character can be killed")] public bool canBeKilled;
         [Tooltip("if this character can see")] public bool canSee;
-        [Tooltip("if this character can be eaten")]public bool canEat;
+        [Tooltip("if this character can eat")]public bool canEat;
 
         [Tooltip("the actions this character can take before being interacted with")]public personUniqueActions beforeInteract;
         [Tooltip("the actions this character can take after being interacted with")]public personUniqueActions afterInteract;
@@ -92,11 +94,13 @@ public class Person : MonoBehaviour
         KILLED,
         AWOKEN,
         EAT,
+        GORILLAPUSHED,
         NONE
     }
     //Stack to store the person's last tile it was on, the last direction it was facing, what floor number the action was made on, and (if the shark) what person was last next to it
     private Stack<(Tile tile, Direction direction, int floorNumber, Person lastPersonInRange, Action action)> states;
     private int numberOfTurnsInSharkRange = 0;
+    private bool undoGorilla = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -140,6 +144,10 @@ public class Person : MonoBehaviour
             {
                 isMoving = false;
                 AfterInteract();
+                if (undoGorilla) {
+                    UndoState();
+                    return;
+                }
                 TileManager.Instance.UpdateLevel();
             }
         }
@@ -228,19 +236,19 @@ public class Person : MonoBehaviour
             
             switch (dir) {
                 case PlayerMechanics.DirectionFacing.Left:
-                    TryMove(currentTile.GetLeft());
+                    TryMove(currentTile.GetLeft(), false);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Right:
-                    TryMove(currentTile.GetRight());
+                    TryMove(currentTile.GetRight(), false);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Down:
-                    TryMove(currentTile.GetBottom());
+                    TryMove(currentTile.GetBottom(), false);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Up:
-                    TryMove(currentTile.GetTop());
+                    TryMove(currentTile.GetTop(), false);
                     break;
             }
             SFXManager.Instance.GuhSFX();
@@ -257,10 +265,11 @@ public class Person : MonoBehaviour
             return false;
         }
         Debug.Log("floor number: " + states.Peek().floorNumber);
-        if (CompareTag("SleepyGuy")) {
-            Debug.Log(states.Peek().direction);
-        }
-        if (states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+        // if (CompareTag("SleepyGuy")) {
+        //     Debug.Log(states.Peek().direction);
+        // }
+        if ((states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) || undoGorilla) {
+            undoGorilla = false;
             Tile lastTile = states.Peek().tile;
             if (currentTile.transform.position != lastTile.transform.position) {
                 currentTile.SetPerson(null);
@@ -270,6 +279,12 @@ public class Person : MonoBehaviour
             }
             Direction lastFacing = states.Peek().direction;
             Action lastAction = states.Peek().action;
+            Debug.Log("Before Gorilla Undo");
+            if (lastAction == Action.GORILLAPUSHED) {
+                states.Pop();
+                undoGorilla = true;
+                return true;
+            }
             if (currentFacing != lastFacing) {
                 currentFacing = lastFacing;
                 TurnSprite();
@@ -293,10 +308,10 @@ public class Person : MonoBehaviour
                 GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
                 TileManager.Instance.UpdateLevel();
             }
-            if (lastAction == Action.EAT && states.Peek().lastPersonInRange && states.Peek().lastPersonInRange.getSharkTurns() > 0) {
+            if (lastAction == Action.EAT && states.Peek().lastPersonInRange && states.Peek().lastPersonInRange.GetSharkTurns() > 0) {
                 Person lastSharkPerson = states.Peek().lastPersonInRange;
-                lastSharkPerson.setSharkTurns(lastSharkPerson.getSharkTurns() - 2);
-                Debug.Log("Unddid Shark: " + lastSharkPerson.getSharkTurns());
+                lastSharkPerson.SetSharkTurns(lastSharkPerson.GetSharkTurns() - 2);
+                Debug.Log("Unddid Shark: " + lastSharkPerson.GetSharkTurns());
             } 
             states.Pop();
             return true;
@@ -358,23 +373,9 @@ public class Person : MonoBehaviour
             }
         }
         if(actions.eatInFront){
-            Tile frontTile = null;
-            switch(currentFacing){
-                case Direction.LEFT:
-                    frontTile = currentTile.GetLeft();
-                    break;
-                case Direction.RIGHT:
-                    frontTile = currentTile.GetRight();
-                    break;
-                case Direction.UP:
-                    frontTile = currentTile.GetTop();
-                    break;
-                case Direction.DOWN:
-                    frontTile = currentTile.GetBottom();
-                    break;
-            }
+            Tile frontTile = GetFrontTile(null);
             if(!frontTile.GetPerson() && states.Count > 0 && states.Peek().lastPersonInRange) {
-                states.Peek().lastPersonInRange.setSharkTurns(0);
+                states.Peek().lastPersonInRange.SetSharkTurns(0);
             }
             if(frontTile && frontTile.GetPerson() && frontTile.GetPerson().IsEdible()){
                 if (states.Count > 0) {
@@ -382,54 +383,77 @@ public class Person : MonoBehaviour
 
                     //If the last person in the shark range is not the same person as the current person in the range, reset the last person's counter to 0
                     if (lastPersonInSharkRange.GetInstanceID() != frontTile.GetPerson().GetInstanceID()) {
-                        lastPersonInSharkRange.setSharkTurns(0);
+                        lastPersonInSharkRange.SetSharkTurns(0);
                     }
                 }
                 Person newSharkPerson = frontTile.GetPerson();
-                newSharkPerson.setSharkTurns(newSharkPerson.getSharkTurns() + 1);
-                if(newSharkPerson.getSharkTurns() == numberOfTurnsBeforeSharkCanEat) {
+                newSharkPerson.SetSharkTurns(newSharkPerson.GetSharkTurns() + 1);
+                if(newSharkPerson.GetSharkTurns() == numberOfTurnsBeforeSharkCanEat) {
                     anim.SetTrigger("Eat");
                     newSharkPerson.OnKill(true);
-                    newSharkPerson.setSharkTurns(0);
+                    newSharkPerson.SetSharkTurns(0);
                 }
                 states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), newSharkPerson, Action.EAT));
+            }
+        }
+        if(actions.pushInFront) {
+            Tile frontTile = GetFrontTile(null);
+            if(frontTile && frontTile.GetPerson()) {
+                Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
+                if (tileInFrontOfFrontTile) {
+                    Person personMoving = frontTile.GetPerson();
+                    personMoving.TryMove(tileInFrontOfFrontTile, true);
+                }
             }
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
         }
     }
-    private void CheckIfGameStartsWithPersonInSharkRange() {
+    /**
+     * Gets tile in front of current tile or tile passed in from the parameter according to direction facing
+     */
+    private Tile GetFrontTile(Tile newTile) {
+        Tile tileToCheck = currentTile;
+        if (newTile) {
+            tileToCheck = newTile;
+        }
         Tile frontTile = null;
         switch(currentFacing){
             case Direction.LEFT:
-                frontTile = currentTile.GetLeft();
+                frontTile = tileToCheck.GetLeft();
                 break;
             case Direction.RIGHT:
-                frontTile = currentTile.GetRight();
+                frontTile = tileToCheck.GetRight();
                 break;
             case Direction.UP:
-                frontTile = currentTile.GetTop();
+                frontTile = tileToCheck.GetTop();
                 break;
             case Direction.DOWN:
-                frontTile = currentTile.GetBottom();
+                frontTile = tileToCheck.GetBottom();
                 break;
         }
+        return frontTile;
+    }
+    private void CheckIfGameStartsWithPersonInSharkRange() {
+        Tile frontTile = GetFrontTile(null);
         if(frontTile.GetPerson() && frontTile.GetPerson().IsEdible()) {
-            frontTile.GetPerson().setSharkTurns(1);
+            frontTile.GetPerson().SetSharkTurns(1);
         }
     }
-    private void setSharkTurns(int turns) {
+    private void SetSharkTurns(int turns) {
         numberOfTurnsInSharkRange = turns;
     }
-    private int getSharkTurns() {
+    private int GetSharkTurns() {
         return numberOfTurnsInSharkRange;
     }
     public string GetId(){
         return personId;
     }
-
-    private bool TryMove(Tile newTile)
+    /**
+     * Tries to move to a new tile, bool stores whether or not it was triggered by a gorilla
+     */
+    private bool TryMove(Tile newTile, bool gorillaMove)
     {
         if (!newTile)
         {
@@ -438,7 +462,12 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.PUSHED));
+            if (gorillaMove) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.GORILLAPUSHED));
+                GameManager.Instance.UndoFloor(GameManager.Instance.GetCurrentFloor() + 1);
+            } else {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.PUSHED));
+            }
             currentTile.SetPerson(null);
             //positions.Push(currentTile.transform.position);
             currentTile = newTile;
