@@ -18,8 +18,11 @@ public class LevelCreationUiHandler : MonoBehaviour
     [SerializeField, Tooltip("If the level has been changed since it was last saved")]
     private bool levelChanged = false;
 
+    [SerializeField, Tooltip("if the level has been beated since it was last changed")]
+    private bool levelBeaten = false;
+
     [SerializeField, Tooltip("save confirmation dialog")]
-    private LevelConfirmationUI saveConfirm;
+    private LevelConfirmationUI confirmUI;
 
     private string prevName;
     private string prevCreator;
@@ -28,9 +31,9 @@ public class LevelCreationUiHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!saveConfirm)
+        if (!confirmUI)
         {
-            saveConfirm = FindObjectOfType<LevelConfirmationUI>(true);
+            confirmUI = FindObjectOfType<LevelConfirmationUI>(true);
         }
     }
 
@@ -38,6 +41,11 @@ public class LevelCreationUiHandler : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ConfirmLevelBeatable()
+    {
+        levelBeaten = true;
     }
 
 
@@ -49,9 +57,14 @@ public class LevelCreationUiHandler : MonoBehaviour
         TileManager.Instance.SetFloorCount(floorCount);
     }
 
-    public void LevelChanged()
+    public void LevelChanged(bool disableSave = false)
     {
+        levelChanged = true;
         errorText.text = string.Empty;
+        if(disableSave)
+        {
+            levelBeaten = false;
+        }
     }
 
     public void UpdateLevelName(string levelName)
@@ -69,11 +82,25 @@ public class LevelCreationUiHandler : MonoBehaviour
     public void UpdateFloorCount(string floorCount)
     {
         TileManager.Instance.SetFloorCount(int.Parse(floorCount));
-        LevelChanged();
+        LevelChanged(true);
+    }
+
+    public void UpdateFloorUI()
+    {
+        floorCountText.text = TileManager.Instance.GetFloorCount().ToString();
     }
 
     public void TrySaveLevel(bool overWrite = false)
     {
+        if (!levelBeaten)
+        {
+            errorText.text = "You must beat your level before you can save it";
+            return;
+        }
+
+
+
+
         int errorCode = TileManager.Instance.SaveLevelToFile(overWrite);
         if (errorCode == 0)
         {
@@ -84,7 +111,7 @@ public class LevelCreationUiHandler : MonoBehaviour
 
         if (errorCode == ElevatorIO.DUPLICATEFILENAME)
         {
-            saveConfirm.DisplayConfirmationDialog(nameText.text);
+            confirmUI.TryOverwriteSave(nameText.text);
             return;
         }
         string errorMessage = "Failed to save level, error code " + errorCode + ": " +
@@ -94,10 +121,11 @@ public class LevelCreationUiHandler : MonoBehaviour
 
     public void BackToMenu(bool confirm = false)
     {
-        //if (!confirm && levelChanged)
-        //{
-        //    return;
-        //}
+        if (!confirm && levelChanged)
+        {
+            confirmUI.TryLeaveWithoutSaving();
+            return;
+        }
         SceneManager.LoadScene(0);
     }
 
@@ -110,7 +138,7 @@ public class LevelCreationUiHandler : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (saveConfirm && saveConfirm.transform != child) { 
+            if (confirmUI && confirmUI.transform != child) { 
                 child.gameObject.SetActive(active);
             }
         }

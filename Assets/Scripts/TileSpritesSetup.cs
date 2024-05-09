@@ -87,17 +87,18 @@ public class TileSpritesSetup : MonoBehaviour
                     newTileSprite = topRowSprites;
                 }
                 //left
-                else if(i == 0 && j == 1){
-                    newTileSprite = leftColBottomSprite;
-                }
-                else if(i == 0 && j == maxY - 1){
-                    newTileSprite = leftColTopSprite;
-                    allTiles[i][j].transform.rotation = Quaternion.Euler(0,0,90);
-                }
+                // else if(i == 0 && j == 1){
+                //     newTileSprite = leftColBottomSprite;
+                // }
+                // else if(i == 0 && j == maxY - 1){
+                //     newTileSprite = leftColTopSprite;
+                //     allTiles[i][j].transform.rotation = Quaternion.Euler(0,0,90);
+                // }
                 else if(i == 0){
                     newTileSprite = leftColSprites;
-                    allTiles[i][j].transform.rotation = Quaternion.Euler(0,0,90);
-                    //Debug.Log("tile rotated: " + allTiles[i][j].transform.rotation.eulerAngles + ", " + allTiles[i][j].gameObject.name);
+                    // this is stupid but for some reason this is the fix
+                    allTiles[i][j].transform.rotation = Quaternion.Euler(0,0,360);
+                    // Debug.Log("tile rotated: " + allTiles[i][j].transform.rotation.eulerAngles + ", " + allTiles[i][j].gameObject.name);
                 }
                 //right
                 else if(i == maxX && j == 1){

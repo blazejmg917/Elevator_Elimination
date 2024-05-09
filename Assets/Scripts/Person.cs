@@ -60,6 +60,7 @@ public class Person : MonoBehaviour
 
     [SerializeField, Tooltip("the key used for this person in level creation")]
     private string personKey;
+    [SerializeField, Tooltip("the description for this person to be displayed in tooltips")] private string tooltipDescription;
 
     [SerializeField, Tooltip("the sprite for when the player is dead")]private Sprite deadSprite;
     [SerializeField, Tooltip("mark true if this person is the target for this level")] private bool isTarget = false;
@@ -727,5 +728,8 @@ public class Person : MonoBehaviour
             }
         }
 
+    public string GetDescription()
+    {
+        return tooltipDescription;
     }
 }

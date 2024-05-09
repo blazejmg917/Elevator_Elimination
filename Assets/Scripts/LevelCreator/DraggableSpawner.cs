@@ -27,6 +27,11 @@ public class DraggableSpawner : MonoBehaviour
         image.sprite = sprite;
     }
 
+    public Person GetPerson()
+    {
+        return prefab.GetComponent<Person>();
+    }
+
     public GameObject GetPrefab()
     {
         GameObject draggable = Instantiate(prefab);
@@ -53,4 +58,15 @@ public class DraggableSpawner : MonoBehaviour
     //    Debug.Log("mouse down on spawner");
     //    MouseFollowCreationScene.Instance.Grab(GetPrefab());
     //}
+
+    private void OnMouseEnter()
+    {
+        Debug.Log("Mouse Enter");
+        MouseFollowCreationScene.Instance.StartHover(prefab.GetComponent<Person>());
+    }
+
+    private void OnMouseExit()
+    {
+        MouseFollowCreationScene.Instance.EndHover(prefab.GetComponent<Person>());
+    }
 }

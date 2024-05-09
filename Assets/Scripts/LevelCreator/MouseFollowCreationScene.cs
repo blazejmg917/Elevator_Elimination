@@ -13,7 +13,18 @@ public class MouseFollowCreationScene : MonoBehaviour
     [SerializeField, Tooltip("the Tile that was most recently hovered over")]
     private Collider2D prevHoverTile;
 
+    private Tile prevObjectTile;
+
+    private Person.Direction prevDirection;
+
     private bool justClicked = false;
+
+    private Person tooltipPerson;
+    private DraggableSpawner tooltipHover;
+    [SerializeField, Tooltip("the tooltip object to display")] private PersonTooltip tooltip;
+
+    [SerializeField, Tooltip("the creation ui handler")]
+    private LevelCreationUiHandler uiHandler;
 
     private static MouseFollowCreationScene _instance;
 
@@ -76,6 +87,27 @@ public class MouseFollowCreationScene : MonoBehaviour
 
             }
         }
+
+        RaycastHit2D hit2 = Physics2D.Raycast(Input.mousePosition, Vector2.zero, 0, ~LayerMask.NameToLayer("Draggable"));
+        if (hit2 && hit2.collider)
+        {
+            Debug.Log("clicked spawner");
+            DraggableSpawner thisObj = hit2.collider.gameObject.GetComponent<DraggableSpawner>();
+            if (thisObj && thisObj != tooltipHover)
+            {
+                StartHover(thisObj.GetPerson().GetComponent<Person>());
+                tooltipHover = thisObj;
+
+            }
+            
+
+            return;
+        }
+        else if (tooltipHover)
+        {
+            EndHover(tooltipHover.GetPerson().GetComponent<Person>());
+            tooltipHover = null;
+        }
         //if (!currentlyDragging)
         //{
         //    if (prevHoverTile)
@@ -101,6 +133,8 @@ public class MouseFollowCreationScene : MonoBehaviour
             currentObject.transform.parent = TileManager.Instance.GetPersonHolderTransform();
             currentlyDragging = true;
             currentObject.SetDragging(true);
+            prevObjectTile = currentObject.GetComponent<Person>().GetCurrentTile();
+            prevDirection = currentObject.GetComponent<Person>().GetDirection();
         }
         else
         {
@@ -213,6 +247,10 @@ public class MouseFollowCreationScene : MonoBehaviour
             }
 
             prevHoverTile.GetComponent<TileHighlight>().SetHoverColor(false);
+            if(thisTile != prevObjectTile || thisPerson.GetDirection() != prevDirection)
+            {
+                uiHandler.LevelChanged(true);
+            }
         }
         else
         {
@@ -260,6 +298,23 @@ public class MouseFollowCreationScene : MonoBehaviour
             {
                 person.SetDirection(Person.Direction.UP);
             }
+        }
+    }
+
+    public void StartHover(Person p)
+    {
+        if(p)
+        {
+            tooltipPerson = p;
+            tooltip.DisplayPerson(p);
+        }
+    }
+
+    public void EndHover(Person p)
+    {
+        if(tooltipPerson == p)
+        {
+            tooltip.HideTooltip();
         }
     }
 }
