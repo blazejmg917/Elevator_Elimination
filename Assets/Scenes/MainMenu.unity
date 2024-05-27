@@ -153,8 +153,70 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overwriteMessage: 0
-  dataPath: /Custom/Tutorial
-  fileText: This is the file where tutorials for level creation will be placed
+  dataPath: /Custom/Tutorial.txt
+  fileText: "Welcome to custom level creation!\r\n\r\nThe suggested way to create
+    levels is using the in-game level editor. However, if you wish to create your
+    levels by hand in text, or your level isn't opening due to an error,\r\nyou may
+    also edit the text files directly. Following this guide should help you to resolve
+    all of your level-creation problems. Have Fun!\r\n\r\n\r\n**LEVEL CREATION**\r\nThis
+    section will cover the basics of level creation text files and how to create
+    your levels\r\n\r\nLevel File Locations: All level files should be placed within
+    the Custom/Levels subfolder.\r\n\r\n\r\nLevel Structure:\r\n\r\nEvery level file
+    will follow the same strucuture as follows:\r\n\r\n[level name]\r\n[level creator
+    name]\r\n[number of floors]\r\n[Level Grid]\r\n\r\nLevel Name: The level name
+    must be a non-empty string that contains none of the following special characters:
+    ?, }, { ;\r\n\r\n\r\nLevel Creator Name: The level creator name must be a non-empty
+    string that contains none of the following special characters: ?, }, { ;\r\n\r\n\r\nNumber
+    of floors: The number of floors must be an integer between 1 and 99\r\n\r\n\r\nLevel
+    Grid: The level grid is a series of string separated by semicolons that represent
+    the structure of the level. There must be 7 lines with 7 entries each.\r\n\t   
+    Each entry should match one of the following forms:\r\n\t\t-Empty tile: X\r\n\t\t-Occupied
+    tile: [object indicator],[facing direction]\r\n\t    The starting tile (4th tile
+    on the top row) must be left open for the player to enter\r\n\t    Additionally,
+    every level must have at least 1 target\r\n\r\n-Objects: each object has a string
+    indicator assigned to it, the string indicators are as follows:\r\n\tBystander
+    Sheep (Person): S\r\n\tBig Crocodile (Person): C\r\n\tFish Operator (Person):
+    F\r\n\tSleepy Bird (Person): B\r\n\tBaaad Man Sheep (Target): Tb\r\n\tPanda Handler
+    (Target): Tp\r\n\tToll Troll (Target): Tt\r\n\tBriefcase (Obstacle): BC\r\n\tCrate
+    (Obstacle): O\r\n\r\n\t**Directions: each object can be giving a direction to
+    face. any person or object should be given one of the following directions to
+    face\r\n\t\t\tUp: U\r\n\t\t\tDown: D\r\n\t\t\tLeft: L\r\n\t\t\tRight: R\r\n\t   
+    \t    meanwhile, obstacles do not have directions to face and as such should
+    be marked as\r\n\t\t\tNone: N\r\n\r\n\tFor example, a bystander sheep facing
+    to the left would be designated as S,L and a Crate would be designated as O,N\r\n\t\t\r\n\r\n\r\n**EXAMPLES**\r\n\r\nAn
+    empty level file would look like so:\r\n\r\nEmptyLevel\r\nEmptyLevelCreator\r\n99\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\n\r\nThis
+    is a good base to work from in creating a level.\r\n\r\n\r\nNow, this is an example
+    of the definition for level 1 of this game's demo version\r\n\r\nLevel1\r\nSixDevsUnder\r\n11\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;S,R;X;Tt,D;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\nX;X;X;X;X;X;X\r\n\r\nAs
+    you can see, this level has 11 turns and contains a bystander sheep looking to
+    the right at a Toll Troll, who is looking down. The rest of the level is empty.\r\n\r\n\r\n**ERRORS**\r\n\r\nWhy
+    won't my level show up in the game window at all?\r\n\tIf your level does not
+    match the general structure provided in this demo, it will not be loaded into
+    the game at all. \r\n\tEnsure that your level follows the general structure provided
+    and reopen the custom window.\r\n\r\nGeneric error codes:\r\n\r\nINVALIDFILENAME:
+    the level name is invalid. Ensure it is not empty and does not contain any of
+    the following disallowed special characters: ; { } ?\r\n\r\nINVALIDLEVELSTRUCTURE:
+    The level does not follow this general structure. Ensure it contains only the
+    level name, creator name, level count, and 7 lines of level representation\r\n\r\nINVALIDPERSON:
+    One of your objects has an invalid indicator. Check the list above to ensure
+    each of your objects uses the correct indicator\r\n\r\nNONEXISTENTFILE: Attempted
+    to read in a file that does not exist. Ensure your file has not been deleted
+    or removed from the directory\r\n\r\nINVALIDLEVELNAME: the level name is invalid.
+    Ensure it is not empty and does not contain any of the following disallowed special
+    characters: ; { } ?\r\n\r\nINVALIDCREATORNAME: the creator name is invalid. Ensure
+    it is not empty and does not contain any of the following disallowed special
+    characters: ; { } ?\r\n\r\nINVALIDTILE: One of your tiles is not defined correctly.
+    Ensure it is either an empty tile represented by an X or a tile following the
+    structure of [object],[direction]\r\n\r\nINVALIDDIRECTION: One of your tile directions
+    is invalid. Ensure you are only using U, D, L, or R to designate directions for
+    people and targets, and are using N for obstacles\r\n\r\nNOTARGETS: Your level
+    does not have a target. Ensure that your level has a target before trying to
+    play it.\r\n\r\nBLOCKEDDOORWAY: You have an object blocking the player's entry
+    space. Ensure that you leave the entryway tile (4th tile in the first row) empty
+    with an X\r\n\r\nINVALIDTURNCOUNT: You have specified an invalid number of turns.
+    Your level must have at least 1 turn, and no more than 99 turns.\r\n\r\nUNKNOWNERROR:
+    an unknown error occured. Ensure you have read/write access for files and try
+    again\r\n\r\nBUSY: tried to read or write a file while another file was already
+    being read or written. Give it time to process and try again"
 --- !u!4 &61047660
 Transform:
   m_ObjectHideFlags: 0
