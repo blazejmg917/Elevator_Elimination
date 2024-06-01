@@ -262,6 +262,7 @@ public class Person : MonoBehaviour
      */
     public bool UndoState() {
         if (states.Count == 0) {
+            undoGorilla = false;
             return false;
         }
         Debug.Log("floor number: " + states.Peek().floorNumber);
@@ -269,16 +270,18 @@ public class Person : MonoBehaviour
         //     Debug.Log(states.Peek().direction);
         // }
         if ((states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) || undoGorilla) {
-            undoGorilla = false;
+            Direction lastFacing = states.Peek().direction;
+            Action lastAction = states.Peek().action;
             Tile lastTile = states.Peek().tile;
-            if (currentTile.transform.position != lastTile.transform.position) {
-                currentTile.SetPerson(null);
+            int lastFloorNumber = states.Peek().floorNumber;
+            if (currentTile.getCoords() != lastTile.getCoords()) {
+                if (currentTile.GetPerson() == this) {
+                    currentTile.SetPerson(null);
+                } 
                 currentTile = lastTile;
                 lastTile.SetPerson(this);
                 isMoving = true;
             }
-            Direction lastFacing = states.Peek().direction;
-            Action lastAction = states.Peek().action;
             Debug.Log("Before Gorilla Undo");
             if (lastAction == Action.GORILLAPUSHED) {
                 states.Pop();
@@ -295,8 +298,8 @@ public class Person : MonoBehaviour
                 //     TileManager.Instance.UpdateLevel();
                 // }
                 if (lastAction == Action.TAPPED) {
-                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
-                    TileManager.Instance.UpdateLevel();
+                    // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
+                    // TileManager.Instance.UpdateLevel();
                 }
                 if (lastAction == Action.AWOKEN && anim) {
                     anim.SetTrigger("WakeUp");
@@ -305,8 +308,8 @@ public class Person : MonoBehaviour
             }
             if (lastAction == Action.KILLED) {
                 OnRevive();
-                GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
-                TileManager.Instance.UpdateLevel();
+                // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
+                // TileManager.Instance.UpdateLevel();
             }
             if (lastAction == Action.EAT && states.Peek().lastPersonInRange && states.Peek().lastPersonInRange.GetSharkTurns() > 0) {
                 Person lastSharkPerson = states.Peek().lastPersonInRange;
@@ -314,6 +317,7 @@ public class Person : MonoBehaviour
                 Debug.Log("Unddid Shark: " + lastSharkPerson.GetSharkTurns());
             } 
             states.Pop();
+            undoGorilla = false;
             return true;
         }
         return false;
@@ -405,6 +409,13 @@ public class Person : MonoBehaviour
                     personMoving.TryMove(tileInFrontOfFrontTile, true);
                 }
             }
+            else if(frontTile && frontTile.GetPlayer()) {
+                Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
+                if (tileInFrontOfFrontTile) {
+                    PlayerMechanics playerMoving = frontTile.GetPlayer();
+                    playerMoving.GorillaMove(tileInFrontOfFrontTile);
+                }
+            }
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
@@ -468,7 +479,9 @@ public class Person : MonoBehaviour
             } else {
                 states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.PUSHED));
             }
-            currentTile.SetPerson(null);
+            if (currentTile.GetPerson() == this) {
+                currentTile.SetPerson(null);
+            }
             //positions.Push(currentTile.transform.position);
             currentTile = newTile;
             newTile.SetPerson(this);
