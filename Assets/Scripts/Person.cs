@@ -21,12 +21,14 @@ public class Person : MonoBehaviour
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
         [Tooltip("if this person will push things directly in front of them")]public bool pushInFront;
+        [Tooltip("if this person will pull things in its line of sight")]public bool pullInSight;
 
-        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true, bool pushy = true){
+        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true, bool pushy = true, bool pully = true){
             eatInFront = hungry;
             alertSurrounding = loud;
             soundAlarm = skeptical;
             pushInFront = pushy;
+            pullInSight = pully;
         }
     }
     [System.Serializable]
@@ -95,12 +97,16 @@ public class Person : MonoBehaviour
         AWOKEN,
         EAT,
         GORILLAPUSHED,
+        FROGPULLED,
         NONE
     }
     //Stack to store the person's last tile it was on, the last direction it was facing, what floor number the action was made on, and (if the shark) what person was last next to it
     private Stack<(Tile tile, Direction direction, int floorNumber, Person lastPersonInRange, Action action)> states;
     private int numberOfTurnsInSharkRange = 0;
     private bool undoGorilla = false;
+    private bool undoFrog = false;
+    private bool frogStopped = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -144,15 +150,16 @@ public class Person : MonoBehaviour
             {
                 isMoving = false;
                 AfterInteract();
-                if (undoGorilla) {
+                if (undoGorilla || undoFrog) {
                     UndoState();
-                    return;
                 }
-                TileManager.Instance.UpdateLevel();
+                TileManager.Instance.UpdateLevelWithoutFloorChange();
             }
         }
     }
-
+    public bool IsMoving() {
+        return isMoving;
+    }
     public bool IsTarget(){
         return isTarget;
     }
@@ -236,19 +243,19 @@ public class Person : MonoBehaviour
             
             switch (dir) {
                 case PlayerMechanics.DirectionFacing.Left:
-                    TryMove(currentTile.GetLeft(), false);
+                    TryMove(currentTile.GetLeft(), Person.Action.PUSHED);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Right:
-                    TryMove(currentTile.GetRight(), false);
+                    TryMove(currentTile.GetRight(), Person.Action.PUSHED);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Down:
-                    TryMove(currentTile.GetBottom(), false);
+                    TryMove(currentTile.GetBottom(), Person.Action.PUSHED);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Up:
-                    TryMove(currentTile.GetTop(), false);
+                    TryMove(currentTile.GetTop(), Person.Action.PUSHED);
                     break;
             }
             SFXManager.Instance.GuhSFX();
@@ -263,13 +270,15 @@ public class Person : MonoBehaviour
     public bool UndoState() {
         if (states.Count == 0) {
             undoGorilla = false;
+            undoFrog = false;
             return false;
         }
         Debug.Log("floor number: " + states.Peek().floorNumber);
+        Debug.Log("Undoing: " + GetId());
         // if (CompareTag("SleepyGuy")) {
         //     Debug.Log(states.Peek().direction);
         // }
-        if ((states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) || undoGorilla) {
+        if ((states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) || undoGorilla || undoFrog) {
             Direction lastFacing = states.Peek().direction;
             Action lastAction = states.Peek().action;
             Tile lastTile = states.Peek().tile;
@@ -282,10 +291,18 @@ public class Person : MonoBehaviour
                 lastTile.SetPerson(this);
                 isMoving = true;
             }
-            Debug.Log("Before Gorilla Undo");
             if (lastAction == Action.GORILLAPUSHED) {
                 states.Pop();
-                undoGorilla = true;
+                if (states.Count > 0 && states.Peek().action != Action.GORILLAPUSHED) {
+                    undoGorilla = true;
+                }
+                return true;
+            }
+            if (lastAction == Action.FROGPULLED) {
+                states.Pop();
+                if (states.Count > 0 && states.Peek().action != Action.FROGPULLED) {
+                    undoFrog = true;
+                }
                 return true;
             }
             if (currentFacing != lastFacing) {
@@ -318,6 +335,7 @@ public class Person : MonoBehaviour
             } 
             states.Pop();
             undoGorilla = false;
+            undoFrog = false;
             return true;
         }
         return false;
@@ -406,20 +424,46 @@ public class Person : MonoBehaviour
                 Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
                 if (tileInFrontOfFrontTile) {
                     Person personMoving = frontTile.GetPerson();
-                    personMoving.TryMove(tileInFrontOfFrontTile, true);
+                    personMoving.TryMove(tileInFrontOfFrontTile, Action.GORILLAPUSHED);
+                    // Stops the frog from performing its pull if the gorilla pushes it
+                    personMoving.StopFrog();
                 }
             }
             else if(frontTile && frontTile.GetPlayer()) {
                 Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
                 if (tileInFrontOfFrontTile) {
                     PlayerMechanics playerMoving = frontTile.GetPlayer();
-                    playerMoving.GorillaMove(tileInFrontOfFrontTile);
+                    playerMoving.PersonMove(tileInFrontOfFrontTile, true, false);
                 }
             }
+        }
+        if (actions.pullInSight && !frogStopped) {
+            Tile frontTile = GetFrontTile(null);
+            Tile oldFrontTile = frontTile;
+            while (frontTile) {
+                frontTile = GetFrontTile(frontTile);
+                if (frontTile && (frontTile.GetPerson() || frontTile.GetPlayer())) {
+                    break;
+                }
+            }
+            if (frontTile && frontTile.GetPerson()) {
+                Person personMoving = frontTile.GetPerson();
+                personMoving.TryMove(oldFrontTile, Action.FROGPULLED);
+            } else if (frontTile && frontTile.GetPlayer()) {
+                PlayerMechanics playerMoving = frontTile.GetPlayer();
+                playerMoving.PersonMove(oldFrontTile, false, true);
+            }
+        }
+        else if (actions.pullInSight && frogStopped) {
+            frogStopped = false;
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
         }
+    }
+
+    public void StopFrog() {
+        frogStopped = true;
     }
     /**
      * Gets tile in front of current tile or tile passed in from the parameter according to direction facing
@@ -462,9 +506,9 @@ public class Person : MonoBehaviour
         return personId;
     }
     /**
-     * Tries to move to a new tile, bool stores whether or not it was triggered by a gorilla
+     * Tries to move to a new tile, action stores whether or not it was triggered by a gorilla or a frog
      */
-    private bool TryMove(Tile newTile, bool gorillaMove)
+    private bool TryMove(Tile newTile, Action action)
     {
         if (!newTile)
         {
@@ -473,9 +517,12 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
-            if (gorillaMove) {
+            if (action == Action.GORILLAPUSHED) {
                 states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.GORILLAPUSHED));
-                GameManager.Instance.UndoFloor(GameManager.Instance.GetCurrentFloor() + 1);
+                // GameManager.Instance.UndoFloor(GameManager.Instance.GetCurrentFloor() + 1);
+            } else if (action == Action.FROGPULLED) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.FROGPULLED));
+                // GameManager.Instance.UndoFloor(GameManager.Instance.GetCurrentFloor() + 1);
             } else {
                 states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.PUSHED));
             }

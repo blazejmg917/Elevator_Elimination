@@ -436,6 +436,29 @@ public class TileManager : MonoBehaviour
 #endif
     }
 
+    public bool UpdateLevelWithoutFloorChange() {
+        bool gameStillRunning = true;
+        //Debug.Log(tilesList.Count);
+        for (int i = 0; i < tilesList.Count; i++)
+        {
+            //Debug.Log(i);
+            for (int j = 0; j < tilesList[i].Count; j++)
+            {
+                //Debug.Log(j);
+                Person tilePerson = tilesList[i][j].GetPerson();
+                if (tilePerson)
+                {
+                    // if (!tilePerson.OnFloorChange())
+                    // {
+                    //     gameStillRunning = false;
+                    // }
+                    
+                }
+
+            }
+        }
+        return gameStillRunning;
+    }
     public bool UpdateLevel()
     {
         bool gameStillRunning = true;
