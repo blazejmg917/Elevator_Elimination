@@ -41,11 +41,6 @@ public class TileHighlight : MonoBehaviour
         }
     }
 
-    public void SetTileColor(Color newColor){
-        renderer.color = newColor;
-
-    }
-
     public void SetHoverColor(bool dragging)
     {
         //Debug.Log("Set hover color");
