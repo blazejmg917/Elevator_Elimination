@@ -20,11 +20,13 @@ public class Person : MonoBehaviour
         [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
+        [Tooltip("If this person will squirt ink on the player when killed")]public bool squirtInk;
 
-        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true){
+        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true, bool inky = true){
             eatInFront = hungry;
             alertSurrounding = loud;
             soundAlarm = skeptical;
+            squirtInk = inky;
         }
     }
     [System.Serializable]
@@ -40,7 +42,8 @@ public class Person : MonoBehaviour
         [Tooltip("the actions this character can take after being interacted with")]public personUniqueActions afterInteract;
         [Tooltip("the actions this character can take on turn change")]public personUniqueActions onTurnChange;
         [Tooltip("NOT WORKING YET. PLACEHOLDER \n the actions this character can take when they see the player")]public personUniqueActions onSeePlayer;
-        
+        [Tooltip("NOT WORKING YET. PLACEHOLDER \n the actions this character causes when killed")]public personUniqueActions onDeath;
+
 
         public personBehavior(bool pushable = true, bool turnable = true, bool killable = true, bool hasSight = true, bool yummy = true)
         {
@@ -53,6 +56,7 @@ public class Person : MonoBehaviour
             afterInteract = new personUniqueActions();
             onTurnChange = new personUniqueActions();
             onSeePlayer = new personUniqueActions();
+            onDeath = new personUniqueActions();
         }
     }
 
@@ -301,10 +305,13 @@ public class Person : MonoBehaviour
         HandleActions(behavior.afterInteract);
     }
 
-
-
     private void OnSeePlayer(){
         HandleActions(behavior.onSeePlayer);
+    }
+
+    private void OnDeath()
+    {
+        HandleActions(behavior.onDeath);
     }
 
     private void HandleActions(personUniqueActions actions){
@@ -368,6 +375,14 @@ public class Person : MonoBehaviour
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
+        }
+        if (actions.squirtInk)
+        {
+            Person[] peeps = PersonManager.Instance.GetPHolder().GetComponentsInChildren<Person>(); //Get all person objects in the level
+            foreach (Person p in peeps)
+            { 
+                p.behavior.onSeePlayer.soundAlarm = true;
+            }
         }
     }
 
@@ -455,6 +470,7 @@ public class Person : MonoBehaviour
     {
         if ((behavior.canBeKilled || overrideKillable) && GetComponent<Animator>().enabled )
         {
+            OnDeath();
             SetDeadSprite();
             takesUpSpace = false;
             triggerAlarmOnSeen = true;
