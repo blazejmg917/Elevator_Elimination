@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+
+    [SerializeField, Tooltip("Bool for if Player is on this tile")] public bool isPlayerOnTile { get; private set; }
     [SerializeField, Tooltip("The character currently on this tile")] private Person currentPerson;
     private Person lastPerson = null;
     [SerializeField, Tooltip("the id for the player on this tile"), ReadOnly(true)]private string personId;
@@ -103,6 +105,11 @@ public class Tile : MonoBehaviour
     public Person GetPerson()
     {
         return currentPerson;
+    }
+
+    public void SetIsPlayerOnTile(bool playerOnTile)
+    { 
+        isPlayerOnTile = playerOnTile;
     }
 
     public void SetPerson(Person per, bool updateID = false) {

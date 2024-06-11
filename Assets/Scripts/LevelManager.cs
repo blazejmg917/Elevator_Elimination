@@ -13,7 +13,9 @@ public class LevelManager : MonoBehaviour
     [System.Serializable]public class LevelCompleteEvent : UnityEvent<bool>{};
     [System.Serializable]public class TutorialStartEvent : UnityEvent<DialogNode>{};
     [System.Serializable]public class TutorialEndEvent : UnityEvent{};
-    
+
+    [SerializeField] public PlayerMechanics player { get; private set;}
+
     [SerializeField, Tooltip("the elevator move object")]private ElevatorMove eMove;
 
     [SerializeField, Tooltip("the Level Holder")]private LevelsHolder levelHolder;
@@ -37,6 +39,8 @@ public class LevelManager : MonoBehaviour
     private bool customLevel = false;
 
     
+
+    
     private static LevelManager _instance;
     public static LevelManager Instance
     {
@@ -58,6 +62,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = FindObjectOfType<PlayerMechanics>(true);
+        
         if(!levelHolder){
             
             levelHolder = GetComponentInChildren<LevelsHolder>();

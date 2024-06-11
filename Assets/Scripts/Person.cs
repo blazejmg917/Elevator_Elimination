@@ -378,11 +378,7 @@ public class Person : MonoBehaviour
         }
         if (actions.squirtInk)
         {
-            Person[] peeps = PersonManager.Instance.GetPHolder().GetComponentsInChildren<Person>(); //Get all person objects in the level
-            foreach (Person p in peeps)
-            { 
-                p.behavior.onSeePlayer.soundAlarm = true;
-            }
+           LevelManager.Instance.player.SetCallAlarmWhenSeen(true);
         }
     }
 
@@ -474,6 +470,7 @@ public class Person : MonoBehaviour
             SetDeadSprite();
             takesUpSpace = false;
             triggerAlarmOnSeen = true;
+            behavior.canSee = false;
             if (isTarget)
             {
                 
@@ -499,7 +496,7 @@ public class Person : MonoBehaviour
         HandleActions(behavior.onTurnChange);
         bool sightlineCleared = false;
         Tile tileSeen = currentTile;
-        while (!sightlineCleared)
+        while (behavior.canSee && !sightlineCleared)
         {
             if (!tileSeen) {
                 return true;
@@ -538,6 +535,20 @@ public class Person : MonoBehaviour
                         return false;
                     }
                     return true;
+                }
+
+                if (tileSeen.isPlayerOnTile)
+                {
+                    if (LevelManager.Instance.player.CallAlarmWhenSeen)
+                    {
+                        //Temp reaction to kill to show who caused the failed level
+                        StartBubbleReaction(true);
+                        GameManager.Instance.GameOver("SEEN");
+                        SFXManager.Instance.ScreamSFX();
+                        Debug.Log("WE WOOOH");
+                        //call game over
+                        return false;
+                    }
                 }
             }
             else {

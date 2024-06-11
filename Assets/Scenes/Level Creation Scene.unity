@@ -6847,6 +6847,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigLevelPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 2822097133755119894, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -11.700012
+      objectReference: {fileID: 0}
+    - target: {fileID: 3854768044489138747, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: behavior.canSee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3954515172430401018, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
       propertyPath: objectsToBeDisplayed.Array.size
       value: 3
@@ -6867,6 +6875,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1226408559}
     - target: {fileID: 5292739857450148916, guid: 29a502efc1490264c93c66e098a3a75f, type: 3}
       propertyPath: gameOver.m_PersistentCalls.m_Calls.Array.size
       value: 4

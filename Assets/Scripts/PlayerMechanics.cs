@@ -72,6 +72,8 @@ public class PlayerMechanics : MonoBehaviour
     private bool targetDead = false;
     private PersonHolder personHolder;
     private Animator doorAnim;
+    public bool CallAlarmWhenSeen { get; private set; } 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -96,6 +98,7 @@ public class PlayerMechanics : MonoBehaviour
     public void StartPlayer() {
         Debug.Log("player entering");
         currentTile = tileMan.GetStartTile();
+        currentTile.SetIsPlayerOnTile(true);
         currentTilePos = currentTile.transform.position;
         exitTile = currentTile;
         entering = true;
@@ -109,6 +112,7 @@ public class PlayerMechanics : MonoBehaviour
         if (doorAnim) {
             doorAnim.SetBool("Open Door", false);
         }
+        SetCallAlarmWhenSeen(false);
     }
 
     public void WalkOut() {
@@ -380,7 +384,9 @@ public class PlayerMechanics : MonoBehaviour
                     case DirectionFacing.Left:
                         if (currentTile.GetLeft() && currentTile.GetLeft().IsWalkable()) {
                             playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                            currentTile.SetIsPlayerOnTile(false);
                             currentTile = currentTile.GetLeft();
+                            currentTile.SetIsPlayerOnTile(true);
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
                             
@@ -391,7 +397,9 @@ public class PlayerMechanics : MonoBehaviour
                     case DirectionFacing.Right:
                         if (currentTile.GetRight() && currentTile.GetRight().IsWalkable()) {
                             playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                            currentTile.SetIsPlayerOnTile(false);
                             currentTile = currentTile.GetRight();
+                            currentTile.SetIsPlayerOnTile(true);
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
                             
@@ -402,7 +410,9 @@ public class PlayerMechanics : MonoBehaviour
                     case DirectionFacing.Up:
                         if (currentTile.GetTop() && currentTile.GetTop().IsWalkable()) {
                             playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                            currentTile.SetIsPlayerOnTile(false);
                             currentTile = currentTile.GetTop();
+                            currentTile.SetIsPlayerOnTile(true);
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
                             
@@ -413,7 +423,9 @@ public class PlayerMechanics : MonoBehaviour
                     case DirectionFacing.Down:
                         if (currentTile.GetBottom() && currentTile.GetBottom().IsWalkable()) {
                             playerStates.Push((currentTile, facing, gameMan.GetCurrentFloor()));
+                            currentTile.SetIsPlayerOnTile(false);
                             currentTile = currentTile.GetBottom();
+                            currentTile.SetIsPlayerOnTile(true);
                             isInteractible = false;
                             //MusicScript.Instance.StepSFX();
                             
@@ -768,5 +780,10 @@ public class PlayerMechanics : MonoBehaviour
         else if(pressed <= .5){
             pressedRestart = false;
         }
+    }
+
+    public void SetCallAlarmWhenSeen(bool shouldCallAlarm)
+    { 
+        CallAlarmWhenSeen = shouldCallAlarm;
     }
 }
