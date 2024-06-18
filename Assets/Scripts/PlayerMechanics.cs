@@ -813,6 +813,8 @@ public class PlayerMechanics : MonoBehaviour
             }
             for (int i = 0; i < personHolder.transform.childCount; i++)
             {
+                personHolder.transform.GetChild(i).GetComponent<Person>().StopFrog();
+                personHolder.transform.GetChild(i).GetComponent<Person>().StopGorilla();
                 if (personHolder.transform.GetChild(i).GetComponent<Person>().UndoState()) {
                     personHolder.UpdateMap();
                 }

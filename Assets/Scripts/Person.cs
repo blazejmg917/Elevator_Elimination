@@ -106,6 +106,7 @@ public class Person : MonoBehaviour
     private bool undoGorilla = false;
     private bool undoFrog = false;
     private bool frogStopped = false;
+    private bool gorillaStopped = false;
     
     // Start is called before the first frame update
     void Start()
@@ -418,7 +419,7 @@ public class Person : MonoBehaviour
                 states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), newSharkPerson, Action.EAT));
             }
         }
-        if(actions.pushInFront) {
+        if(actions.pushInFront && !gorillaStopped) {
             Tile frontTile = GetFrontTile(null);
             if(frontTile && frontTile.GetPerson()) {
                 Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
@@ -436,6 +437,8 @@ public class Person : MonoBehaviour
                     playerMoving.PersonMove(tileInFrontOfFrontTile, true, false);
                 }
             }
+        } else if (actions.pushInFront && gorillaStopped) {
+            gorillaStopped = false;
         }
         if (actions.pullInSight && !frogStopped) {
             Tile frontTile = GetFrontTile(null);
@@ -464,6 +467,9 @@ public class Person : MonoBehaviour
 
     public void StopFrog() {
         frogStopped = true;
+    }
+    public void StopGorilla() {
+        gorillaStopped = true;
     }
     /**
      * Gets tile in front of current tile or tile passed in from the parameter according to direction facing
