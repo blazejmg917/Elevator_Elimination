@@ -20,6 +20,8 @@ public class Person : MonoBehaviour
         [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
+        [Tooltip("if this person can cast a line of sight")]public bool sightCast;
+        [Tooltip("if this person can remove a line of sight")]public bool sightRemove;
         [Tooltip("if this person will push things directly in front of them")]public bool pushInFront;
         [Tooltip("if this person will pull things in its line of sight")]public bool pullInSight;
 
@@ -29,6 +31,9 @@ public class Person : MonoBehaviour
             soundAlarm = skeptical;
             pushInFront = pushy;
             pullInSight = pully;
+            //can cast if not target or player
+            sightCast = true;
+            sightRemove = true;
         }
     }
     [System.Serializable]
@@ -135,9 +140,20 @@ public class Person : MonoBehaviour
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
+        StartCoroutine(waitForLevelToStartAndUpdateLOS());
         if (behavior.canEat) {
             CheckIfGameStartsWithPersonInSharkRange();
         }
+    }
+    
+
+    IEnumerator waitForLevelToStartAndUpdateLOS(){
+        yield return new WaitForSeconds(.5f);
+        if (behavior.canSee){
+            updateLineOfSight(currentFacing);
+        }
+        yield return null;
+        
     }
 
     // Update is called once per frame
@@ -274,6 +290,8 @@ public class Person : MonoBehaviour
             undoFrog = false;
             return false;
         }
+        //remove old line of sight
+        RemoveLOSLighting(currentFacing);
         Debug.Log("floor number: " + states.Peek().floorNumber);
         Debug.Log("Undoing: " + GetId());
         // if (CompareTag("SleepyGuy")) {
@@ -343,6 +361,9 @@ public class Person : MonoBehaviour
     }
 
     private void BeforeInteract(){
+        if (currentFacing != null){
+            RemoveLOSLighting(currentFacing);
+        }
         HandleActions(behavior.beforeInteract);
     }
 
@@ -462,6 +483,15 @@ public class Person : MonoBehaviour
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
+        }
+        if(actions.sightRemove){
+            RemoveLOSLighting(currentFacing);
+        }
+        if(actions.sightCast){
+            if (behavior.canSee && currentFacing != null){
+                //RemoveLOSLighting(currentFacing);
+                updateLineOfSight(currentFacing);
+            }
         }
     }
 
@@ -721,6 +751,126 @@ public class Person : MonoBehaviour
         }
         TurnSprite();
     }
+
+    public void castVisionOnTile(Tile tileSeen){
+        //highlight tile passed in
+        Color castVisionColor = Color.cyan;
+        //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetTileColor(castVisionColor);
+        tileSeen.GetComponent<TileHighlight>().SetHoverColor(true);
+        //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetHoverColor(true);
+
+    }
+
+    public void RemoveLOSLighting(Direction facing){
+        bool sightlineCleared = false;
+        Tile tileSeen = currentTile;
+        while (!sightlineCleared)
+        {
+            //if tile is invalid, break los
+            if (!tileSeen) {
+                Debug.Log("BreakLOSRemoveing");
+                break;
+            }
+
+            
+            
+            switch (currentFacing) {
+                case Direction.LEFT:
+                    tileSeen = tileSeen.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    tileSeen = tileSeen.GetRight();
+                    break;
+                case Direction.UP:
+                    tileSeen = tileSeen.GetTop();
+                    break;
+                case Direction.DOWN:
+                    tileSeen = tileSeen.GetBottom();
+                    break;
+                default: 
+                    break;
+                
+            }
+
+            //if tile seen exists
+            if (tileSeen)
+            {
+
+                //unhighlight tile
+                if (tileSeen.IsWalkable() && tileSeen.GetComponent<TileHighlight>() != null){
+                    Color defaultColor = Color.white;
+                    tileSeen.GetComponent<TileHighlight>().SetDefaultColor();
+                    //tileSeen.GetComponent<TileHighlight>().SetTileColor(defaultColor);
+                }
+                
+            }
+            
+        }
+    }
+    
+
+    public void updateLineOfSight(Direction facing){
+        //HandleActions(behavior.onTurnChange);
+        
+        //bool sightlineCleared = false;
+        Tile tileSeen = currentTile;
+        Tile ogTile = currentTile;
+        while (true)
+        {
+            //if tile is invalid, break los
+            if (!tileSeen) { // || !tileSeen.IsWalkable()
+                Debug.Log("BreakLOS for " + personId.ToString());
+                break;
+            }
+            //highlight tileseen
+            
+            //Debug.Log(tileSeen.getX() + " " + tileSeen.getY());
+            switch (currentFacing) {
+                case Direction.LEFT:
+                    //Debug.Log("hitUpdateLOSLeft");
+                    tileSeen = tileSeen.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    ///Debug.Log("hitUpdateLOSRight");
+                    tileSeen = tileSeen.GetRight();
+                    break;
+                case Direction.UP:
+                    //Debug.Log("hitUpdateLOSUp");
+                    tileSeen = tileSeen.GetTop();
+                    break;
+                case Direction.DOWN:
+                    //Debug.Log("hitUpdateLOSDown");
+                    tileSeen = tileSeen.GetBottom();
+                    break;
+                default: 
+                    break;
+                
+            }
+            //if tile seen exists
+            if (tileSeen && ogTile != tileSeen)
+            {
+                
+                //get person on tile
+                Person seenPerson = tileSeen.GetPerson();
+                //if person exists, stop line of sight at/on them
+                if (seenPerson)
+                {
+                    Debug.Log(seenPerson.name);
+                    
+                }
+                //highlight tile
+                if (tileSeen.IsWalkable()){ // || seenPerson == tileSeen.GetPerson()
+                    castVisionOnTile(tileSeen);
+                }
+                else{
+                    
+                    break;
+                }
+                
+            }
+        }
+    }
+
 
     public string GetKey()
     {

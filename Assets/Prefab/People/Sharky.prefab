@@ -121,18 +121,34 @@ MonoBehaviour:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
+      pushInFront: 0
+      pullInSight: 0
     afterInteract:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
+      pushInFront: 0
+      pullInSight: 0
     onTurnChange:
       eatInFront: 1
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 1
+      sightRemove: 1
+      pushInFront: 0
+      pullInSight: 0
     onSeePlayer:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
+      pushInFront: 0
+      pullInSight: 0
   pushSpeed: 0
   numberOfTurnsBeforeSharkCanEat: 3
   initialOffset: 4
