@@ -754,9 +754,10 @@ public class Person : MonoBehaviour
 
     public void castVisionOnTile(Tile tileSeen){
         //highlight tile passed in
-        Color castVisionColor = Color.cyan;
+        //Color castVisionColor = Color.cyan;
         //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetTileColor(castVisionColor);
-        tileSeen.GetComponent<TileHighlight>().SetHoverColor(true);
+        //tileSeen.GetComponent<TileHighlight>().SetHoverColor(true);
+        tileSeen.GetComponent<TileHighlight>().addLOSHighlight();
         //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetHoverColor(true);
 
     }
@@ -798,9 +799,10 @@ public class Person : MonoBehaviour
 
                 //unhighlight tile
                 if (tileSeen.IsWalkable() && tileSeen.GetComponent<TileHighlight>() != null){
-                    Color defaultColor = Color.white;
+                    //Color defaultColor = Color.white;
                     tileSeen.GetComponent<TileHighlight>().SetDefaultColor();
                     //tileSeen.GetComponent<TileHighlight>().SetTileColor(defaultColor);
+                    //tileSeen.GetComponent<TileHighlight>().removeLOSHighlight();
                 }
                 
             }
