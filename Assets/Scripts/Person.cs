@@ -112,6 +112,7 @@ public class Person : MonoBehaviour
     private bool undoFrog = false;
     private bool frogStopped = false;
     private bool gorillaStopped = false;
+    private List<Tile> tilesHighlightedByLOS = new List<Tile>();
     
     // Start is called before the first frame update
     void Start()
@@ -758,6 +759,8 @@ public class Person : MonoBehaviour
         //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetTileColor(castVisionColor);
         //tileSeen.GetComponent<TileHighlight>().SetHoverColor(true);
         tileSeen.GetComponent<TileHighlight>().addLOSHighlight();
+        //add tile to seen list
+        tilesHighlightedByLOS.Add(tileSeen);
         //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetHoverColor(true);
 
     }
@@ -769,7 +772,7 @@ public class Person : MonoBehaviour
         {
             //if tile is invalid, break los
             if (!tileSeen) {
-                Debug.Log("BreakLOSRemoveing");
+                //Debug.Log("BreakLOSRemoveing");
                 break;
             }
 
@@ -800,9 +803,15 @@ public class Person : MonoBehaviour
                 //unhighlight tile
                 if (tileSeen.IsWalkable() && tileSeen.GetComponent<TileHighlight>() != null){
                     //Color defaultColor = Color.white;
-                    tileSeen.GetComponent<TileHighlight>().SetDefaultColor();
+                    //tileSeen.GetComponent<TileHighlight>().SetDefaultColor();
                     //tileSeen.GetComponent<TileHighlight>().SetTileColor(defaultColor);
-                    //tileSeen.GetComponent<TileHighlight>().removeLOSHighlight();
+
+                    //only remove LOS highlight if person had this tile is their seen list
+                    if (tilesHighlightedByLOS.Contains(tileSeen)){
+                        tileSeen.GetComponent<TileHighlight>().removeLOSHighlight();
+                        tilesHighlightedByLOS.Remove(tileSeen);
+                    }
+                    
                 }
                 
             }

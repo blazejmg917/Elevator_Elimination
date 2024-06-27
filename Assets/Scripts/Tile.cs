@@ -169,6 +169,11 @@ public class Tile : MonoBehaviour
         sRenderer.sprite = sprite;
     }
 
+    public SpriteRenderer GetSpriteRenderer(){
+        return sRenderer;
+    
+    }
+
     public void SetOffset(Vector3 tileOffset){
         offset = tileOffset;
     }

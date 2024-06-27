@@ -63,23 +63,32 @@ public class TileHighlight : MonoBehaviour
         }
     }
 
+    //adds one person looking at a tile, if there are people (1 or more) observing tile then higlight it
     public void addLOSHighlight(){
         numberOfPersonsLookingAtTile++;
         renderer.color = highlightColor;
+        //Debug.Log("<color=green>added LOS color!</color>");
+        Debug.Log(numberOfPersonsLookingAtTile);
         if (tileScript.GetPerson())
         {
             tileScript.GetPerson().SetColor(renderer.color);
         }
     }
 
+    //removes one person from looking at a tile, if there are no more people observing tile then unhiglight it
     public void removeLOSHighlight(){
         if (numberOfPersonsLookingAtTile > 0){
             numberOfPersonsLookingAtTile--;
         }
+
+        //Debug.Log("<color=red>removed LOS attempt</color>");
+        //Debug.Log(numberOfPersonsLookingAtTile);
         
-        if (numberOfPersonsLookingAtTile <= 0 && tileScript.GetPerson()){
+        if (numberOfPersonsLookingAtTile == 0 && tileScript.GetSpriteRenderer()){
+            //Debug.Log("<color=red>removed LOS color!</color>");
             renderer.color = defaultColor;
-            tileScript.GetPerson().SetColor(renderer.color);
+            tileScript.GetSpriteRenderer().color = renderer.color; //setting sprite instead of person
+            //tileScript.GetPerson().SetColor(renderer.color);
         }
     }
 }
