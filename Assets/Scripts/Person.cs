@@ -661,14 +661,38 @@ public class Person : MonoBehaviour
     public bool OnFloorChange()
     {
         HandleActions(behavior.onTurnChange);
-        bool sightlineCleared = false;
         Tile tileSeen = currentTile;
-        while (!sightlineCleared)
+        Direction currFacingDirection = currentFacing;
+        while (true)
         {
             if (!tileSeen) {
                 return true;
             }
-            switch (currentFacing) {
+            //logic for the mirror person flipping the line of sight
+            if (tileSeen && tileSeen.GetPerson() && tileSeen.GetPerson().GetKey() == "MI"){
+                switch (currFacingDirection) {
+                    case Direction.LEFT:
+                        //left to up translation
+                        currFacingDirection = Direction.UP;
+                        break;
+                    case Direction.RIGHT:
+                        //right to down translation
+                        currFacingDirection = Direction.DOWN;
+                        break;
+                    case Direction.UP:
+                        //up to left translation
+                        currFacingDirection = Direction.LEFT;
+                        break;
+                    case Direction.DOWN:
+                        //down to right translation
+                        currFacingDirection = Direction.RIGHT;
+                        break;
+                    default: 
+                        break;
+                            
+                }
+            }
+            switch (currFacingDirection) {
                 case Direction.LEFT:
                     tileSeen = tileSeen.GetLeft();
                     break;
@@ -685,6 +709,7 @@ public class Person : MonoBehaviour
                     return true;
                 
             }
+            
             if (tileSeen)
             {
                 Person seenPerson = tileSeen.GetPerson();
@@ -766,9 +791,9 @@ public class Person : MonoBehaviour
     }
 
     public void RemoveLOSLighting(Direction facing){
-        bool sightlineCleared = false;
         Tile tileSeen = currentTile;
-        while (!sightlineCleared)
+        Direction currFacingDirection = currentFacing;
+        while (true)
         {
             //if tile is invalid, break los
             if (!tileSeen) {
@@ -778,7 +803,7 @@ public class Person : MonoBehaviour
 
             
             
-            switch (currentFacing) {
+            switch (currFacingDirection) {
                 case Direction.LEFT:
                     tileSeen = tileSeen.GetLeft();
                     break;
@@ -813,6 +838,29 @@ public class Person : MonoBehaviour
                     }
                     
                 }
+                else if (tileSeen.GetPerson() && tileSeen.GetPerson().GetKey() == "MI"){
+                    switch (currFacingDirection) {
+                        case Direction.LEFT:
+                            //left to up translation
+                            currFacingDirection = Direction.UP;
+                            break;
+                        case Direction.RIGHT:
+                            //right to down translation
+                            currFacingDirection = Direction.DOWN;
+                            break;
+                        case Direction.UP:
+                            //up to left translation
+                            currFacingDirection = Direction.LEFT;
+                            break;
+                        case Direction.DOWN:
+                            //down to right translation
+                            currFacingDirection = Direction.RIGHT;
+                            break;
+                        default: 
+                            break;
+                        
+                    }
+                }
                 
             }
             
@@ -826,6 +874,7 @@ public class Person : MonoBehaviour
         //bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         Tile ogTile = currentTile;
+        Direction currFacingDirection = currentFacing;
         while (true)
         {
             //if tile is invalid, break los
@@ -836,7 +885,7 @@ public class Person : MonoBehaviour
             //highlight tileseen
             
             //Debug.Log(tileSeen.getX() + " " + tileSeen.getY());
-            switch (currentFacing) {
+            switch (currFacingDirection) {
                 case Direction.LEFT:
                     //Debug.Log("hitUpdateLOSLeft");
                     tileSeen = tileSeen.GetLeft();
@@ -867,11 +916,36 @@ public class Person : MonoBehaviour
                 if (seenPerson)
                 {
                     Debug.Log(seenPerson.name);
+                    Debug.Log(seenPerson.GetKey());
                     
                 }
                 //highlight tile
                 if (tileSeen.IsWalkable()){ // || seenPerson == tileSeen.GetPerson()
                     castVisionOnTile(tileSeen);
+                }
+                //logic for mirror reflection (up goes left and down goes right (vice versa for both))
+                else if (seenPerson && seenPerson.GetKey() == "MI"){
+                    switch (currFacingDirection) {
+                        case Direction.LEFT:
+                            //left to up translation
+                            currFacingDirection = Direction.UP;
+                            break;
+                        case Direction.RIGHT:
+                            //right to down translation
+                            currFacingDirection = Direction.DOWN;
+                            break;
+                        case Direction.UP:
+                            //up to left translation
+                            currFacingDirection = Direction.LEFT;
+                            break;
+                        case Direction.DOWN:
+                            //down to right translation
+                            currFacingDirection = Direction.RIGHT;
+                            break;
+                        default: 
+                            break;
+                        
+                    }
                 }
                 else{
                     
