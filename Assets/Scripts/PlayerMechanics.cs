@@ -431,7 +431,6 @@ public class PlayerMechanics : MonoBehaviour
                             currentTile = currentTile.GetLeft();
                             currentTile.SetPlayer(this);
                             isInteractible = false;
-                            //MusicScript.Instance.StepSFX();
                             SFXManager.Instance.StepSFX();
                             
                         } else {
@@ -446,7 +445,6 @@ public class PlayerMechanics : MonoBehaviour
                             currentTile = currentTile.GetRight();
                             currentTile.SetPlayer(this);
                             isInteractible = false;
-                            //MusicScript.Instance.StepSFX();
                             SFXManager.Instance.StepSFX();
                             
                         } else {
@@ -461,7 +459,6 @@ public class PlayerMechanics : MonoBehaviour
                             currentTile = currentTile.GetTop();
                             currentTile.SetPlayer(this);
                             isInteractible = false;
-                            //MusicScript.Instance.StepSFX();
                             SFXManager.Instance.StepSFX();
                             
                         } else {
@@ -476,8 +473,8 @@ public class PlayerMechanics : MonoBehaviour
                             currentTile = currentTile.GetBottom();
                             currentTile.SetPlayer(this);
                             isInteractible = false;
-                            //MusicScript.Instance.StepSFX();
                             SFXManager.Instance.StepSFX();
+                            
                             
                         } else {
                             //Trigger bump sound
@@ -500,6 +497,8 @@ public class PlayerMechanics : MonoBehaviour
             currentTile = tileToMoveTo;
             currentTile.SetPlayer(this);
             isInteractible = false;
+            //remove vision highlight from tile that person is moved onto
+            currentTile.GetComponent<TileHighlight>().removeLOSHighlight();
             //SFXManager.Instance.StepSFX();
             gameMan.UndoFloor(gameMan.GetCurrentFloor() + 1);
         }

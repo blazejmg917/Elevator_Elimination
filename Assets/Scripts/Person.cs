@@ -917,6 +917,16 @@ public class Person : MonoBehaviour
                 {
                     Debug.Log(seenPerson.name);
                     Debug.Log(seenPerson.GetKey());
+                    //end game if person sees dead target
+                    if (seenPerson.CallAlarmWhenSeen())
+                    {
+                        //Temp reaction to kill to show who caused the failed level
+                        StartBubbleReaction(true);
+                        GameManager.Instance.GameOver("SEEN");
+                        SFXManager.Instance.ScreamSFX();
+                        Debug.Log("WE WOOOH");
+                        //call game over
+                    }
                     
                 }
                 //highlight tile

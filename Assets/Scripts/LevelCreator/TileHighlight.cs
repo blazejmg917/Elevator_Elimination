@@ -68,7 +68,7 @@ public class TileHighlight : MonoBehaviour
         numberOfPersonsLookingAtTile++;
         renderer.color = highlightColor;
         //Debug.Log("<color=green>added LOS color!</color>");
-        Debug.Log(numberOfPersonsLookingAtTile);
+        //Debug.Log(numberOfPersonsLookingAtTile);
         if (tileScript.GetPerson())
         {
             tileScript.GetPerson().SetColor(renderer.color);
