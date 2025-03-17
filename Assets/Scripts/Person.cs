@@ -108,8 +108,6 @@ public class Person : MonoBehaviour
     //Stack to store the person's last tile it was on, the last direction it was facing, what floor number the action was made on, and (if the shark) what person was last next to it
     private Stack<(Tile tile, Direction direction, int floorNumber, Person lastPersonInRange, Action action)> states;
     private int numberOfTurnsInSharkRange = 0;
-    private bool undoGorilla = false;
-    private bool undoFrog = false;
     private bool frogStopped = false;
     private bool gorillaStopped = false;
     private List<Tile> tilesHighlightedByLOS = new List<Tile>();
@@ -168,9 +166,6 @@ public class Person : MonoBehaviour
             {
                 isMoving = false;
                 AfterInteract();
-                if (undoGorilla || undoFrog) {
-                    UndoState();
-                }
                 TileManager.Instance.UpdateLevelWithoutFloorChange();
             }
         }
@@ -282,84 +277,6 @@ public class Person : MonoBehaviour
         return false;
     }
     
-    /*
-     * Undoes tap or push depending on if the floor number of the last action matches the current floor
-     */
-    public bool UndoState() {
-        if (states.Count == 0) {
-            undoGorilla = false;
-            undoFrog = false;
-            return false;
-        }
-        //remove old line of sight
-        RemoveLOSLighting(currentFacing);
-        Debug.Log("floor number: " + states.Peek().floorNumber);
-        Debug.Log("Undoing: " + GetId());
-        // if (CompareTag("SleepyGuy")) {
-        //     Debug.Log(states.Peek().direction);
-        // }
-        if ((states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) || undoGorilla || undoFrog) {
-            Direction lastFacing = states.Peek().direction;
-            Action lastAction = states.Peek().action;
-            Tile lastTile = states.Peek().tile;
-            int lastFloorNumber = states.Peek().floorNumber;
-            if (currentTile.getCoords() != lastTile.getCoords()) {
-                if (currentTile.GetPerson() == this) {
-                    currentTile.SetPerson(null);
-                } 
-                currentTile = lastTile;
-                lastTile.SetPerson(this);
-                isMoving = true;
-            }
-            if (lastAction == Action.GORILLAPUSHED) {
-                states.Pop();
-                if (states.Count > 0 && states.Peek().action != Action.GORILLAPUSHED) {
-                    undoGorilla = true;
-                }
-                return true;
-            }
-            if (lastAction == Action.FROGPULLED) {
-                states.Pop();
-                if (states.Count > 0 && states.Peek().action != Action.FROGPULLED) {
-                    undoFrog = true;
-                }
-                return true;
-            }
-            if (currentFacing != lastFacing) {
-                currentFacing = lastFacing;
-                TurnSprite();
-                //Next two lines fix the undo issue with tap by artificially increasing floor count when undoing a tap
-                // if (lastAction == Action.ALERTED && gameObject.tag == "SleepyGuy" && anim) {
-                //     anim.SetBool("Alarm", false);
-                //     GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
-                //     TileManager.Instance.UpdateLevel();
-                // }
-                if (lastAction == Action.TAPPED) {
-                    // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
-                    // TileManager.Instance.UpdateLevel();
-                }
-                if (lastAction == Action.AWOKEN && anim) {
-                    anim.SetTrigger("WakeUp");
-                    GameManager.Instance.UndoAwake = true;
-                }
-            }
-            if (lastAction == Action.KILLED) {
-                OnRevive();
-                // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
-                // TileManager.Instance.UpdateLevel();
-            }
-            if (lastAction == Action.EAT && states.Peek().lastPersonInRange && states.Peek().lastPersonInRange.GetSharkTurns() > 0) {
-                Person lastSharkPerson = states.Peek().lastPersonInRange;
-                lastSharkPerson.SetSharkTurns(lastSharkPerson.GetSharkTurns() - 2);
-                Debug.Log("Unddid Shark: " + lastSharkPerson.GetSharkTurns());
-            } 
-            states.Pop();
-            undoGorilla = false;
-            undoFrog = false;
-            return true;
-        }
-        return false;
-    }
 
     private void BeforeInteract(){
         if (currentFacing != null){

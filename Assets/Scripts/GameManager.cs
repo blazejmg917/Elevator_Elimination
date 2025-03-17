@@ -45,10 +45,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ErrorCodeReference errorCodes;
     private bool countUp = false;
     private bool undoAwakeVar = false;
-    public bool UndoAwake {
-        get {return undoAwakeVar;}
-        set {undoAwakeVar = value;}
-    }
     public static GameManager Instance
     {
         get
