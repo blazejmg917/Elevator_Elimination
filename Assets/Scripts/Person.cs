@@ -20,11 +20,20 @@ public class Person : MonoBehaviour
         [Tooltip("If this person ill try to eat a person directly in front of them")]public bool eatInFront;
         [Tooltip("if this person will alert all direct line of sight people in all directions from it")]public bool alertSurrounding;
         [Tooltip("if this person will sound the alarm and fail the level")]public bool soundAlarm;
+        [Tooltip("if this person can cast a line of sight")]public bool sightCast;
+        [Tooltip("if this person can remove a line of sight")]public bool sightRemove;
+        [Tooltip("if this person will push things directly in front of them")]public bool pushInFront;
+        [Tooltip("if this person will pull things in its line of sight")]public bool pullInSight;
 
-        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true){
+        public personUniqueActions(bool hungry = true, bool loud = true, bool skeptical = true, bool pushy = true, bool pully = true){
             eatInFront = hungry;
             alertSurrounding = loud;
             soundAlarm = skeptical;
+            pushInFront = pushy;
+            pullInSight = pully;
+            //can cast if not target or player
+            sightCast = true;
+            sightRemove = true;
         }
     }
     [System.Serializable]
@@ -34,7 +43,7 @@ public class Person : MonoBehaviour
         [Tooltip("if this character can be turned")] public bool canTurn;
         [Tooltip("if this character can be killed")] public bool canBeKilled;
         [Tooltip("if this character can see")] public bool canSee;
-        [Tooltip("if this character can be eaten")]public bool canEat;
+        [Tooltip("if this character can eat")]public bool canEat;
 
         [Tooltip("the actions this character can take before being interacted with")]public personUniqueActions beforeInteract;
         [Tooltip("the actions this character can take after being interacted with")]public personUniqueActions afterInteract;
@@ -81,6 +90,7 @@ public class Person : MonoBehaviour
     private Animator bubbleAnim;
     private Animator chatAnim;
     private SpriteRenderer spriteRen;
+    [SerializeField, Tooltip("number of turns it takes for a shark to eat")] private int numberOfTurnsBeforeSharkCanEat = 3;
     //Offsets the animation time to sync up with the people around it
     //private float animOffset;
     [SerializeField, Tooltip("Number of frames offset to start the player's idle animation")] private float initialOffset = 4f;
@@ -90,10 +100,20 @@ public class Person : MonoBehaviour
         ALERTED,
         KILLED,
         AWOKEN,
+        EAT,
+        GORILLAPUSHED,
+        FROGPULLED,
         NONE
     }
-    //Stack to store the person's last tile it was on, the last direction it was facing, and what floor number the action was made on
-    private Stack<(Tile tile, Direction direction, int floorNumber, Action action)> states;
+    //Stack to store the person's last tile it was on, the last direction it was facing, what floor number the action was made on, and (if the shark) what person was last next to it
+    private Stack<(Tile tile, Direction direction, int floorNumber, Person lastPersonInRange, Action action)> states;
+    private int numberOfTurnsInSharkRange = 0;
+    private bool undoGorilla = false;
+    private bool undoFrog = false;
+    private bool frogStopped = false;
+    private bool gorillaStopped = false;
+    private List<Tile> tilesHighlightedByLOS = new List<Tile>();
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -101,7 +121,7 @@ public class Person : MonoBehaviour
         {
             currentFacing = Direction.NONE;
         }
-        states = new Stack<(Tile, Direction, int, Action)>();
+        states = new Stack<(Tile, Direction, int, Person, Action)>();
         if (currentTile)
         {
             transform.position = new Vector3(currentTile.transform.position.x, currentTile.transform.position.y, transform.position.z);
@@ -121,6 +141,20 @@ public class Person : MonoBehaviour
         anim.Rebind();
         anim.Update(0f);
         TurnSprite();
+        StartCoroutine(waitForLevelToStartAndUpdateLOS());
+        if (behavior.canEat) {
+            CheckIfGameStartsWithPersonInSharkRange();
+        }
+    }
+    
+
+    IEnumerator waitForLevelToStartAndUpdateLOS(){
+        yield return new WaitForSeconds(.5f);
+        if (behavior.canSee){
+            updateLineOfSight(currentFacing);
+        }
+        yield return null;
+        
     }
 
     // Update is called once per frame
@@ -134,17 +168,22 @@ public class Person : MonoBehaviour
             {
                 isMoving = false;
                 AfterInteract();
-                TileManager.Instance.UpdateLevel();
+                if (undoGorilla || undoFrog) {
+                    UndoState();
+                }
+                TileManager.Instance.UpdateLevelWithoutFloorChange();
             }
         }
     }
-
+    public bool IsMoving() {
+        return isMoving;
+    }
     public bool IsTarget(){
         return isTarget;
     }
 
     public bool IsEdible(){
-        return behavior.canEat;
+        return !behavior.canEat;
     }
 
     public bool TakesUpSpace()
@@ -222,19 +261,19 @@ public class Person : MonoBehaviour
             
             switch (dir) {
                 case PlayerMechanics.DirectionFacing.Left:
-                    TryMove(currentTile.GetLeft());
+                    TryMove(currentTile.GetLeft(), Person.Action.PUSHED);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Right:
-                    TryMove(currentTile.GetRight());
+                    TryMove(currentTile.GetRight(), Person.Action.PUSHED);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Down:
-                    TryMove(currentTile.GetBottom());
+                    TryMove(currentTile.GetBottom(), Person.Action.PUSHED);
                     break;
 
                 case PlayerMechanics.DirectionFacing.Up:
-                    TryMove(currentTile.GetTop());
+                    TryMove(currentTile.GetTop(), Person.Action.PUSHED);
                     break;
             }
             SFXManager.Instance.GuhSFX();
@@ -248,22 +287,44 @@ public class Person : MonoBehaviour
      */
     public bool UndoState() {
         if (states.Count == 0) {
+            undoGorilla = false;
+            undoFrog = false;
             return false;
         }
+        //remove old line of sight
+        RemoveLOSLighting(currentFacing);
         Debug.Log("floor number: " + states.Peek().floorNumber);
-        if (CompareTag("SleepyGuy")) {
-            Debug.Log(states.Peek().direction);
-        }
-        if (states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) {
+        Debug.Log("Undoing: " + GetId());
+        // if (CompareTag("SleepyGuy")) {
+        //     Debug.Log(states.Peek().direction);
+        // }
+        if ((states.Count > 0 && states.Peek().floorNumber == GameManager.Instance.GetCurrentFloor() + 1) || undoGorilla || undoFrog) {
+            Direction lastFacing = states.Peek().direction;
+            Action lastAction = states.Peek().action;
             Tile lastTile = states.Peek().tile;
-            if (currentTile.transform.position != lastTile.transform.position) {
-                currentTile.SetPerson(null);
+            int lastFloorNumber = states.Peek().floorNumber;
+            if (currentTile.getCoords() != lastTile.getCoords()) {
+                if (currentTile.GetPerson() == this) {
+                    currentTile.SetPerson(null);
+                } 
                 currentTile = lastTile;
                 lastTile.SetPerson(this);
                 isMoving = true;
             }
-            Direction lastFacing = states.Peek().direction;
-            Action lastAction = states.Peek().action;
+            if (lastAction == Action.GORILLAPUSHED) {
+                states.Pop();
+                if (states.Count > 0 && states.Peek().action != Action.GORILLAPUSHED) {
+                    undoGorilla = true;
+                }
+                return true;
+            }
+            if (lastAction == Action.FROGPULLED) {
+                states.Pop();
+                if (states.Count > 0 && states.Peek().action != Action.FROGPULLED) {
+                    undoFrog = true;
+                }
+                return true;
+            }
             if (currentFacing != lastFacing) {
                 currentFacing = lastFacing;
                 TurnSprite();
@@ -274,8 +335,8 @@ public class Person : MonoBehaviour
                 //     TileManager.Instance.UpdateLevel();
                 // }
                 if (lastAction == Action.TAPPED) {
-                    GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
-                    TileManager.Instance.UpdateLevel();
+                    // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
+                    // TileManager.Instance.UpdateLevel();
                 }
                 if (lastAction == Action.AWOKEN && anim) {
                     anim.SetTrigger("WakeUp");
@@ -284,16 +345,26 @@ public class Person : MonoBehaviour
             }
             if (lastAction == Action.KILLED) {
                 OnRevive();
-                GameManager.Instance.UndoFloor(states.Peek().floorNumber + 1);
-                TileManager.Instance.UpdateLevel();
+                // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
+                // TileManager.Instance.UpdateLevel();
+            }
+            if (lastAction == Action.EAT && states.Peek().lastPersonInRange && states.Peek().lastPersonInRange.GetSharkTurns() > 0) {
+                Person lastSharkPerson = states.Peek().lastPersonInRange;
+                lastSharkPerson.SetSharkTurns(lastSharkPerson.GetSharkTurns() - 2);
+                Debug.Log("Unddid Shark: " + lastSharkPerson.GetSharkTurns());
             } 
             states.Pop();
+            undoGorilla = false;
+            undoFrog = false;
             return true;
         }
         return false;
     }
 
     private void BeforeInteract(){
+        if (currentFacing != null){
+            RemoveLOSLighting(currentFacing);
+        }
         HandleActions(behavior.beforeInteract);
     }
 
@@ -347,35 +418,134 @@ public class Person : MonoBehaviour
             }
         }
         if(actions.eatInFront){
-            Tile frontTile = null;
-            switch(currentFacing){
-                case Direction.LEFT:
-                    frontTile = currentTile.GetLeft();
-                    break;
-                case Direction.RIGHT:
-                    frontTile = currentTile.GetRight();
-                    break;
-                case Direction.UP:
-                    frontTile = currentTile.GetTop();
-                    break;
-                case Direction.DOWN:
-                    frontTile = currentTile.GetBottom();
-                    break;
+            Tile frontTile = GetFrontTile(null);
+            if(!frontTile.GetPerson() && states.Count > 0 && states.Peek().lastPersonInRange) {
+                states.Peek().lastPersonInRange.SetSharkTurns(0);
             }
             if(frontTile && frontTile.GetPerson() && frontTile.GetPerson().IsEdible()){
-                frontTile.GetPerson().OnKill(true);
+                if (states.Count > 0) {
+                    Person lastPersonInSharkRange = states.Peek().lastPersonInRange;
+
+                    //If the last person in the shark range is not the same person as the current person in the range, reset the last person's counter to 0
+                    if (lastPersonInSharkRange.GetInstanceID() != frontTile.GetPerson().GetInstanceID()) {
+                        lastPersonInSharkRange.SetSharkTurns(0);
+                    }
+                }
+                Person newSharkPerson = frontTile.GetPerson();
+                newSharkPerson.SetSharkTurns(newSharkPerson.GetSharkTurns() + 1);
+                if(newSharkPerson.GetSharkTurns() == numberOfTurnsBeforeSharkCanEat) {
+                    anim.SetTrigger("Eat");
+                    newSharkPerson.OnKill(true);
+                    newSharkPerson.SetSharkTurns(0);
+                }
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), newSharkPerson, Action.EAT));
             }
+        }
+        if(actions.pushInFront && !gorillaStopped) {
+            Tile frontTile = GetFrontTile(null);
+            if(frontTile && frontTile.GetPerson()) {
+                Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
+                if (tileInFrontOfFrontTile) {
+                    Person personMoving = frontTile.GetPerson();
+                    personMoving.TryMove(tileInFrontOfFrontTile, Action.GORILLAPUSHED);
+                    // Stops the frog from performing its pull if the gorilla pushes it
+                    personMoving.StopFrog();
+                }
+            }
+            else if(frontTile && frontTile.GetPlayer()) {
+                Tile tileInFrontOfFrontTile = GetFrontTile(frontTile);
+                if (tileInFrontOfFrontTile) {
+                    PlayerMechanics playerMoving = frontTile.GetPlayer();
+                    playerMoving.PersonMove(tileInFrontOfFrontTile, true, false);
+                }
+            }
+        } else if (actions.pushInFront && gorillaStopped) {
+            gorillaStopped = false;
+        }
+        if (actions.pullInSight && !frogStopped) {
+            Tile frontTile = GetFrontTile(null);
+            Tile oldFrontTile = frontTile;
+            while (frontTile) {
+                frontTile = GetFrontTile(frontTile);
+                if (frontTile && (frontTile.GetPerson() || frontTile.GetPlayer())) {
+                    break;
+                }
+            }
+            if (frontTile && frontTile.GetPerson()) {
+                Person personMoving = frontTile.GetPerson();
+                personMoving.TryMove(oldFrontTile, Action.FROGPULLED);
+            } else if (frontTile && frontTile.GetPlayer()) {
+                PlayerMechanics playerMoving = frontTile.GetPlayer();
+                playerMoving.PersonMove(oldFrontTile, false, true);
+            }
+        }
+        else if (actions.pullInSight && frogStopped) {
+            frogStopped = false;
         }
         if(actions.soundAlarm){
             GameManager.Instance.GameOver("SEEN");
         }
+        if(actions.sightRemove){
+            RemoveLOSLighting(currentFacing);
+        }
+        if(actions.sightCast){
+            if (behavior.canSee && currentFacing != null){
+                //RemoveLOSLighting(currentFacing);
+                updateLineOfSight(currentFacing);
+            }
+        }
     }
 
+    public void StopFrog() {
+        frogStopped = true;
+    }
+    public void StopGorilla() {
+        gorillaStopped = true;
+    }
+    /**
+     * Gets tile in front of current tile or tile passed in from the parameter according to direction facing
+     */
+    private Tile GetFrontTile(Tile newTile) {
+        Tile tileToCheck = currentTile;
+        if (newTile) {
+            tileToCheck = newTile;
+        }
+        Tile frontTile = null;
+        switch(currentFacing){
+            case Direction.LEFT:
+                frontTile = tileToCheck.GetLeft();
+                break;
+            case Direction.RIGHT:
+                frontTile = tileToCheck.GetRight();
+                break;
+            case Direction.UP:
+                frontTile = tileToCheck.GetTop();
+                break;
+            case Direction.DOWN:
+                frontTile = tileToCheck.GetBottom();
+                break;
+        }
+        return frontTile;
+    }
+    private void CheckIfGameStartsWithPersonInSharkRange() {
+        Tile frontTile = GetFrontTile(null);
+        if(frontTile.GetPerson() && frontTile.GetPerson().IsEdible()) {
+            frontTile.GetPerson().SetSharkTurns(1);
+        }
+    }
+    private void SetSharkTurns(int turns) {
+        numberOfTurnsInSharkRange = turns;
+    }
+    private int GetSharkTurns() {
+        return numberOfTurnsInSharkRange;
+    }
     public string GetId(){
         return personId;
     }
-
-    private bool TryMove(Tile newTile)
+    /**
+     * Tries to move to a new tile, action stores whether or not it was triggered by a gorilla or a frog
+     */
+    private bool TryMove(Tile newTile, Action action)
     {
         if (!newTile)
         {
@@ -384,8 +554,18 @@ public class Person : MonoBehaviour
         if (newTile.IsWalkable())
         {
             BeforeInteract();
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.PUSHED));
-            currentTile.SetPerson(null);
+            if (action == Action.GORILLAPUSHED) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.GORILLAPUSHED));
+                // GameManager.Instance.UndoFloor(GameManager.Instance.GetCurrentFloor() + 1);
+            } else if (action == Action.FROGPULLED) {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.FROGPULLED));
+                // GameManager.Instance.UndoFloor(GameManager.Instance.GetCurrentFloor() + 1);
+            } else {
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.PUSHED));
+            }
+            if (currentTile.GetPerson() == this) {
+                currentTile.SetPerson(null);
+            }
             //positions.Push(currentTile.transform.position);
             currentTile = newTile;
             newTile.SetPerson(this);
@@ -406,10 +586,10 @@ public class Person : MonoBehaviour
             }
             BeforeInteract();
             if (CompareTag("SleepyGuy") && anim) {
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.AWOKEN));
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.AWOKEN));
                 anim.SetTrigger("WakeUp");
             } else {
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.TAPPED));
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.TAPPED));
             }
             switch (dir)
             {
@@ -462,7 +642,7 @@ public class Person : MonoBehaviour
             {
                 
                 LevelManager.Instance.TargetKilled();
-                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.KILLED));
+                states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.KILLED));
                 //GameManager.Instance.SetWinCon(true);
                 //call target killed
                 return true;
@@ -560,7 +740,7 @@ public class Person : MonoBehaviour
      */
     public void SetAlarmDirection(Direction direction) {
         if(currentFacing != Direction.NONE || currentFacing != direction){
-            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), Action.ALERTED));
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.ALERTED));
             currentFacing = direction;
         }
         TurnSprite();
@@ -572,6 +752,136 @@ public class Person : MonoBehaviour
         }
         TurnSprite();
     }
+
+    public void castVisionOnTile(Tile tileSeen){
+        //highlight tile passed in
+        //Color castVisionColor = Color.cyan;
+        //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetTileColor(castVisionColor);
+        //tileSeen.GetComponent<TileHighlight>().SetHoverColor(true);
+        tileSeen.GetComponent<TileHighlight>().addLOSHighlight();
+        //add tile to seen list
+        tilesHighlightedByLOS.Add(tileSeen);
+        //TileManager.Instance.getTileListFromManager()[tileSeen.getX()][tileSeen.getY()].GetComponent<TileHighlight>().SetHoverColor(true);
+
+    }
+
+    public void RemoveLOSLighting(Direction facing){
+        bool sightlineCleared = false;
+        Tile tileSeen = currentTile;
+        while (!sightlineCleared)
+        {
+            //if tile is invalid, break los
+            if (!tileSeen) {
+                //Debug.Log("BreakLOSRemoveing");
+                break;
+            }
+
+            
+            
+            switch (currentFacing) {
+                case Direction.LEFT:
+                    tileSeen = tileSeen.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    tileSeen = tileSeen.GetRight();
+                    break;
+                case Direction.UP:
+                    tileSeen = tileSeen.GetTop();
+                    break;
+                case Direction.DOWN:
+                    tileSeen = tileSeen.GetBottom();
+                    break;
+                default: 
+                    break;
+                
+            }
+
+            //if tile seen exists
+            if (tileSeen)
+            {
+
+                //unhighlight tile
+                if (tileSeen.IsWalkable() && tileSeen.GetComponent<TileHighlight>() != null){
+                    //Color defaultColor = Color.white;
+                    //tileSeen.GetComponent<TileHighlight>().SetDefaultColor();
+                    //tileSeen.GetComponent<TileHighlight>().SetTileColor(defaultColor);
+
+                    //only remove LOS highlight if person had this tile is their seen list
+                    if (tilesHighlightedByLOS.Contains(tileSeen)){
+                        tileSeen.GetComponent<TileHighlight>().removeLOSHighlight();
+                        tilesHighlightedByLOS.Remove(tileSeen);
+                    }
+                    
+                }
+                
+            }
+            
+        }
+    }
+    
+
+    public void updateLineOfSight(Direction facing){
+        //HandleActions(behavior.onTurnChange);
+        
+        //bool sightlineCleared = false;
+        Tile tileSeen = currentTile;
+        Tile ogTile = currentTile;
+        while (true)
+        {
+            //if tile is invalid, break los
+            if (!tileSeen) { // || !tileSeen.IsWalkable()
+                Debug.Log("BreakLOS for " + personId.ToString());
+                break;
+            }
+            //highlight tileseen
+            
+            //Debug.Log(tileSeen.getX() + " " + tileSeen.getY());
+            switch (currentFacing) {
+                case Direction.LEFT:
+                    //Debug.Log("hitUpdateLOSLeft");
+                    tileSeen = tileSeen.GetLeft();
+                    break;
+                case Direction.RIGHT:
+                    ///Debug.Log("hitUpdateLOSRight");
+                    tileSeen = tileSeen.GetRight();
+                    break;
+                case Direction.UP:
+                    //Debug.Log("hitUpdateLOSUp");
+                    tileSeen = tileSeen.GetTop();
+                    break;
+                case Direction.DOWN:
+                    //Debug.Log("hitUpdateLOSDown");
+                    tileSeen = tileSeen.GetBottom();
+                    break;
+                default: 
+                    break;
+                
+            }
+            //if tile seen exists
+            if (tileSeen && ogTile != tileSeen)
+            {
+                
+                //get person on tile
+                Person seenPerson = tileSeen.GetPerson();
+                //if person exists, stop line of sight at/on them
+                if (seenPerson)
+                {
+                    Debug.Log(seenPerson.name);
+                    
+                }
+                //highlight tile
+                if (tileSeen.IsWalkable()){ // || seenPerson == tileSeen.GetPerson()
+                    castVisionOnTile(tileSeen);
+                }
+                else{
+                    
+                    break;
+                }
+                
+            }
+        }
+    }
+
 
     public string GetKey()
     {

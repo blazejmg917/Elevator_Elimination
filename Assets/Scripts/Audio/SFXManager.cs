@@ -59,6 +59,15 @@ public class SFXManager : MonoBehaviour
 
     }
 
+    /*
+     * Put the name of the SFX to play in the string parameter
+     */
+    public void PlayUnimplementedSFX(string eventName = "temp")
+    {
+
+        Debug.Log("Sound Effect played: " + eventName);
+        OneShotSFX(buttonClick);
+    }
 
     public void PauseAdjust()
     {

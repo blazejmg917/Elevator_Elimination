@@ -23,6 +23,7 @@ public class Tile : MonoBehaviour
 
     [SerializeField, Tooltip("if this tile is the entry point for the player")]
     private bool isEntry = false;
+    private PlayerMechanics currentPlayer = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -93,11 +94,19 @@ public class Tile : MonoBehaviour
 
     public bool IsWalkable()
     {
-        if(!currentPerson || !currentPerson.TakesUpSpace())
+        if((!currentPerson || !currentPerson.TakesUpSpace()) && !currentPlayer)
         {
             return true;
         }
         return false;
+    }
+
+    public PlayerMechanics GetPlayer() {
+        return currentPlayer;
+    }
+
+    public void SetPlayer(PlayerMechanics player) {
+        currentPlayer = player;
     }
 
     public Person GetPerson()
@@ -158,6 +167,11 @@ public class Tile : MonoBehaviour
             sRenderer = gameObject.GetComponent<SpriteRenderer>();
         }
         sRenderer.sprite = sprite;
+    }
+
+    public SpriteRenderer GetSpriteRenderer(){
+        return sRenderer;
+    
     }
 
     public void SetOffset(Vector3 tileOffset){
