@@ -867,14 +867,12 @@ public class Person : MonoBehaviour
         }
     }
     
-
+    ///Updates the line of sight for the person. This is called when the person is created and when the person moves
     public void updateLineOfSight(Direction facing){
-        //HandleActions(behavior.onTurnChange);
-        
-        //bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         Tile ogTile = currentTile;
         Direction currFacingDirection = currentFacing;
+        //go until vision breaks
         while (true)
         {
             //if tile is invalid, break los
@@ -882,9 +880,8 @@ public class Person : MonoBehaviour
                 Debug.Log("BreakLOS for " + personId.ToString());
                 break;
             }
-            //highlight tileseen
             
-            //Debug.Log(tileSeen.getX() + " " + tileSeen.getY());
+            //get the tile seen via the direction the person is facing and previous tile
             switch (currFacingDirection) {
                 case Direction.LEFT:
                     //Debug.Log("hitUpdateLOSLeft");
@@ -904,28 +901,26 @@ public class Person : MonoBehaviour
                     break;
                 default: 
                     break;
-                
             }
+
             //if tile seen exists
             if (tileSeen && ogTile != tileSeen)
             {
-                
-                //get person on tile
+                //get person on seen tile
                 Person seenPerson = tileSeen.GetPerson();
                 //if person exists, stop line of sight at/on them
                 if (seenPerson)
                 {
                     Debug.Log(seenPerson.name);
                     Debug.Log(seenPerson.GetKey());
-                    //end game if person sees dead target
+                    //end game if person sees target (or any person that alarms when seen dead)
                     if (seenPerson.CallAlarmWhenSeen())
                     {
                         //Temp reaction to kill to show who caused the failed level
                         StartBubbleReaction(true);
-                        GameManager.Instance.GameOver("SEEN");
+                        GameManager.Instance.GameOver("SEEN"); //call game over
                         SFXManager.Instance.ScreamSFX();
                         Debug.Log("WE WOOOH");
-                        //call game over
                     }
                     
                 }
@@ -954,11 +949,10 @@ public class Person : MonoBehaviour
                             break;
                         default: 
                             break;
-                        
                     }
                 }
+                //break line of sight if tile is not walkable and person is not a mirror
                 else{
-                    
                     break;
                 }
                 
