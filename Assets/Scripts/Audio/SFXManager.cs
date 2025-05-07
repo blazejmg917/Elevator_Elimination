@@ -86,12 +86,14 @@ public class SFXManager : MonoBehaviour
     public void StabbyStabby()
     {
         MusicManager.Instance.GetEventInstance().setParameterByName("fade", 20f);
+        MusicManager.Instance.GetEventInstance().setParameterByName("going backward", 0f);
 
         OneShotSFX(stab);
     }
 
     public void MischiefManaged(bool playRecordScratch = true)
     {
+        MusicManager.Instance.GetEventInstance().setParameterByName("going backward", 1f);
         MusicManager.Instance.GetEventInstance().setParameterByName("fade", 0f);
 
         if (playRecordScratch)
