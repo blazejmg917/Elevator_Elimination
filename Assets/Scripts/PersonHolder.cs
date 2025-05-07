@@ -65,6 +65,13 @@ public class PersonHolder : MonoBehaviour
         return people;
     }
 
+    public void RemoveAllLOS(){
+        foreach(GameObject person in people){
+            Person personScript = person.GetComponent<Person>();
+            personScript.RemoveLOSLighting(personScript.GetDirection());
+        }
+    }
+
     // void OnValidate(){
     //     foreach()
     // }

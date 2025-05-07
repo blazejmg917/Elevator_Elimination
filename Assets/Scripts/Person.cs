@@ -948,7 +948,7 @@ public class Person : MonoBehaviour
     //mirror turning would also need to remove previous cast LOS before turning
     private Direction GetMirrorFacingDirection(Direction facing) {
         //if the mirror is facing left or right, then cast left LOS up, and right LOS down
-        if (currentFacing == Direction.LEFT || currentFacing == Direction.RIGHT) {
+        //if (facing == Direction.UP || facing == Direction.DOWN) {
             switch (facing) {
                 case Direction.LEFT:
                     return Direction.UP;
@@ -961,22 +961,22 @@ public class Person : MonoBehaviour
                 default:
                     return Direction.NONE;
             }
-        }
-        //if the mirror is facing up or down, the direction is flipped
-        else{
-            switch (facing) {
-                case Direction.LEFT:
-                    return Direction.DOWN;
-                case Direction.RIGHT:
-                    return Direction.UP;
-                case Direction.UP:
-                    return Direction.RIGHT;
-                case Direction.DOWN:
-                    return Direction.LEFT;
-                default:
-                    return Direction.NONE;
-            }
-        }
+        //}
+        // //if the mirror is facing up or down, the direction is flipped
+        // else{
+        //     switch (facing) {
+        //         case Direction.LEFT:
+        //             return Direction.DOWN;
+        //         case Direction.RIGHT:
+        //             return Direction.UP;
+        //         case Direction.UP:
+        //             return Direction.RIGHT;
+        //         case Direction.DOWN:
+        //             return Direction.LEFT;
+        //         default:
+        //             return Direction.NONE;
+        //     }
+        // }
 
     }
 
