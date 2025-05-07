@@ -96,6 +96,7 @@ public class CustomLevelSelect : MonoBehaviour
             {
                 finalButton.interactable = false;
             }
+            //set to "New" button
             else if(buttonText)
             {
                 buttonText.text = "New";
@@ -103,20 +104,18 @@ public class CustomLevelSelect : MonoBehaviour
         }
         else
         {
-
-            int error = 0;
+			//set to Edit button
+			int error = 0;
             if (IO.ReadFileFullCheck(option.GetLevel(), out error, editMode))
             {
                 errorText.text = "";
-                if (editMode)
+                if (editMode && buttonText)
                 {
                     buttonText.text = "Edit";
                 }
-                else
-                {
-                    finalButton.interactable = true;
-                    
-                }
+
+                finalButton.interactable = true;
+
             }
             else
             {
