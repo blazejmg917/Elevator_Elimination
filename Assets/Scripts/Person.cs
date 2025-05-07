@@ -113,6 +113,8 @@ public class Person : MonoBehaviour
     private bool frogStopped = false;
     private bool gorillaStopped = false;
     private List<Tile> tilesHighlightedByLOS = new List<Tile>();
+
+    private bool awokenThisTurn = false;
     
     // Start is called before the first frame update
     void Start()
@@ -362,6 +364,7 @@ public class Person : MonoBehaviour
     }
 
     private void BeforeInteract(){
+        awokenThisTurn = false;
         if (currentFacing != null){
             RemoveLOSLighting(currentFacing);
         }
@@ -739,7 +742,17 @@ public class Person : MonoBehaviour
      * @param direction the direction to change the person's animation
      */
     public void SetAlarmDirection(Direction direction) {
-        if(currentFacing != Direction.NONE || currentFacing != direction){
+        if (CompareTag("SleepyGuy") && anim && !awokenThisTurn)
+        {
+            BeforeInteract();
+            states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.AWOKEN));
+            anim.SetTrigger("WakeUp");
+            currentFacing = direction;
+            awokenThisTurn = true;
+            AfterInteract();
+        }
+        else if (currentFacing != Direction.NONE || currentFacing != direction)
+        {
             states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.ALERTED));
             currentFacing = direction;
         }

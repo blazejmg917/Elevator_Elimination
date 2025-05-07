@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 65956865
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1000335773, guid: 783dc5665f1f37f43b5c2764e861a07e, type: 3}
+  m_Sprite: {fileID: -772470716, guid: 32b65978e2f05a44db335bc21f519be9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -120,24 +120,32 @@ MonoBehaviour:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
       pushInFront: 0
       pullInSight: 0
     afterInteract:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
       pushInFront: 0
       pullInSight: 0
     onTurnChange:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
       pushInFront: 0
       pullInSight: 1
     onSeePlayer:
       eatInFront: 0
       alertSurrounding: 0
       soundAlarm: 0
+      sightCast: 0
+      sightRemove: 0
       pushInFront: 0
       pullInSight: 0
   pushSpeed: 5
