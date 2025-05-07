@@ -165,6 +165,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3779404650769609902}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 562221147329285623}
+  isEntry: 0
 --- !u!1 &159278296589647586
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +331,7 @@ MonoBehaviour:
   bottomTile: {fileID: 980188320717754514}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 5483229860101209934}
+  isEntry: 0
 --- !u!1 &718477121774057940
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +497,7 @@ MonoBehaviour:
   bottomTile: {fileID: 6602913914561731457}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 8750727625500875338}
+  isEntry: 0
 --- !u!1 &1274686771383354779
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,6 +663,7 @@ MonoBehaviour:
   bottomTile: {fileID: 8545821901434509348}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 573462626644150592}
+  isEntry: 0
 --- !u!1 &1752240627530291797
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,6 +829,7 @@ MonoBehaviour:
   bottomTile: {fileID: 151259098184727955}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 685720363993921950}
+  isEntry: 0
 --- !u!1 &1758470223655525132
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
-  personId: Bystander
+  personId: 
   personDirection: 1
   leftTile: {fileID: 7027217296738537678}
   rightTile: {fileID: 6806609292719777522}
@@ -990,6 +995,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1789242584069174724}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1514776983886165683}
+  isEntry: 0
 --- !u!1 &1780523915669872620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,6 +1161,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1547510457024934740}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2002230297622105394}
+  isEntry: 0
 --- !u!1 &2045355264719283953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,6 +1327,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 3912126082973595431}
+  isEntry: 0
 --- !u!1 &2045361138687261627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1485,6 +1493,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2135865986086036640}
+  isEntry: 0
 --- !u!1 &2569006140209167181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,6 +1659,7 @@ MonoBehaviour:
   bottomTile: {fileID: 6261791987888401967}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 7361778748672043487}
+  isEntry: 0
 --- !u!1 &3064302198667819359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,6 +1825,7 @@ MonoBehaviour:
   bottomTile: {fileID: 7782195241961726401}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2163269143231036045}
+  isEntry: 0
 --- !u!1 &3177341620804008632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,6 +1991,7 @@ MonoBehaviour:
   bottomTile: {fileID: 4495914366007105982}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1196865411212125585}
+  isEntry: 0
 --- !u!1 &3240808687554432761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2145,6 +2157,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3092540947582394605}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1649313031884117013}
+  isEntry: 0
 --- !u!1 &3411117709212592558
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,14 +2315,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
-  personId: 
-  personDirection: 0
+  personId: SleepyGuy
+  personDirection: 3
   leftTile: {fileID: 0}
   rightTile: {fileID: 6249333914663448126}
   topTile: {fileID: 0}
   bottomTile: {fileID: 7778105883183672039}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6165137265756684523}
+  isEntry: 0
 --- !u!1 &3658498807606925879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2475,6 +2489,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3290217717389704028}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2305159190279470011}
+  isEntry: 0
 --- !u!1 &3665868130982896818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2632,14 +2647,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
-  personId: 
-  personDirection: 0
+  personId: Bystander
+  personDirection: 1
   leftTile: {fileID: 0}
   rightTile: {fileID: 7027217296738537678}
   topTile: {fileID: 7782195241961726401}
   bottomTile: {fileID: 26523665779214850}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2859343684847485213}
+  isEntry: 0
 --- !u!1 &3680648019422846011
 GameObject:
   m_ObjectHideFlags: 0
@@ -2805,6 +2821,7 @@ MonoBehaviour:
   bottomTile: {fileID: 5137524572226025724}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 5798432463626204650}
+  isEntry: 0
 --- !u!1 &3698539937938412016
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,6 +2987,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3309215096884678283}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1193838481557695413}
+  isEntry: 0
 --- !u!1 &3749538477877296865
 GameObject:
   m_ObjectHideFlags: 0
@@ -3135,6 +3153,7 @@ MonoBehaviour:
   bottomTile: {fileID: 2413882743995503281}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 864248534121309470}
+  isEntry: 0
 --- !u!1 &3839144168992252847
 GameObject:
   m_ObjectHideFlags: 0
@@ -3300,6 +3319,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 4544225280925486663}
+  isEntry: 0
 --- !u!1 &4073115412493031921
 GameObject:
   m_ObjectHideFlags: 0
@@ -3465,6 +3485,7 @@ MonoBehaviour:
   bottomTile: {fileID: 6647612997983160831}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1551625119246001858}
+  isEntry: 0
 --- !u!1 &4204617489566258189
 GameObject:
   m_ObjectHideFlags: 0
@@ -3630,6 +3651,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3838043935727447118}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6773277067844090261}
+  isEntry: 0
 --- !u!1 &4354547000805130395
 GameObject:
   m_ObjectHideFlags: 0
@@ -3795,6 +3817,7 @@ MonoBehaviour:
   bottomTile: {fileID: 2287881237647738094}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 5613868548709390797}
+  isEntry: 0
 --- !u!1 &4574209818591849261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3960,6 +3983,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 870772831714514410}
+  isEntry: 0
 --- !u!1 &4980132857187994852
 GameObject:
   m_ObjectHideFlags: 0
@@ -4125,6 +4149,7 @@ MonoBehaviour:
   bottomTile: {fileID: 7518269409006346136}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6734279612814350022}
+  isEntry: 0
 --- !u!1 &5000190102625783249
 GameObject:
   m_ObjectHideFlags: 0
@@ -4290,6 +4315,7 @@ MonoBehaviour:
   bottomTile: {fileID: 5439725506431609483}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 3184558806448493198}
+  isEntry: 0
 --- !u!1 &5226277538705391092
 GameObject:
   m_ObjectHideFlags: 0
@@ -4455,6 +4481,7 @@ MonoBehaviour:
   bottomTile: {fileID: 7108991810286025293}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 7510316370956864668}
+  isEntry: 0
 --- !u!1 &5289295695181684586
 GameObject:
   m_ObjectHideFlags: 0
@@ -4620,6 +4647,7 @@ MonoBehaviour:
   bottomTile: {fileID: 8721181940682100952}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 8407660546584766088}
+  isEntry: 0
 --- !u!1 &5580518043739685168
 GameObject:
   m_ObjectHideFlags: 0
@@ -4785,6 +4813,7 @@ MonoBehaviour:
   bottomTile: {fileID: 2946866438555332797}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1039229919734094951}
+  isEntry: 0
 --- !u!1 &5955950763490337593
 GameObject:
   m_ObjectHideFlags: 0
@@ -4950,6 +4979,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3271159503661352356}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 173995505878014882}
+  isEntry: 0
 --- !u!1 &5999113542812379256
 GameObject:
   m_ObjectHideFlags: 0
@@ -5115,6 +5145,7 @@ MonoBehaviour:
   bottomTile: {fileID: 4236045251256847090}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6964612337910837377}
+  isEntry: 0
 --- !u!1 &6137946087814653477
 GameObject:
   m_ObjectHideFlags: 0
@@ -5280,6 +5311,7 @@ MonoBehaviour:
   bottomTile: {fileID: 4287218964746087790}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 3246955714771405646}
+  isEntry: 0
 --- !u!1 &6285021744524098322
 GameObject:
   m_ObjectHideFlags: 0
@@ -5445,6 +5477,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1392018927959736869}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2206591325319538100}
+  isEntry: 0
 --- !u!1 &6572743309993166529
 GameObject:
   m_ObjectHideFlags: 0
@@ -5610,6 +5643,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3418817337533351385}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 8261051440457660383}
+  isEntry: 0
 --- !u!1 &6834013689632734827
 GameObject:
   m_ObjectHideFlags: 0
@@ -5768,13 +5802,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPerson: {fileID: 0}
   personId: 
-  personDirection: 0
+  personDirection: 1
   leftTile: {fileID: 7782195241961726401}
   rightTile: {fileID: 3271159503661352356}
   topTile: {fileID: 7518269409006346136}
   bottomTile: {fileID: 7027217296738537678}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6731796568481533167}
+  isEntry: 0
 --- !u!1 &7382567208852220255
 GameObject:
   m_ObjectHideFlags: 0
@@ -5940,6 +5975,7 @@ MonoBehaviour:
   bottomTile: {fileID: 780884069111805524}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 4810828024288749583}
+  isEntry: 0
 --- !u!1 &7404695780346755394
 GameObject:
   m_ObjectHideFlags: 0
@@ -6092,7 +6128,7 @@ MonoBehaviour:
     - {fileID: 1547510457024934740}
     - {fileID: 2946866438555332797}
     - {fileID: 2175273015752980333}
-  floors: 11
+  floors: 99
 --- !u!1 &7506135693495655688
 GameObject:
   m_ObjectHideFlags: 0
@@ -6258,6 +6294,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6051794877383447562}
+  isEntry: 0
 --- !u!1 &7755152705549589746
 GameObject:
   m_ObjectHideFlags: 0
@@ -6423,6 +6460,7 @@ MonoBehaviour:
   bottomTile: {fileID: 6806609292719777522}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 4030476682310856179}
+  isEntry: 0
 --- !u!1 &7787320205344677267
 GameObject:
   m_ObjectHideFlags: 0
@@ -6588,6 +6626,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1626193001153959362}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 7233591307530133474}
+  isEntry: 0
 --- !u!1 &7927093863181048289
 GameObject:
   m_ObjectHideFlags: 0
@@ -6753,6 +6792,7 @@ MonoBehaviour:
   bottomTile: {fileID: 8340195786331709980}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 3775976972307069616}
+  isEntry: 0
 --- !u!1 &8066721134053500253
 GameObject:
   m_ObjectHideFlags: 0
@@ -6918,6 +6958,7 @@ MonoBehaviour:
   bottomTile: {fileID: 4390821575061493266}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 6471507326031949833}
+  isEntry: 0
 --- !u!1 &8188898849081503906
 GameObject:
   m_ObjectHideFlags: 0
@@ -7083,6 +7124,7 @@ MonoBehaviour:
   bottomTile: {fileID: 3010504293778546972}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 5059775544458856904}
+  isEntry: 0
 --- !u!1 &8354766629148674775
 GameObject:
   m_ObjectHideFlags: 0
@@ -7248,6 +7290,7 @@ MonoBehaviour:
   bottomTile: {fileID: 6217585271617887524}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 800089369248856524}
+  isEntry: 0
 --- !u!1 &8361009539391319946
 GameObject:
   m_ObjectHideFlags: 0
@@ -7413,6 +7456,7 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 5480385976886126134}
+  isEntry: 0
 --- !u!1 &8559286630133760500
 GameObject:
   m_ObjectHideFlags: 0
@@ -7578,6 +7622,7 @@ MonoBehaviour:
   bottomTile: {fileID: 8582871545992511189}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 2049656914548238913}
+  isEntry: 0
 --- !u!1 &8592078966983883065
 GameObject:
   m_ObjectHideFlags: 0
@@ -7743,6 +7788,7 @@ MonoBehaviour:
   bottomTile: {fileID: 1293794337057512145}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1540786870586130138}
+  isEntry: 0
 --- !u!1 &8845743271137659478
 GameObject:
   m_ObjectHideFlags: 0
@@ -7908,6 +7954,7 @@ MonoBehaviour:
   bottomTile: {fileID: 2409954227723421523}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 1676636679713607785}
+  isEntry: 0
 --- !u!1 &8921677797375630642
 GameObject:
   m_ObjectHideFlags: 0
@@ -8073,6 +8120,7 @@ MonoBehaviour:
   bottomTile: {fileID: 8607343321593501079}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 7070963366655894284}
+  isEntry: 0
 --- !u!1 &8940621664271090523
 GameObject:
   m_ObjectHideFlags: 0
@@ -8238,3 +8286,4 @@ MonoBehaviour:
   bottomTile: {fileID: 0}
   offset: {x: 0, y: 0, z: -0.5}
   sRenderer: {fileID: 4395175074957508654}
+  isEntry: 0

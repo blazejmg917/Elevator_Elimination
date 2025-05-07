@@ -338,8 +338,8 @@ public class Person : MonoBehaviour
                     // GameManager.Instance.UndoFloor(lastFloorNumber + 1);
                     // TileManager.Instance.UpdateLevel();
                 }
-                if (lastAction == Action.AWOKEN && anim) {
-                    anim.SetTrigger("WakeUp");
+                if (lastAction == Action.AWOKEN) {
+                    //anim.SetTrigger("WakeUp");
                     GameManager.Instance.UndoAwake = true;
                 }
             }
@@ -412,7 +412,6 @@ public class Person : MonoBehaviour
             while(thisTile){
                 if(thisTile && thisTile.GetPerson()){
                     thisTile.GetPerson().SetAlarmDirection(Direction.RIGHT);
-                    
                 }
                 thisTile = thisTile.GetLeft();
             }
@@ -585,7 +584,7 @@ public class Person : MonoBehaviour
                 return false;
             }
             BeforeInteract();
-            if (CompareTag("SleepyGuy") && anim) {
+            if (CompareTag("SleepyGuy") && anim && !GameManager.Instance.UndoAwake) {
                 states.Push((currentTile, currentFacing, GameManager.Instance.GetCurrentFloor(), null, Action.AWOKEN));
                 anim.SetTrigger("WakeUp");
             } else {
