@@ -176,5 +176,6 @@ public class CustomLevelSelect : MonoBehaviour
             return;
         }
         UI.LoadCustomLevelToRun(currentOption.GetLevel());
+        //TODO: add logic for calling CastAllLOS in player holder
     }
 }
