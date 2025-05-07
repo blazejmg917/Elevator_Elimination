@@ -65,10 +65,19 @@ public class PersonHolder : MonoBehaviour
         return people;
     }
 
+    //remove line of sight from all people
     public void RemoveAllLOS(){
         foreach(GameObject person in people){
             Person personScript = person.GetComponent<Person>();
             personScript.RemoveLOSLighting(personScript.GetDirection());
+        }
+    }
+    
+    //cast line of sight for all people
+    public void CastAllLOS(){
+        foreach(GameObject person in people){
+            Person personScript = person.GetComponent<Person>();
+            personScript.updateLineOfSight(personScript.GetDirection());
         }
     }
 
