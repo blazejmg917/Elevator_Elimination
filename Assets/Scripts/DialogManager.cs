@@ -117,6 +117,7 @@ public class DialogManager : MonoBehaviour
             Debug.Log("stopped breaker error");
             return;
         }
+        SFXManager.Instance.PandaStaticSFX();
         StartCoroutine("DisplayDialog");
 
     }

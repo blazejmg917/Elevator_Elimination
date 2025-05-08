@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 558395428736588038}
   - component: {fileID: 6932866319804143121}
   - component: {fileID: 7131905693798545601}
+  - component: {fileID: 5591080396821145203}
   m_Layer: 0
   m_Name: pandaHead
   m_TagString: Untagged
@@ -190,6 +191,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5591080396821145203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541474306438891568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d88f72acc239874a9281dcebac98f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8393679266552320970
 GameObject:
   m_ObjectHideFlags: 0

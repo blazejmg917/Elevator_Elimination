@@ -51,7 +51,7 @@ MonoBehaviour:
       Data2: 1158288104
       Data3: -939057261
       Data4: 1124666923
-    Path: event:/Temp Music
+    Path: event:/Music/Temp Music
 --- !u!114 &200927761962652316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,14 +133,14 @@ MonoBehaviour:
       Data2: 1200475788
       Data3: -2085277765
       Data4: -175997052
-    Path: event:/SFX Common/Panda Static
+    Path: event:/SFX Common/Panda/Panda Talk
   exitDoor:
     Guid:
-      Data1: 1515303106
-      Data2: 1200475788
-      Data3: -2085277765
-      Data4: -175997052
-    Path: event:/SFX Common/Panda Static
+      Data1: 1872734480
+      Data2: 1280293327
+      Data3: -545792582
+      Data4: 923785329
+    Path: event:/SFX Common/Exit Door
   step:
     Guid:
       Data1: -920952335

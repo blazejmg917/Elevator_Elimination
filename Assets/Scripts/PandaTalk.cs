@@ -47,6 +47,9 @@ public class PandaTalk : MonoBehaviour
             return;
         }
         DialogManager.Instance.StartDialog(node);
-        SFXManager.Instance.PandaStaticSFX();
+        
+        // moved to dialog manager
+        // SFXManager.Instance.PandaStaticSFX();
+
     }
 }

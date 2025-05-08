@@ -105,4 +105,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: OpenCRT
+    data: 
+    objectReferenceParameter: {fileID: 8393679266552320970, guid: 64e3bb8d63148aa4c8fb5edd47db7430, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

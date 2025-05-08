@@ -69,18 +69,19 @@ public class SFXManager : MonoBehaviour
         OneShotSFX(buttonClick);
     }
 
+    FMOD.Studio.EventInstance PausedEvent;
+
     public void PauseAdjust()
     {
-        //StartCoroutine(FadeAudioSource.StartFade(currentSource, .1f, currentVolume / 2));
-
-        // program "paused" as a boolean? or just use 0 and 1 and use seek speed to give it a slight fade
-
-        // these could also totally be moved to the other class?
+        PausedEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Pause");
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(PausedEvent, transform);
+        PausedEvent.start();
     }
 
     public void UnpauseAdjust()
     {
-        //StartCoroutine(FadeAudioSource.StartFade(currentSource, .1f, currentVolume));
+        PausedEvent.setParameterByName("end", 1f);
+        PausedEvent.release();
     }
 
     public void StabbyStabby()
@@ -142,7 +143,6 @@ public class SFXManager : MonoBehaviour
     public void StepSFX()
     {
         OneShotSFX(step); //sfx.PlayOneShot(steps[UnityEngine.Random.Range(0, steps.Count)], 0.6f);
-        Debug.Log("took step");
     }
     public void ButtonHover()
     {

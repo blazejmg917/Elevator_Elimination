@@ -72,7 +72,7 @@ public class MusicManager : MonoBehaviour
 #if UNITY_EDITOR
     void Reset() // maybe we can get rid of this later
     {
-        MusicEventName = FMODUnity.EventReference.Find("event:/Temp Music");
+        MusicEventName = FMODUnity.EventReference.Find("event:/Music/Temp Music");
     }
 #endif
 
