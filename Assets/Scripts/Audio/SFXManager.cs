@@ -84,6 +84,7 @@ public class SFXManager : MonoBehaviour
         PausedEvent.release();
     }
 
+    // music helper functions
     public void StabbyStabby()
     {
         MusicManager.Instance.GetEventInstance().setParameterByName("fade", 20f);
@@ -101,6 +102,13 @@ public class SFXManager : MonoBehaviour
         {
             OneShotSFX(recordScratch);
         }
+    }
+
+    // 0 is no megaphone, 1 is all megaphone.
+    // pick one of those two values and FMOD does the lerp and everything
+    public void SetMegaphone(float megaphoneAmount)
+    {
+        MusicManager.Instance.GetEventInstance().setParameterByName("megaphone", megaphoneAmount);
     }
 
 
