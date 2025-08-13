@@ -82,7 +82,11 @@ public class MouseFollowCreationScene : MonoBehaviour
             if (prevHoverTile)
             {
                 //turn off highlight
-                prevHoverTile.GetComponent<TileHighlight>().SetDefaultColor();
+                TileHighlight highlight = prevHoverTile.GetComponent<TileHighlight>();
+                if (highlight)
+                {
+                    highlight.SetDefaultColor();
+                }
                 prevHoverTile = null;
 
             }

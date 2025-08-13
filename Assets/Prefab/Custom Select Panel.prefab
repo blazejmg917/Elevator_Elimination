@@ -35,10 +35,10 @@ RectTransform:
   - {fileID: 965504613403065056}
   m_Father: {fileID: 2884023317925720053}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000011444, y: 0.00009410384}
-  m_SizeDelta: {x: 200, y: 134.3}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -0.0000019073486, y: 0.00009410384}
+  m_SizeDelta: {x: 0.0000038146973, y: 134.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7642074611923503884
 CanvasRenderer:
@@ -210,11 +210,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionPrefab: {fileID: 6262042353941122049, guid: 4c63df632aea4d64c9979e44bee08ec5, type: 3}
   IO: {fileID: 4284617698440973862}
+  UI: {fileID: 0}
   holderTransform: {fileID: 6117065179666469508}
   finalButton: {fileID: 0}
+  buttonText: {fileID: 0}
+  errorText: {fileID: 0}
   editMode: 0
   defaultOption: {fileID: 4589284447629468320}
   currentOption: {fileID: 0}
+  selectedOptions: []
 --- !u!114 &4284617698440973862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +234,7 @@ MonoBehaviour:
   folderFilePath: /Custom/Levels
   tilePrefab: {fileID: 0}
   EmptyTileMarker: X
+  preCheckPHolder: {fileID: 0}
 --- !u!114 &7236485436347239339
 MonoBehaviour:
   m_ObjectHideFlags: 0
