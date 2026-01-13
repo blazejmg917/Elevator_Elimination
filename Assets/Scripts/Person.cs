@@ -661,14 +661,38 @@ public class Person : MonoBehaviour
     public bool OnFloorChange()
     {
         HandleActions(behavior.onTurnChange);
-        bool sightlineCleared = false;
         Tile tileSeen = currentTile;
-        while (!sightlineCleared)
+        Direction currFacingDirection = currentFacing;
+        while (true)
         {
             if (!tileSeen) {
                 return true;
             }
-            switch (currentFacing) {
+            //logic for the mirror person flipping the line of sight
+            if (tileSeen && tileSeen.GetPerson() && tileSeen.GetPerson().GetKey() == "MI"){
+                switch (currFacingDirection) {
+                    case Direction.LEFT:
+                        //left to up translation
+                        currFacingDirection = Direction.UP;
+                        break;
+                    case Direction.RIGHT:
+                        //right to down translation
+                        currFacingDirection = Direction.DOWN;
+                        break;
+                    case Direction.UP:
+                        //up to left translation
+                        currFacingDirection = Direction.LEFT;
+                        break;
+                    case Direction.DOWN:
+                        //down to right translation
+                        currFacingDirection = Direction.RIGHT;
+                        break;
+                    default: 
+                        break;
+                            
+                }
+            }
+            switch (currFacingDirection) {
                 case Direction.LEFT:
                     tileSeen = tileSeen.GetLeft();
                     break;
@@ -685,6 +709,7 @@ public class Person : MonoBehaviour
                     return true;
                 
             }
+            
             if (tileSeen)
             {
                 Person seenPerson = tileSeen.GetPerson();
@@ -766,9 +791,9 @@ public class Person : MonoBehaviour
     }
 
     public void RemoveLOSLighting(Direction facing){
-        bool sightlineCleared = false;
         Tile tileSeen = currentTile;
-        while (!sightlineCleared)
+        Direction currFacingDirection = currentFacing;
+        while (true)
         {
             //if tile is invalid, break los
             if (!tileSeen) {
@@ -778,7 +803,7 @@ public class Person : MonoBehaviour
 
             
             
-            switch (currentFacing) {
+            switch (currFacingDirection) {
                 case Direction.LEFT:
                     tileSeen = tileSeen.GetLeft();
                     break;
@@ -813,19 +838,41 @@ public class Person : MonoBehaviour
                     }
                     
                 }
+                else if (tileSeen.GetPerson() && tileSeen.GetPerson().GetKey() == "MI"){
+                    switch (currFacingDirection) {
+                        case Direction.LEFT:
+                            //left to up translation
+                            currFacingDirection = Direction.UP;
+                            break;
+                        case Direction.RIGHT:
+                            //right to down translation
+                            currFacingDirection = Direction.DOWN;
+                            break;
+                        case Direction.UP:
+                            //up to left translation
+                            currFacingDirection = Direction.LEFT;
+                            break;
+                        case Direction.DOWN:
+                            //down to right translation
+                            currFacingDirection = Direction.RIGHT;
+                            break;
+                        default: 
+                            break;
+                        
+                    }
+                }
                 
             }
             
         }
     }
     
-
+    ///Updates the line of sight for the person. This is called when the person is created and when the person moves
     public void updateLineOfSight(Direction facing){
-        //HandleActions(behavior.onTurnChange);
-        
-        //bool sightlineCleared = false;
         Tile tileSeen = currentTile;
         Tile ogTile = currentTile;
+        Direction currFacingDirection = currentFacing;
+        //go until vision breaks
         while (true)
         {
             //if tile is invalid, break los
@@ -833,10 +880,9 @@ public class Person : MonoBehaviour
                 Debug.Log("BreakLOS for " + personId.ToString());
                 break;
             }
-            //highlight tileseen
             
-            //Debug.Log(tileSeen.getX() + " " + tileSeen.getY());
-            switch (currentFacing) {
+            //get the tile seen via the direction the person is facing and previous tile
+            switch (currFacingDirection) {
                 case Direction.LEFT:
                     //Debug.Log("hitUpdateLOSLeft");
                     tileSeen = tileSeen.GetLeft();
@@ -855,31 +901,83 @@ public class Person : MonoBehaviour
                     break;
                 default: 
                     break;
-                
             }
+
             //if tile seen exists
             if (tileSeen && ogTile != tileSeen)
             {
-                
-                //get person on tile
+                //get person on seen tile
                 Person seenPerson = tileSeen.GetPerson();
                 //if person exists, stop line of sight at/on them
                 if (seenPerson)
                 {
                     Debug.Log(seenPerson.name);
+                    Debug.Log(seenPerson.GetKey());
+                    //end game if person sees target (or any person that alarms when seen dead)
+                    if (seenPerson.CallAlarmWhenSeen())
+                    {
+                        //Temp reaction to kill to show who caused the failed level
+                        StartBubbleReaction(true);
+                        GameManager.Instance.GameOver("SEEN"); //call game over
+                        SFXManager.Instance.ScreamSFX();
+                        Debug.Log("WE WOOOH");
+                    }
                     
                 }
                 //highlight tile
                 if (tileSeen.IsWalkable()){ // || seenPerson == tileSeen.GetPerson()
                     castVisionOnTile(tileSeen);
                 }
+                //logic for mirror reflection (up goes left and down goes right (vice versa for both))
+                else if (seenPerson && seenPerson.GetKey() == "MI"){
+                    //gets the new direction the line of sight gets reflected by the mirror
+                    currFacingDirection = GetMirrorFacingDirection(currFacingDirection);
+                    //this allows for future functionality of mirrors that can be turned
+                }
+                //break line of sight if tile is not walkable and person is not a mirror
                 else{
-                    
                     break;
                 }
                 
             }
         }
+    }
+
+    //function that gets the direction the mirror reflects the line of sight to
+    //this function is for future functionality allowing mirrors to be tapped/turned
+    //mirror turning would also need to remove previous cast LOS before turning
+    private Direction GetMirrorFacingDirection(Direction facing) {
+        //if the mirror is facing left or right, then cast left LOS up, and right LOS down
+        //if (facing == Direction.UP || facing == Direction.DOWN) {
+            switch (facing) {
+                case Direction.LEFT:
+                    return Direction.UP;
+                case Direction.RIGHT:
+                    return Direction.DOWN;
+                case Direction.UP:
+                    return Direction.LEFT;
+                case Direction.DOWN:
+                    return Direction.RIGHT;
+                default:
+                    return Direction.NONE;
+            }
+        //}
+        // //if the mirror is facing up or down, the direction is flipped
+        // else{
+        //     switch (facing) {
+        //         case Direction.LEFT:
+        //             return Direction.DOWN;
+        //         case Direction.RIGHT:
+        //             return Direction.UP;
+        //         case Direction.UP:
+        //             return Direction.RIGHT;
+        //         case Direction.DOWN:
+        //             return Direction.LEFT;
+        //         default:
+        //             return Direction.NONE;
+        //     }
+        // }
+
     }
 
 

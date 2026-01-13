@@ -247,7 +247,6 @@ public class GameManager : MonoBehaviour
         //change highlight
     }
 
-    
 
     public void LevelStart(int id){
 
